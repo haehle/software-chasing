@@ -8,8 +8,13 @@ public class Player {
     private String name;
     private int[] location;
     private int hp;
+    private int maxHP;
     private int speed;
     private int stamina;
+    private int maxStamina;
+    private int level;
+    private int levelXP;
+    private int initialLevelXP;
     private String[] skills;
     private String[] abilities;
 
@@ -17,22 +22,31 @@ public class Player {
         this.username = username;
         this.name = name;
         this.location = new int[]{0,0};
+        this.level = 1;
+        this.levelXP = 100;
+        this.initialLevelXP = 100;
         if(type == 1){
             this.hp = 100;
+            this.maxHP = 100;
             this.speed = 15;
             this.stamina = 20;
+            this.maxStamina = 20;
             this.skills = new String[]{};
             this.abilities = new String[]{};
         } else if(type == 2){
             this.hp = 60;
+            this.maxHP = 100;
             this.speed = 25;
             this.stamina = 30;
+            this.maxStamina = 30;
             this.skills = new String[]{};
             this.abilities = new String[]{};
         } else if(type == 3){
             this.hp = 200;
+            this.maxHP = 200;
             this.speed = 5;
             this.stamina = 5;
+            this.maxStamina = 5;
             this.skills = new String[]{};
             this.abilities = new String[]{};
         }
@@ -63,6 +77,10 @@ public class Player {
         this.hp = hp;
     }
 
+    public int getMaxHP() { return this.maxHP; }
+
+    public void setMaxHP(int maxHP) { this.maxHP = maxHP; }
+
     public int getSpeed() {
         return this.speed;
     }
@@ -78,6 +96,27 @@ public class Player {
     public void setStamina(int stamina) {
         this.stamina = stamina;
     }
+
+    public int getMaxStamina() {
+        return this.maxStamina;
+    }
+
+    public void setMaxStamina(int maxStamina) {
+        this.maxStamina = maxStamina;
+    }
+
+    public int getLevel() { return this.level; }
+
+    public void setLevel(int level) { this.level = level; }
+
+    public int getLevelXP() { return this.levelXP; }
+
+    public void setLevelXP(int levelXP ) { this.levelXP = levelXP; }
+
+    public int getInitialLevelXP() { return this.initialLevelXP; }
+
+    public void setInitialLevelXP(int initialLevelXP ) { this.initialLevelXP = initialLevelXP; }
+
 
     public String[] getSkills() {
         return this.skills;
