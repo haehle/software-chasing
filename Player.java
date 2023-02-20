@@ -140,5 +140,45 @@ public class Player {
         this.abilities = updatedAbilities;
     }
 
+    public void gainXP(int amt) {
+        //Check for level up
+        if (amt >= this.levelXP)
+        {
+            int xpOver = (amt - this.levelXP);
+            levelUp(xpOver);
+        }
+        else
+        {
+            //Subtract xp gained from remaining levelXP
+            setLevelXP(this.levelXP - amt);
+        }
+    }
+
+    public void levelUp(int xpOver) {
+        while (true) {
+            setMaxHP((int) ((this.maxHP * 0.2) + this.maxHP));
+            setSpeed((int) ((this.speed * 0.2) + this.speed));
+            setMaxStamina((int) ((this.maxStamina * 0.2) + this.maxStamina));
+            setLevel(this.level + 1);
+            setInitialLevelXP((int)((this.initialLevelXP * 0.5) + this.initialLevelXP));
+
+            //Check for more levels gained
+            if (xpOver > this.initialLevelXP)
+            {
+                xpOver = xpOver - this.initialLevelXP;
+                //Keep executing loop
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        //Remove xp amt from current xp needed to level up
+        setLevelXP(this.initialLevelXP - xpOver);
+
+        //Later on, will also have to check for new skills/abilities unlocked at each level
+    }
+
 
 }
