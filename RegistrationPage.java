@@ -26,6 +26,7 @@ class RegistrationPage extends JFrame implements ActionListener {
     private JLabel par1;
     private JLabel par2;
     private JLabel par3;
+    private JLabel par4;
 //    private JLabel gender;
 //    private JRadioButton male;
 //    private JRadioButton female;
@@ -142,6 +143,12 @@ class RegistrationPage extends JFrame implements ActionListener {
         par3.setLocation(200, 270);
         c.add(par3);
 
+        par4 = new JLabel("Please Enter Matching Passwords!");
+        par4.setFont(new Font("Acumin Pro", Font.ITALIC, 12));
+        par4.setSize(350, 25);
+        par4.setLocation(200, 325);
+
+
         cpa = new JLabel("Confirm Password");
         cpa.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
         cpa.setSize(150, 25);
@@ -153,6 +160,8 @@ class RegistrationPage extends JFrame implements ActionListener {
         tcpa.setSize(250, 20);
         tcpa.setLocation(200, 300);
         c.add(tcpa);
+
+
 
 //        gender = new JLabel("Gender");
 //        gender.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -235,26 +244,26 @@ class RegistrationPage extends JFrame implements ActionListener {
         reset.addActionListener(this);
         c.add(reset);
 
-//        tout = new JTextArea();
-//        tout.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
-//        tout.setSize(300, 400);
-//        tout.setLocation(500, 100);
-//        tout.setLineWrap(true);
-//        tout.setEditable(false);
-//        c.add(tout);
-//
-//        res = new JLabel("");
-//        res.setFont(new Font("Acumin Pro", Font.PLAIN, 20));
-//        res.setSize(500, 25);
-//        res.setLocation(100, 500);
-//        c.add(res);
-//
-//        resadd = new JTextArea();
-//        resadd.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
-//        resadd.setSize(200, 75);
-//        resadd.setLocation(580, 175);
-//        resadd.setLineWrap(true);
-//        c.add(resadd);
+        tout = new JTextArea();
+        tout.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
+        tout.setSize(300, 400);
+        tout.setLocation(500, 100);
+        tout.setLineWrap(true);
+        tout.setEditable(false);
+        c.add(tout);
+
+        res = new JLabel("");
+        res.setFont(new Font("Acumin Pro", Font.PLAIN, 20));
+        res.setSize(500, 25);
+        res.setLocation(100, 500);
+        c.add(res);
+
+        resadd = new JTextArea();
+        resadd.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
+        resadd.setSize(200, 75);
+        resadd.setLocation(580, 175);
+        resadd.setLineWrap(true);
+        c.add(resadd);
 
         setVisible(true);
     }
@@ -265,12 +274,18 @@ class RegistrationPage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e)
     {
         if (e.getSource() == sub) {
-            String data1;
-            String data
-                    = "Username : "
-                    + tuse.getText() + "\n"
-                    + "Password : "
-                    + tpas.getText() + "\n";
+//            String data1;
+            if (tpas.equals(tcpa)) {
+                String data
+                        = "Username : "
+                        + tuse.getText() + "\n"
+                        + "Password : "
+                        + tpas.getText() + "\n";
+            }
+            else if (!tpas.getText().equals(tcpa.getText())) {
+                System.out.println("Passwords do not match");
+            }
+
 //                if (male.isSelected())
 //                    data1 = "Gender : Male"
 //                            + "\n";
