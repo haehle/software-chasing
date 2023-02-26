@@ -10,8 +10,8 @@ public class Tile { // the fundamental type of the map can be various types
 * Private Boss (type 4) (RED)
 * private enemy (type 3) (Pink)
 * private NPC (type 2) (green)
-* Floors will be white
-* Walls will be black until we get images to load into these locations.
+* Floors will be white (type 1)
+* Walls will be black until we get images to load into these locations. (type 0)
 * Player will be yellow?
 * These classes will have their own info, but we can use it to generate the other classes/ set the boss enemy as needed
 * */
