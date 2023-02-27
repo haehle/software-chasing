@@ -51,7 +51,10 @@ public class Player {
             this.abilities = new String[]{};
         }
     }
-    
+
+    public String getUsername() { return this.username; }
+
+    public void setUsername(String name) { this.username = username; }
 
     public String getName() {
         return this.name;
@@ -138,6 +141,17 @@ public class Player {
         list.addAll(Arrays.asList(this.abilities));
         String[] updatedAbilities = (String[]) list.toArray();
         this.abilities = updatedAbilities;
+    }
+
+    public static void createPlayer(String username, String name, int type)
+    {
+        Player player = new Player(username, name, type);
+        dbConnection.addCharacter(player);
+    }
+
+    public static void deletePlayer(String username, String name)
+    {
+        dbConnection.deleteCharacter(username, name);
     }
 
     public void gainXP(int amt) {
