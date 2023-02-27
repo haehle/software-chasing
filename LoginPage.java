@@ -1,4 +1,4 @@
-//Code adapted from https://www.javatpoint.com/login-form-java
+//Code adapted from javatpoint
 
 
 import javax.swing.*;
@@ -8,7 +8,7 @@ import java.lang.Exception;
 
 public class LoginPage extends JFrame implements ActionListener {
 
-    //initialize button, panel, label, and text field
+
     private JLabel title;
     private JLabel username;
     private JTextField usernameText;
@@ -18,12 +18,10 @@ public class LoginPage extends JFrame implements ActionListener {
     JButton b2;
     JPanel newPanel;
     JLabel userLabel, passLabel;
-    final JTextField  textField1, textField2;
+//    final JTextField  textField1, textField2;
     private Container c;
 
-    //calling constructor
-    LoginPage()
-    {
+    LoginPage() {
         setTitle("Software Chasing Registration");
         setBounds(300, 90, 500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -64,8 +62,6 @@ public class LoginPage extends JFrame implements ActionListener {
         passwordText.setLocation(200, 200);
         c.add(passwordText);
 
-
-
         b1 = new JButton("Login");
         b1.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
         b1.setSize(100, 20);
@@ -81,33 +77,33 @@ public class LoginPage extends JFrame implements ActionListener {
         c.add(b2);
 
 
-        //create label for username
-        userLabel = new JLabel();
-        userLabel.setText("Username/Email");      //set label value for textField1
-
-        //create text field to get username from the user
-        textField1 = new JTextField(15);    //set length of the text
-
-        //create label for password
-        passLabel = new JLabel();
-        passLabel.setText("Password"); //set label value for textField2
-
-        //create text field to get password from the user
-        textField2 = new JPasswordField(15);    //set length for the password
-
-        //create submit button
-        b1 = new JButton("LOGIN"); //set label to button
-
-        //create panel to put form elements
-        newPanel = new JPanel(new GridLayout(3, 1));
-        newPanel.add(userLabel);    //set username label to panel
-        newPanel.add(textField1);   //set text field to panel
-        newPanel.add(passLabel);    //set password label to panel
-        newPanel.add(textField2);   //set text field to panel
-        newPanel.add(b1);           //set button to panel
-
-        //set border to panel
-        add(newPanel, BorderLayout.CENTER);
+//        //create label for username/email
+//        userLabel = new JLabel();
+//        userLabel.setText("Username/Email");      //set label value for textField1
+//
+//        //create text field to get username from the user
+//        textField1 = new JTextField(15);    //set length of the text
+//
+//        //create label for password
+//        passLabel = new JLabel();
+//        passLabel.setText("Password"); //set label value for textField2
+//
+//        //create text field to get password from the user
+//        textField2 = new JPasswordField(15);    //set length for the password
+//
+//        //create login button
+//        b1 = new JButton("LOGIN"); //set label to button
+//
+//        //create panel to put form elements
+//        newPanel = new JPanel(new GridLayout(3, 1));
+//        newPanel.add(userLabel);    //set username label to panel
+//        newPanel.add(textField1);   //set text field to panel
+//        newPanel.add(passLabel);    //set password label to panel
+//        newPanel.add(textField2);   //set text field to panel
+//        newPanel.add(b1);           //set button to panel
+//
+//        //set border to panel
+//        add(newPanel, BorderLayout.CENTER);
 
         //perform action on button click
         b1.addActionListener(this);     //add action listener to button
@@ -120,8 +116,10 @@ public class LoginPage extends JFrame implements ActionListener {
         if (e.getSource() == b1) {
 
 
-            String userValue = textField1.getText();        //get user entered username from the textField1
-            String passValue = textField2.getText();        //get user entered password from the textField2
+//            String userValue = textField1.getText();        //get user entered username from the textField1
+//            String passValue = textField2.getText();        //get user entered password from the textField2
+            String userValue = usernameText.getText();
+            String passValue = passwordText.getText();
 
             //check whether the credentials are authentic or not
             if (userValue.equals("test1@gmail.com") && passValue.equals("test")) {  //if authentic, navigate user to a new page
@@ -150,17 +148,13 @@ public class LoginPage extends JFrame implements ActionListener {
 
     public class NewPage extends JFrame{
 
-        //constructor
-        NewPage()
-        {
+
+        NewPage() {
             setDefaultCloseOperation(javax.swing.
                     WindowConstants.DISPOSE_ON_CLOSE);
             setTitle("Welcome");
             setSize(400, 200);
         }
-
-
-
 
     }
 }
@@ -168,16 +162,13 @@ public class LoginPage extends JFrame implements ActionListener {
 
 
 
-//create the main class
 class LoginForm {
-    //main() method start
     public static void main(String arg[]) {
         try {
             //create instance of the CreateLoginForm
             LoginPage form = new LoginPage();
             form.setVisible(true);  //make form visible to the user
         } catch (Exception e) {
-            //handle exception
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }
