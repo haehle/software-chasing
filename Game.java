@@ -35,6 +35,7 @@ public class Game {//used to load in the game to start levels from the main menu
 
     }//END RUN
 
+    /*TODO Actions such as the report button need to go in here and be hooked into the run() function*/
 
 
 }// END GAME CLASS
