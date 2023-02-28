@@ -86,16 +86,21 @@ public class World {
         this.currLoc[1] = y;
     }
 
-    public void displayWorld(){ //tiles are 8x8 pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
+
+    public void setTileSize(int tileSize) {
+        this.tileSize = tileSize;
+    }
+
+    public void displayWorld(){ //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
         final String title = "Game World: Software Chasing";
-        final int width = this.length * tileSize;
-        final int height = this.height * tileSize;
+        final int frameWidth = this.length * tileSize;
+        final int frameHeight = this.height * tileSize;
 
 
         //Creating the frame.
         frame = new JFrame(title);
 
-        frame.setSize(width, height);
+        frame.setSize(frameWidth, frameHeight);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
@@ -124,7 +129,7 @@ public class World {
         //Creating the canvas.
         Canvas canvas = new Canvas();
 
-        canvas.setSize(width, height);
+        canvas.setSize(frameWidth, frameHeight);
         //canvas.setBackground(Color.BLACK);
         canvas.setVisible(true);
         canvas.setFocusable(false);
@@ -140,21 +145,6 @@ public class World {
         bufferStrategy = canvas.getBufferStrategy();
         graphics = bufferStrategy.getDrawGraphics();
 
-//        for (int y = 0; y < this.height; y++) {
-//            for (int x = 0; x < this.length; x++) {
-//                //get color of tile based on type
-//                int type = this.worldMap[y][x].getType();
-//                //0 is wall 1 is floor
-//                /*TODO: MAKE THIS SWITCH BASED OF tile type*/
-//                if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
-//
-//                /*TODO load a tile image*/
-//                graphics.fillRect(x*tileSize,y*tileSize,tileSize,tileSize); //TILE IMAGE WILL GO HERE LATER
-//            }
-//        }
-//
-//        bufferStrategy.show();
-//        graphics.dispose();
 
         while (true) { // will add movements in here and wait for certain motions to keep displaying this
             bufferStrategy = canvas.getBufferStrategy();
@@ -165,8 +155,10 @@ public class World {
                 for (int x = 0; x < this.length; x++) {
                     //get color of tile based on type
                     int type = this.worldMap[y][x].getType();
+                    //0 is wall 1 is floor
                     if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
-                    graphics.fillRect(x*16,y*16,16,16);
+                    /*TODO load a tile image*/
+                    graphics.fillRect(x*tileSize,y*tileSize,tileSize,tileSize); //TILE IMAGE WILL GO HERE LATER
                 }
             }
 
@@ -175,7 +167,7 @@ public class World {
             graphics.dispose();
 
         }
-    }
+    }//END DISPLAY WORLD
 
     public static void main(String[] args) {
         int[][] tiles = new int[50][50];
@@ -194,11 +186,11 @@ public class World {
     public class upAction extends AbstractAction{
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.printf(" UP LOCATION" + currLoc[0] +"  Y: "+ currLoc[1]);
+            System.out.println(" UP LOCATION" + currLoc[0] +"  Y: "+ currLoc[1]);
             if (getUp(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() - tileSize);//x then y
-            //setCurrLoc(currLoc[0], currLoc[1] - 1 );
-            System.out.printf("UP");
+            setCurrLoc(currLoc[0], currLoc[1] - 1 );
+            System.out.println("UP");
         }
     }//up action
     public class downAction extends AbstractAction{
@@ -207,7 +199,7 @@ public class World {
             System.out.println(" DOWN LOCATION" + " X: "+ currLoc[0] +"  Y: "+ currLoc[1]);
             if (getDown(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() + tileSize);//x then y
-            //setCurrLoc(currLoc[0], currLoc[1] + 1 );
+            setCurrLoc(currLoc[0], currLoc[1] + 1 );
             System.out.println("down");
         }
     }//down action
@@ -217,7 +209,7 @@ public class World {
             System.out.println("LOCATION X: " + currLoc[0] +"  Y: "+ currLoc[1]);
             if (getLeft(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX() - tileSize,playerLabel.getY());//x then y
-            //setCurrLoc(currLoc[0] - 1, currLoc[1] );
+            setCurrLoc(currLoc[0] - 1, currLoc[1] );
             System.out.println("left");
         }
     }//left action
@@ -227,7 +219,7 @@ public class World {
             System.out.println("LOCATION X: " + currLoc[0] +"  Y: "+ currLoc[1]);
             if (getRight(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX() + tileSize,playerLabel.getY());//x then y
-            //setCurrLoc(currLoc[0] + 1, currLoc[1] );
+            setCurrLoc(currLoc[0] + 1, currLoc[1] );
             System.out.println("right");
         }
     }//up action
