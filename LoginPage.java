@@ -122,7 +122,9 @@ public class LoginPage extends JFrame implements ActionListener {
             String passValue = passwordText.getText();
 
             //check whether the credentials are authentic or not
-            if (userValue.equals("test1@gmail.com") && passValue.equals("test")) {  //if authentic, navigate user to a new page
+            Profile profile = dbConnection.login(userValue, passValue);
+
+            if (profile != null) {  //if authentic, navigate user to a new page
 
                 //create instance of the NewPage
                 NewPage page = new NewPage();
@@ -133,6 +135,11 @@ public class LoginPage extends JFrame implements ActionListener {
                 //create a welcome label and set it to the new page
                 JLabel wel_label = new JLabel("Welcome: " + userValue);
                 page.getContentPane().add(wel_label);
+            }
+            else
+            {
+                //Invalid login
+                System.out.println("Invalid login credentials");
             }
         }
 

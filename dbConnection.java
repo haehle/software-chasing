@@ -164,4 +164,50 @@ public class dbConnection {
             throw new IllegalStateException("Error occurred while connecting to database", e);
         }
     }
+
+    public static Profile login(String username, String password)
+    {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String encryptedPassword = Util.EncryptPassword(password);
+                String email = "";
+
+                String query = "SELECT * FROM Users WHERE username=\"" + username +
+                        "\" AND password=\"" + encryptedPassword + "\";";
+
+                ResultSet rs = statement.executeQuery(query);
+
+                if (rs == null) {
+                    //User not found
+                    System.out.println("User with given credentials not found in database.");
+                    return null;
+                } else {
+                    //User found
+                    System.out.println("User with given credentials found in database.");
+
+                    //Parse data
+                    while (rs.next()) {
+                        email = rs.getString("email");
+                        System.out.println("EMAIL: " + email + "\nUSERNAME: " + username);
+                    }
+
+                    //Create new User object with fetched data
+                    Profile profile = new Profile(email, username, password);
+                    return profile;
+                }
+
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not access user profiles for login", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
 }
