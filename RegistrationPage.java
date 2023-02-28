@@ -29,9 +29,9 @@ class RegistrationPage extends JFrame implements ActionListener {
     private JTextArea resadd;
 
     // Components of the profile
-    private String data1;
-    private String data2;
-    private String data3;
+    private String email;
+    private String username;
+    private String password;
 
 
 
@@ -172,14 +172,14 @@ class RegistrationPage extends JFrame implements ActionListener {
     // by the user and act accordingly
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == sub) {
-            data1 = tem.getText();
-            data2 = tuse.getText();
-            data3 = tpas.getText();
+            email = tem.getText();
+            username = tuse.getText();
+            password = tpas.getText();
             if (!tpas.getText().equals(tcpa.getText())) {
                 System.out.println("Passwords do not match");
             }
 
-            Profile p = new Profile(data1, data2, data3);
+            Profile.createProfile(email, username, password);
 
             tout.setEditable(false);
             res.setText("Registration Successfully..");

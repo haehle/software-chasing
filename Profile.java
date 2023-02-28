@@ -37,9 +37,16 @@ public class Profile {
         return encryptedPassword;
     }
 
+    public static void createProfile(String email, String username, String password)
+    {
+        Profile profile = new Profile(email, username, password);
+        dbConnection.addUserProfile(profile);
+    }
 
-
-
+    public static void deleteProfile(String username)
+    {
+        dbConnection.deleteUserProfile(username);
+    }
 
     public String EncryptPassword(String p) {
         try {

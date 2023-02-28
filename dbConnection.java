@@ -113,4 +113,55 @@ public class dbConnection {
             throw new IllegalStateException("Error occurred while connecting to database", e);
         }
     }
+
+    public static void addUserProfile(Profile profile)
+    {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "INSERT INTO Users VALUES (" +
+                        "\"" + profile.getUsername() + "\", " +
+                        "\"" + profile.getEmail() + "\", " +
+                        "\"" + profile.getEncryptedPassword() + "\");";
+
+                statement.execute(query);
+                System.out.println("User profile added successfully.");
+
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not create user profile", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
+    public static void deleteUserProfile(String username)
+    {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "DELETE FROM Characters WHERE Username = \"" + username + "\"";
+
+                statement.execute(query);
+                System.out.println("User profile deleted successfully.");
+
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not delete user profile", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
 }
