@@ -8,12 +8,12 @@ public class DatabaseTests {
 
     //Class created to test player creation/deletion process
     public static void NewPlayerTest() {
-        Player.createPlayer("test", "Tester", 1);
-        Player.deletePlayer("test", "Tester");
+        Util.createPlayer("test", "Tester", 1);
+        Util.deletePlayer("test", "Tester");
     }
 
     public static void NewUserProfileTest() {
-        Profile.createProfile("test@test.com", "test", "password");
-        Profile.deleteProfile("test");
+        Util.createProfile("test@test.com", "test", "password");
+        Util.deleteProfile("test");
     }
 }

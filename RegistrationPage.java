@@ -179,7 +179,7 @@ class RegistrationPage extends JFrame implements ActionListener {
                 System.out.println("Passwords do not match");
             }
 
-            Profile.createProfile(email, username, password);
+            Util.createProfile(email, username, password);
 
             tout.setEditable(false);
             res.setText("Registration Successfully..");

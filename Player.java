@@ -143,17 +143,6 @@ public class Player {
         this.abilities = updatedAbilities;
     }
 
-    public static void createPlayer(String username, String name, int type)
-    {
-        Player player = new Player(username, name, type);
-        dbConnection.addCharacter(player);
-    }
-
-    public static void deletePlayer(String username, String name)
-    {
-        dbConnection.deleteCharacter(username, name);
-    }
-
     public void gainXP(int amt) {
         //Check for level up
         if (amt >= this.levelXP)
