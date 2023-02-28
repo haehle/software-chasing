@@ -150,7 +150,7 @@ public class dbConnection {
 
             try (Statement statement = connection.createStatement()) {
 
-                String query = "DELETE FROM Characters WHERE Username = \"" + username + "\"";
+                String query = "DELETE FROM Users WHERE Username = \"" + username + "\"";
 
                 statement.execute(query);
                 System.out.println("User profile deleted successfully.");
