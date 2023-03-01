@@ -210,4 +210,55 @@ public class dbConnection {
             throw new IllegalStateException("Error occurred while connecting to database", e);
         }
     }
+
+    public static Player[] getPlayers(String username)
+    {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "SELECT * FROM Characters WHERE username=\"" + username + "\";";
+
+                Player[] players = {};
+                ResultSet rs = statement.executeQuery(query);
+
+                if (rs == null) {
+                    //User not found
+                    System.out.println("No players found for user.");
+                    return null;
+                } else {
+                    //User found
+                    System.out.println("Players found for user...");
+
+                    //Parse data
+                    int i = 0;
+                    while (rs.next()) {
+
+                        Player player  = new Player(username, rs.getString("name"), rs.getInt("type"),
+                                rs.getInt("locationX"), rs.getInt("locationY"), rs.getInt("hp"),
+                                rs.getInt("maxHP"), rs.getInt("speed"), rs.getInt("stamina"),
+                                rs.getInt("maxStamina"), rs.getInt("level"), rs.getInt("levelXP"),
+                                rs.getInt("initialLevelXP"));
+
+                        players[i] = player;
+
+                        System.out.println("Existing player data " + (i+1) + " fetched");
+                        i++;
+                    }
+
+                    return players;
+                }
+
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not access user profiles for login", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
 }

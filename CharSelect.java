@@ -11,17 +11,21 @@ public class CharSelect {
     JPanel titlePanel;
     JPanel editPanel;
 
-    String username = "Saheer";//Get current users username
+    public static Profile profile = new Profile("test@gmail.com", "test", "password"); //Temporary placeholder object
+    public static String username = profile.getUsername();//Get current users username
 
-    static Player char1 = null;//Get however many characters for the user and set the ones that exist(Hunter).
-    static Player char2 = null;
-    static Player char3 = null;
+    public static Player[] players = dbConnection.getPlayers(username);
+
+    public static Player char1;
+    public static Player char2;
+    public static Player char3;
     
-    static String char1Name = null;
-    static String char2Name = null;
-    static String char3Name = null;
+    public static String char1Name = players[0].getName();
+    public static String char2Name = players[1].getName();
+    public static String char3Name = players[2].getName();
 
     public CharSelect(String name1, String name2, String name3){
+
         window = new JFrame();
         window.setSize(800,600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
