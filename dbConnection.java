@@ -41,17 +41,16 @@ public class dbConnection {
                 //Remove user from table
                 statement.execute(removeUsers);
 
-                } catch (SQLException e){
-                    throw new IllegalStateException("Could not create user", e);
-                }
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not create user", e);
+            }
 
         } catch (SQLException e) {
             throw new IllegalStateException("Error occurred while connecting to database", e);
         }
     }
 
-    public static void addCharacter(Player player)
-    {
+    public static void addPlayer(Player player) {
         try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
 
             //Connected to database
@@ -62,9 +61,10 @@ public class dbConnection {
                 int locationX = player.getLocation()[0];
                 int locationY = player.getLocation()[1];
 
-                String query = "INSERT INTO Characters VALUES (" +
+                String query = "INSERT INTO Players VALUES (" +
                         "\"" + player.getName() + "\", " +
                         "\"" + player.getUsername() + "\", " +
+                        "\"" + player.getType() + "\", " +
                         "\"" + locationX + "\", " +
                         "\"" + locationY + "\", " +
                         "\"" + player.getHp() + "\", " +
@@ -77,10 +77,10 @@ public class dbConnection {
                         "\"" + player.getInitialLevelXP() + "\");";
 
                 statement.execute(query);
-                System.out.println("Character added successfully.");
+                System.out.println("Player added successfully.");
 
             } catch (SQLException e) {
-                throw new IllegalStateException("Could not create character", e);
+                throw new IllegalStateException("Could not create player", e);
             }
 
 
@@ -89,8 +89,7 @@ public class dbConnection {
         }
     }
 
-    public static void deleteCharacter(String username, String name)
-    {
+    public static void deletePlayer(String username, String name) {
         try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
 
             //Connected to database
@@ -98,14 +97,14 @@ public class dbConnection {
 
             try (Statement statement = connection.createStatement()) {
 
-                String query = "DELETE FROM Characters WHERE Username = \"" + username + "\" AND Name = \"" +
+                String query = "DELETE FROM Players WHERE Username = \"" + username + "\" AND Name = \"" +
                         name + "\"";
 
                 statement.execute(query);
-                System.out.println("Character deleted successfully.");
+                System.out.println("Player deleted successfully.");
 
             } catch (SQLException e) {
-                throw new IllegalStateException("Could not delete character", e);
+                throw new IllegalStateException("Could not delete player", e);
             }
 
 
@@ -114,8 +113,7 @@ public class dbConnection {
         }
     }
 
-    public static void addUserProfile(Profile profile)
-    {
+    public static void addUserProfile(Profile profile) {
         try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
 
             //Connected to database
@@ -141,8 +139,7 @@ public class dbConnection {
         }
     }
 
-    public static void deleteUserProfile(String username)
-    {
+    public static void deleteUserProfile(String username) {
         try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
 
             //Connected to database
@@ -165,8 +162,7 @@ public class dbConnection {
         }
     }
 
-    public static Profile login(String username, String password)
-    {
+    public static Profile login(String username, String password) {
         try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
 
             //Connected to database
@@ -211,8 +207,7 @@ public class dbConnection {
         }
     }
 
-    public static Player[] getPlayers(String username)
-    {
+    public static Player[] getPlayers(String username) {
         try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
 
             //Connected to database
@@ -220,7 +215,7 @@ public class dbConnection {
 
             try (Statement statement = connection.createStatement()) {
 
-                String query = "SELECT * FROM Characters WHERE username=\"" + username + "\";";
+                String query = "SELECT * FROM Users WHERE username=\"" + username + "\";";
 
                 Player[] players = {};
                 ResultSet rs = statement.executeQuery(query);
@@ -237,7 +232,7 @@ public class dbConnection {
                     int i = 0;
                     while (rs.next()) {
 
-                        Player player  = new Player(username, rs.getString("name"), rs.getInt("type"),
+                        Player player = new Player(username, rs.getString("name"), rs.getInt("type"),
                                 rs.getInt("locationX"), rs.getInt("locationY"), rs.getInt("hp"),
                                 rs.getInt("maxHP"), rs.getInt("speed"), rs.getInt("stamina"),
                                 rs.getInt("maxStamina"), rs.getInt("level"), rs.getInt("levelXP"),
@@ -245,7 +240,7 @@ public class dbConnection {
 
                         players[i] = player;
 
-                        System.out.println("Existing player data " + (i+1) + " fetched");
+                        System.out.println("Existing player data " + (i + 1) + " fetched");
                         i++;
                     }
 
@@ -261,4 +256,40 @@ public class dbConnection {
             throw new IllegalStateException("Error occurred while connecting to database", e);
         }
     }
+
+    /* public static void createPlayer(Player player) {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "INSERT INTO Players VALUES (" +
+                        "\"" + player.getName() + "\", " +
+                        "\"" + player.getUsername() + "\", " +
+                        "\"" + player.getType() + "\", " +
+                        "\"" + player.getLocation() + "\", " + //Fix this to get X and Y components of location
+                        "\"" + player.getHp() + "\", " +
+                        "\"" + player.getMaxHP() + "\", " +
+                        "\"" + player.getSpeed() + "\", " +
+                        "\"" + player.getStamina() + "\", " +
+                        "\"" + player.getMaxStamina() + "\", " +
+                        "\"" + player.getLevel() + "\", " +
+                        "\"" + player.getLevelXP() + "\", " +
+                        "\"" + player.getInitialLevelXP() + "\";";
+
+                System.out.println("QUERY:\n" + query);
+
+                statement.execute(query);
+                System.out.println("New player added successfully.");
+
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not create new player in database", e);
+            }
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    } */
 }

@@ -5,11 +5,11 @@ public final class Util {
     //Utility class for static methods
     public static void createPlayer(String username, String name, int type) {
         Player player = new Player(username, name, type);
-        dbConnection.addCharacter(player);
+        dbConnection.addPlayer(player);
     }
 
     public static void deletePlayer(String username, String name) {
-        dbConnection.deleteCharacter(username, name);
+        dbConnection.deletePlayer(username, name);
     }
 
     public static void createProfile(String email, String username, String password) {

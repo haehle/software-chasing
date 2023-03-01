@@ -20,9 +20,9 @@ public class CharSelect {
     public static Player char2;
     public static Player char3;
     
-    public static String char1Name = players[0].getName();
-    public static String char2Name = players[1].getName();
-    public static String char3Name = players[2].getName();
+    public static String char1Name = null; //players[0].getName();
+    public static String char2Name = null; //players[1].getName();
+    public static String char3Name = null; //players[2].getName();
 
     public CharSelect(String name1, String name2, String name3){
 
@@ -193,12 +193,21 @@ public class CharSelect {
 
                 if(character.equals("char1")){//Save new character name(Hunter)
                     char1Name = CharNameText.getText();
+                    Player newPlayer = new Player(char1.getUsername(), char1Name, char1.getType());
+                    dbConnection.deletePlayer(char1.getUsername(), char1.getName());
+                    dbConnection.addPlayer(newPlayer);
                     new CharSelect(char1Name, char2Name, char3Name);
                 }else if(character.equals("char2")){
                     char2Name = CharNameText.getText();
+                    Player newPlayer = new Player(char2.getUsername(), char2Name, char2.getType());
+                    dbConnection.deletePlayer(char2.getUsername(), char2.getName());
+                    dbConnection.addPlayer(newPlayer);
                     new CharSelect(char1Name, char2Name, char3Name);
                 } else if(character.equals("char3")){
                     char3Name = CharNameText.getText();
+                    Player newPlayer = new Player(char3.getUsername(), char3Name, char3.getType());
+                    dbConnection.deletePlayer(char3.getUsername(), char3.getName());
+                    dbConnection.addPlayer(newPlayer);
                     new CharSelect(char1Name, char2Name, char3Name);
                 }
 
@@ -296,10 +305,13 @@ public class CharSelect {
                 Player newPlayer;              
                 if(type1.isSelected()){ //Save newPlayer to database(Hunter)
                     newPlayer = new Player(username, charNameField.getText(), 1);
+                    dbConnection.addPlayer(newPlayer);
                 }else if(type2.isSelected()){
                     newPlayer = new Player(username, charNameField.getText(), 2);
+                    dbConnection.addPlayer(newPlayer);
                 } else{
                     newPlayer = new Player(username, charNameField.getText(), 3);
+                    dbConnection.addPlayer(newPlayer);
                 }
                 if(char1Name == null){//temporary
                     char1Name = charNameField.getText();
