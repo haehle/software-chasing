@@ -15,7 +15,8 @@ public class CharSelect {
     public static String username;//Get current users username
 
     public static Player[] players;
-    public Player currentPlayer;
+    public static Player currentPlayer;
+    public static Profile userProfile;
 
     public static Player char1;
     public static Player char2;
@@ -28,13 +29,17 @@ public class CharSelect {
     public CharSelect(Profile profile){
         username = profile.getUsername();
         players = dbConnection.getPlayers(username);
-        if(players[0] != null){
+        if(players[0] != null) {
             char1 = players[0];
             char1Name = players[0].getName();
-        } else if(players[1] != null){
+        }
+
+        if(players[1] != null) {
             char2 = players[1];
             char2Name = players[1].getName();
-        } else if(players[2] != null){
+        }
+
+        if(players[2] != null) {
             char3 = players[2];
             char3Name = players[2].getName();
         }
@@ -365,4 +370,8 @@ public class CharSelect {
     // public static void main(String args[]) {
     //     new CharSelect(Profile);
     // }
+
+    public static void GeneratePage(Profile profile) {
+        new CharSelect(profile);
+    }
 }

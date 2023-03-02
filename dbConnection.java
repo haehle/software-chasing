@@ -217,7 +217,7 @@ public class dbConnection {
 
                 String query = "SELECT * FROM Players WHERE username=\"" + username + "\";";
 
-                Player[] players = {};
+                Player[] players = {null, null, null};
                 ResultSet rs = statement.executeQuery(query);
                 if (!rs.isBeforeFirst()) {
                     //User not found
@@ -231,7 +231,7 @@ public class dbConnection {
                     int i = 0;
                     while (rs.next()) {
 
-                        Player player = new Player(rs.getString("name"), username, rs.getInt("type"),
+                        Player player = new Player(username, rs.getString("name"), rs.getInt("type"),
                                 rs.getInt("locationX"), rs.getInt("locationY"), rs.getInt("hp"),
                                 rs.getInt("maxHP"), rs.getInt("speed"), rs.getInt("stamina"),
                                 rs.getInt("maxStamina"), rs.getInt("level"), rs.getInt("levelXP"),
@@ -255,40 +255,4 @@ public class dbConnection {
             throw new IllegalStateException("Error occurred while connecting to database", e);
         }
     }
-
-    /* public static void createPlayer(Player player) {
-        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
-
-            //Connected to database
-            System.out.println("Connected to database successfully.");
-
-            try (Statement statement = connection.createStatement()) {
-
-                String query = "INSERT INTO Players VALUES (" +
-                        "\"" + player.getName() + "\", " +
-                        "\"" + player.getUsername() + "\", " +
-                        "\"" + player.getType() + "\", " +
-                        "\"" + player.getLocation() + "\", " + //Fix this to get X and Y components of location
-                        "\"" + player.getHp() + "\", " +
-                        "\"" + player.getMaxHP() + "\", " +
-                        "\"" + player.getSpeed() + "\", " +
-                        "\"" + player.getStamina() + "\", " +
-                        "\"" + player.getMaxStamina() + "\", " +
-                        "\"" + player.getLevel() + "\", " +
-                        "\"" + player.getLevelXP() + "\", " +
-                        "\"" + player.getInitialLevelXP() + "\";";
-
-                System.out.println("QUERY:\n" + query);
-
-                statement.execute(query);
-                System.out.println("New player added successfully.");
-
-            } catch (SQLException e) {
-                throw new IllegalStateException("Could not create new player in database", e);
-            }
-
-        } catch (SQLException e) {
-            throw new IllegalStateException("Error occurred while connecting to database", e);
-        }
-    } */
 }

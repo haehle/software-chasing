@@ -23,7 +23,7 @@ public class LoginPage extends JFrame implements ActionListener {
 
     LoginPage() {
         setTitle("Software Chasing Registration");
-        setBounds(300, 90, 500, 500);
+        setBounds(300, 90, 500, 525);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -71,7 +71,7 @@ public class LoginPage extends JFrame implements ActionListener {
 
         b2 = new JButton("Register Here");
         b2.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
-        b2.setSize(100, 20);
+        b2.setSize(150, 20);
         b2.setLocation(270, 450);
         b2.addActionListener(this);
         c.add(b2);
@@ -125,7 +125,7 @@ public class LoginPage extends JFrame implements ActionListener {
             Profile profile = dbConnection.login(userValue, passValue);
 
             if (profile != null) {  //if authentic, navigate user to a new page
-
+                /*
                 //create instance of the NewPage
                 NewPage page = new NewPage();
 
@@ -135,6 +135,8 @@ public class LoginPage extends JFrame implements ActionListener {
                 //create a welcome label and set it to the new page
                 JLabel wel_label = new JLabel("Welcome: " + userValue);
                 page.getContentPane().add(wel_label);
+                 */
+                CharSelect.GeneratePage(profile);
             }
             else
             {
