@@ -14,6 +14,7 @@ public class LoginPage extends JFrame implements ActionListener {
     private JTextField usernameText;
     private JLabel password;
     private JTextField passwordText;
+    private JLabel invalidLogin;
     JButton b1;
     JButton b2;
     JButton b3;
@@ -60,6 +61,12 @@ public class LoginPage extends JFrame implements ActionListener {
         passwordText.setLocation(200, 200);
         c.add(passwordText);
 
+        invalidLogin = new JLabel("Invalid Login Credentials");
+        invalidLogin.setFont(new Font("Acumin Pro", Font.BOLD, 12));
+        invalidLogin.setForeground(Color.red);
+        invalidLogin.setSize(150, 30);
+        invalidLogin.setLocation(50, 300);
+
         b1 = new JButton("Login");
         b1.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
         b1.setSize(100, 20);
@@ -99,31 +106,27 @@ public class LoginPage extends JFrame implements ActionListener {
             Profile profile = dbConnection.login(userValue, passValue);
 
             if (profile != null) {  //if authentic, navigate user to a new page
-                /*
-                //create instance of the NewPage
-                NewPage page = new NewPage();
-
-                //make page visible to the user
-                page.setVisible(true);
-
-                //create a welcome label and set it to the new page
-                JLabel wel_label = new JLabel("Welcome: " + userValue);
-                page.getContentPane().add(wel_label);
-                 */
+                dispose();
                 CharSelect.GeneratePage(profile);
             }
             else
             {
                 //Invalid login
-                System.out.println("Invalid login credentials");
+                String def = "";
+                passwordText.setText(def);
+                c.add(invalidLogin);
+                c.revalidate();
+                c.repaint();
             }
         }
 
         else if (e.getSource() == b2) {
+            dispose();
             RegistrationPage f = new RegistrationPage();
         }
 
         else if (e.getSource() == b3) {
+            dispose();
             ForgotPage a = new ForgotPage();
             a.setVisible(true);
         }
