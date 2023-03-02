@@ -1,9 +1,12 @@
 //import javax.mail.MessagingException;
+import javax.mail.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.UnsupportedEncodingException;
 import java.lang.Exception;
+import java.nio.charset.*;
+import java.util.*;
 
 
 public class ForgotPage extends JFrame implements ActionListener {
@@ -14,6 +17,7 @@ public class ForgotPage extends JFrame implements ActionListener {
     private JTextField emailText;
     private JButton sendEmail;
     private JLabel confirmation;
+
 
     ForgotPage() {
         setTitle("Software Chasing Forgot Password");
@@ -62,15 +66,39 @@ public class ForgotPage extends JFrame implements ActionListener {
             c.add(confirmation);
             c.revalidate();
             c.repaint();
-//            try {
-//                EmailUtil.sendEmail("a", "b", "c", "d", "e", "f", "g", "h");
-//                confirmation = new JLabel("Check your email for a forgot password message");
-//                confirmation.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
-//                confirmation.setSize(350, 25);
-//                confirmation.setLocation(50, 250);
-//            } catch (MessagingException | UnsupportedEncodingException messagingException) {
-//                messagingException.printStackTrace();
-//            }
+
+            // Generate a random 10 digit one time password using numbers and letters
+            String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    + "0123456789"
+                    + "abcdefghijklmnopqrstuvxyz";
+
+            // create StringBuffer size of AlphaNumericString
+            StringBuilder sb = new StringBuilder(10);
+
+            for (int i = 0; i < 10; i++) {
+
+                // generate a random number between
+                // 0 to AlphaNumericString variable length
+                int index
+                        = (int)(AlphaNumericString.length()
+                        * Math.random());
+
+                // add Character one by one in end of sb
+                sb.append(AlphaNumericString
+                        .charAt(index));
+            }
+
+            // Send an email from us (developers) to the user's email specifying a one time password to be used to login
+
+            try {
+                EmailUtil.sendEmail("smtp.gmail.com", "25", "thewheatman1234@gmail.com", "SoftwareChasing", "twgxqmjyekanixul", emailText.getText(), "Password Reset", "Here is a one time password, please use this to login: " + sb);
+                confirmation = new JLabel("Check your email for a forgot password message");
+               confirmation.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
+                confirmation.setSize(350, 25);
+                confirmation.setLocation(50, 250);
+            } catch (UnsupportedEncodingException | MessagingException messagingException) {
+                messagingException.printStackTrace();
+            }
         }
 
     }
