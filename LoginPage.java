@@ -16,13 +16,11 @@ public class LoginPage extends JFrame implements ActionListener {
     private JTextField passwordText;
     JButton b1;
     JButton b2;
-    JPanel newPanel;
-    JLabel userLabel, passLabel;
-//    final JTextField  textField1, textField2;
+    JButton b3;
     private Container c;
 
     LoginPage() {
-        setTitle("Software Chasing Registration");
+        setTitle("Software Chasing Login");
         setBounds(300, 90, 500, 525);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
@@ -65,49 +63,27 @@ public class LoginPage extends JFrame implements ActionListener {
         b1 = new JButton("Login");
         b1.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
         b1.setSize(100, 20);
-        b1.setLocation(150, 450);
+        b1.setLocation(200, 250);
         b1.addActionListener(this);
         c.add(b1);
 
         b2 = new JButton("Register Here");
         b2.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
         b2.setSize(150, 20);
-        b2.setLocation(270, 450);
+        b2.setLocation(275, 450);
         b2.addActionListener(this);
         c.add(b2);
 
+        b3 = new JButton("Forgot Password");
+        b3.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
+        b3.setSize(150, 20);
+        b3.setLocation(100, 450);
+        b3.addActionListener(this);
+        c.add(b3);
 
-//        //create label for username/email
-//        userLabel = new JLabel();
-//        userLabel.setText("Username/Email");      //set label value for textField1
-//
-//        //create text field to get username from the user
-//        textField1 = new JTextField(15);    //set length of the text
-//
-//        //create label for password
-//        passLabel = new JLabel();
-//        passLabel.setText("Password"); //set label value for textField2
-//
-//        //create text field to get password from the user
-//        textField2 = new JPasswordField(15);    //set length for the password
-//
-//        //create login button
-//        b1 = new JButton("LOGIN"); //set label to button
-//
-//        //create panel to put form elements
-//        newPanel = new JPanel(new GridLayout(3, 1));
-//        newPanel.add(userLabel);    //set username label to panel
-//        newPanel.add(textField1);   //set text field to panel
-//        newPanel.add(passLabel);    //set password label to panel
-//        newPanel.add(textField2);   //set text field to panel
-//        newPanel.add(b1);           //set button to panel
-//
-//        //set border to panel
-//        add(newPanel, BorderLayout.CENTER);
 
-        //perform action on button click
-        b1.addActionListener(this);     //add action listener to button
-        setTitle("SOFTWARE CHASING LOGIN");         //set title to the login form
+
+
     }
 
     //define abstract method actionPerformed() which will be called on button click
@@ -116,8 +92,6 @@ public class LoginPage extends JFrame implements ActionListener {
         if (e.getSource() == b1) {
 
 
-//            String userValue = textField1.getText();        //get user entered username from the textField1
-//            String passValue = textField2.getText();        //get user entered password from the textField2
             String userValue = usernameText.getText();
             String passValue = passwordText.getText();
 
@@ -147,6 +121,11 @@ public class LoginPage extends JFrame implements ActionListener {
 
         else if (e.getSource() == b2) {
             RegistrationPage f = new RegistrationPage();
+        }
+
+        else if (e.getSource() == b3) {
+            ForgotPage a = new ForgotPage();
+            a.setVisible(true);
         }
 
         else {
