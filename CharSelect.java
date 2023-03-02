@@ -11,20 +11,33 @@ public class CharSelect {
     JPanel titlePanel;
     JPanel editPanel;
 
-    public static Profile profile = new Profile("test@gmail.com", "test", "password"); //Temporary placeholder object
-    public static String username = profile.getUsername();//Get current users username
+    // public static Profile profile = new Profile("test@gmail.com", "test", "password"); //Temporary placeholder object
+    public static String username;//Get current users username
 
-    public static Player[] players = dbConnection.getPlayers(username);
+    public static Player[] players;
+    public Player currentPlayer;
 
     public static Player char1;
     public static Player char2;
     public static Player char3;
     
-    public static String char1Name = null; //players[0].getName();
-    public static String char2Name = null; //players[1].getName();
-    public static String char3Name = null; //players[2].getName();
+    public static String char1Name = null; 
+    public static String char2Name = null; 
+    public static String char3Name = null; 
 
-    public CharSelect(String name1, String name2, String name3){
+    public CharSelect(Profile profile){
+        username = profile.getUsername();
+        players = dbConnection.getPlayers(username);
+        if(players[0] != null){
+            char1 = players[0];
+            char1Name = players[0].getName();
+        } else if(players[1] != null){
+            char2 = players[1];
+            char2Name = players[1].getName();
+        } else if(players[2] != null){
+            char3 = players[2];
+            char3Name = players[2].getName();
+        }
 
         window = new JFrame();
         window.setSize(800,600);
@@ -51,7 +64,7 @@ public class CharSelect {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                createCharPanel();
+                createCharPanel(profile);
             }
             
         });
@@ -62,12 +75,12 @@ public class CharSelect {
         JButton char1Button = new JButton();
         char1Button.setBounds(270, 300, 200, 60);
         char1Button.setBackground(Color.white);
-        char1Button.setText(name1);
+        char1Button.setText(char1Name);
         char1Button.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Open Game and send in Character 1
+                currentPlayer = char1;
             }
             
         });
@@ -80,7 +93,7 @@ public class CharSelect {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                editPanel("char1");
+                editPanel(profile, "char1");
             }
             
         });
@@ -92,12 +105,12 @@ public class CharSelect {
         JButton char2Button = new JButton();
         char2Button.setBounds(270, 380, 200, 60);
         char2Button.setBackground(Color.white);
-        char2Button.setText(name2);
+        char2Button.setText(char2Name);
         char2Button.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Open Game and send in Character 2
+                currentPlayer = char2;
             }
             
         });
@@ -110,7 +123,7 @@ public class CharSelect {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                editPanel("char2");
+                editPanel(profile, "char2");
             }
             
         });
@@ -122,12 +135,12 @@ public class CharSelect {
         JButton char3Button = new JButton();
         char3Button.setBounds(270, 460, 200, 60);
         char3Button.setBackground(Color.white);
-        char3Button.setText(name3);
+        char3Button.setText(char3Name);
         char3Button.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Open Game and send in Character 3
+                currentPlayer = char3;
             }
             
         });
@@ -140,7 +153,7 @@ public class CharSelect {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                editPanel("char3");
+                editPanel(profile, "char3");
             }
             
         });
@@ -151,7 +164,7 @@ public class CharSelect {
 
     }
 
-    public void editPanel(String character){
+    public void editPanel(Profile profile, String character){
         JFrame editFrame = new JFrame();
         Container editCon = new Container();
         editFrame.setSize(800,600);
@@ -196,19 +209,19 @@ public class CharSelect {
                     Player newPlayer = new Player(char1.getUsername(), char1Name, char1.getType());
                     dbConnection.deletePlayer(char1.getUsername(), char1.getName());
                     dbConnection.addPlayer(newPlayer);
-                    new CharSelect(char1Name, char2Name, char3Name);
+                    new CharSelect(profile);
                 }else if(character.equals("char2")){
                     char2Name = CharNameText.getText();
                     Player newPlayer = new Player(char2.getUsername(), char2Name, char2.getType());
                     dbConnection.deletePlayer(char2.getUsername(), char2.getName());
                     dbConnection.addPlayer(newPlayer);
-                    new CharSelect(char1Name, char2Name, char3Name);
+                    new CharSelect(profile);
                 } else if(character.equals("char3")){
                     char3Name = CharNameText.getText();
                     Player newPlayer = new Player(char3.getUsername(), char3Name, char3.getType());
                     dbConnection.deletePlayer(char3.getUsername(), char3.getName());
                     dbConnection.addPlayer(newPlayer);
-                    new CharSelect(char1Name, char2Name, char3Name);
+                    new CharSelect(profile);
                 }
 
             }
@@ -230,7 +243,7 @@ public class CharSelect {
         });
         editCon.add(cancelButton);
     }
-    public void createCharPanel(){
+    public void createCharPanel(Profile profile){
         JFrame createFrame = new JFrame();
         Container createCon = new Container();
         createFrame.setSize(800,600);
@@ -301,31 +314,34 @@ public class CharSelect {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                window.dispose();  
-                Player newPlayer;              
-                if(type1.isSelected()){ //Save newPlayer to database(Hunter)
-                    newPlayer = new Player(username, charNameField.getText(), 1);
-                    dbConnection.addPlayer(newPlayer);
-                }else if(type2.isSelected()){
-                    newPlayer = new Player(username, charNameField.getText(), 2);
-                    dbConnection.addPlayer(newPlayer);
-                } else{
-                    newPlayer = new Player(username, charNameField.getText(), 3);
-                    dbConnection.addPlayer(newPlayer);
-                }
-                if(char1Name == null){//temporary
-                    char1Name = charNameField.getText();
-                    char1 = newPlayer;
-                } else if(char2Name == null){
-                    char2Name = charNameField.getText();
-                    char2 = newPlayer;
-                } else if(char3Name == null){
-                    char3Name = charNameField.getText();
-                    char3 = newPlayer;
-                }
-                createFrame.dispose();
-                new CharSelect(char1Name, char2Name, char3Name);
+                if(charNameField.getText().length() > 0){
+                    window.dispose();  
+                    Player newPlayer;              
+                    if(type1.isSelected()){ //Save newPlayer to database(Hunter)
+                        newPlayer = new Player(username, charNameField.getText(), 1);
+                        dbConnection.addPlayer(newPlayer);
+                    }else if(type2.isSelected()){
+                        newPlayer = new Player(username, charNameField.getText(), 2);
+                        dbConnection.addPlayer(newPlayer);
+                    } else{
+                        newPlayer = new Player(username, charNameField.getText(), 3);
+                        dbConnection.addPlayer(newPlayer);
+                    }
+                    if(char1Name == null){//temporary
+                        char1Name = charNameField.getText();
+                        char1 = newPlayer;
+                    } else if(char2Name == null){
+                        char2Name = charNameField.getText();
+                        char2 = newPlayer;
+                    } else if(char3Name == null){
+                        char3Name = charNameField.getText();
+                        char3 = newPlayer;
+                    }
+                    createFrame.dispose();
+                    new CharSelect(profile);
 
+                } 
+                
             }
             
         });
@@ -346,7 +362,7 @@ public class CharSelect {
         createCon.add(cancelButton);
     }
 
-    public static void main(String args[]) {
-        new CharSelect(char1Name, char2Name, char3Name);
-    }
+    // public static void main(String args[]) {
+    //     new CharSelect(Profile);
+    // }
 }

@@ -179,6 +179,9 @@ public class World {
                 //count++;
             }
         }
+        Profile profile = new Profile("test@gmail.com", "test", "password");
+        CharSelect charSelect = new CharSelect(profile);
+        Player currentPlayer = charSelect.currentPlayer;
         World test = new World(50,50,tiles);
         test.displayWorld();
     }
