@@ -1,10 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 
-public class World {
+public class World extends MenuButtons {
     /*
     * Class Will load the world in ie the iterations of tiles and display it as a canvas
     * Enjoy :)
@@ -35,6 +34,7 @@ public class World {
 
 
     public World(int height, int length, int[][] tileType, Player player){ /*TODO: ADD PLAYER FIELD*/
+        super(player.getName());
         this.worldMap = new Tile[height][length];
         this.height = height; //y
         this.length = length; // x
@@ -116,6 +116,15 @@ public class World {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
+
+        frame.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    changeVisibility();
+                }
+            }
+        });
 
         //creating "player" label
         playerLabel = new JLabel();
