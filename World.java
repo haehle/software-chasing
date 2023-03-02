@@ -30,6 +30,7 @@ public class World {
     Action moveDown = new downAction();
     Action moveLeft = new leftAction();
     Action moveRight = new rightAction();
+    boolean exit;
 
 
 
@@ -45,6 +46,7 @@ public class World {
                 worldMap[y][x] = new Tile(tileType[y][x]);
             }
         }
+        exit = false;
     }//constructor of world
 
     public int[] getAdjTiles(int x, int y){// will teturn the tile type to the player -1 if it doesnt exist up down left right
@@ -113,8 +115,6 @@ public class World {
         //creating "player" label
         playerLabel = new JLabel();
         playerLabel.setBackground(Color.green); //CHANGE PLAYER APPEARANCE
-        //playerLabel.setBounds(0,0,length*tileSize,height*tileSize);
-        //playerLabel.setBounds(this.spawnPoint[0],this.spawnPoint[1],tileSize,tileSize);//start x, start y, width, height
         playerLabel.setBounds(this.spawnPoint[0],this.spawnPoint[1],1,1);
         playerLabel.setOpaque(true);
 
@@ -130,6 +130,25 @@ public class World {
 
         //add player label to the frame
         frame.add(playerLabel);
+
+        //create the logout button
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.setBounds(0,frameHeight - tileSize,100,100-tileSize);
+        logoutButton.setBackground(Color.decode("#daaa00"));
+        //add logout action
+        logoutButton.addActionListener(new ActionListener() {
+            //logout was hit, so we write player data out and return to caller
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                /*TODO WRITE OUT PLAYER INFO HERE*/
+                exit = true;//break out of display loop
+                frame.dispose();
+                //System.exit(69); Nice
+            }
+        });
+
+        //add the logout button to the frame
+        frame.add(logoutButton);
 
 
         //Creating the canvas.
@@ -173,8 +192,9 @@ public class World {
 
             bufferStrategy.show();
             graphics.dispose();
+            if (exit){break;}
+        }//DISPLAY LOOP
 
-        }
     }//END DISPLAY WORLD
 
     public static void main(String[] args) {
@@ -240,5 +260,15 @@ public class World {
         }
     }//up action
 
+    public class Logout extends AbstractAction{
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("LOCATION X: " + currLoc[0] +"  Y: "+ currLoc[1]);
+            if (getRight(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
+            playerLabel.setLocation(playerLabel.getX() + tileSize,playerLabel.getY());//x then y
+            setCurrLoc(currLoc[0] + 1, currLoc[1] );
+            //player.setLocation(currLoc);
+            System.out.println("right");
+        }
+    }
 
 }// END CLASS
