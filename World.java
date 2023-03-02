@@ -34,11 +34,12 @@ public class World {
 
 
 
-    public World(int height, int length, int[][] tileType){ /*TODO: ADD PLAYER FIELD*/
+    public World(int height, int length, int[][] tileType, Player player){ /*TODO: ADD PLAYER FIELD*/
         this.worldMap = new Tile[height][length];
         this.height = height; //y
         this.length = length; // x
-        this.spawnPoint = new int[]{0, 0};//spawn point in reference to world map
+        this.player = player;
+        this.spawnPoint = player.getLocation(); //pick up where last left    //new int[]{0, 0};//spawn point in reference to world map
         this.currLoc = spawnPoint;//location in tiles (reference to current map
         this.tileSize = 10;
         for (int y = 0; y < this.height; y++) {
@@ -144,7 +145,7 @@ public class World {
             //logout was hit, so we write player data out and return to caller
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*TODO WRITE OUT PLAYER INFO HERE*/
+                /*TODO HUNTER: WRITE OUT PLAYER INFO HERE*/
                 exit = true;//break out of display loop
                 frame.dispose();
                 //System.exit(69); Nice
@@ -254,8 +255,8 @@ public class World {
             }
         }
         Player player = new Player("RILEY6215","Riley",1);
-        World test = new World(50,50,tiles);
-        test.setPlayer(player);
+        World test = new World(50,50,tiles,player);
+        //test.setPlayer(player);
         test.displayWorld();
     }
 
