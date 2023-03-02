@@ -215,15 +215,14 @@ public class dbConnection {
 
             try (Statement statement = connection.createStatement()) {
 
-                String query = "SELECT * FROM Users WHERE username=\"" + username + "\";";
+                String query = "SELECT * FROM Players WHERE username=\"" + username + "\";";
 
                 Player[] players = {};
                 ResultSet rs = statement.executeQuery(query);
-
-                if (rs == null) {
+                if (!rs.isBeforeFirst()) {
                     //User not found
                     System.out.println("No players found for user.");
-                    return null;
+                    return players;
                 } else {
                     //User found
                     System.out.println("Players found for user...");
@@ -232,7 +231,7 @@ public class dbConnection {
                     int i = 0;
                     while (rs.next()) {
 
-                        Player player = new Player(username, rs.getString("name"), rs.getInt("type"),
+                        Player player = new Player(rs.getString("name"), username, rs.getInt("type"),
                                 rs.getInt("locationX"), rs.getInt("locationY"), rs.getInt("hp"),
                                 rs.getInt("maxHP"), rs.getInt("speed"), rs.getInt("stamina"),
                                 rs.getInt("maxStamina"), rs.getInt("level"), rs.getInt("levelXP"),
