@@ -150,47 +150,11 @@ public class World {
         //add the logout button to the frame
         frame.add(logoutButton);
 
-        //create the stats bar
-        JPanel statPanel = new JPanel();
-        statPanel.setBackground(Color.decode("#ddb945"));
-        statPanel.setBounds(100,frameHeight-tileSize,frameWidth-100,100);
-        statPanel.setVisible(true);
-        statPanel.setOpaque(true);
-
-        //TODO add player stat
-        JLabel health = new JLabel("Player Health: ");
-        health.setBackground(Color.white);
-        health.setBounds(20,20,50,50);
-        health.setOpaque(false);
-
-        JLabel stamina = new JLabel("Player Stamina: ");
-        stamina.setBackground(Color.white);
-        stamina.setBounds(20,frameHeight-(tileSize+20),50,50);
-        health.setOpaque(false);
-
-        JLabel intellect = new JLabel("Player Intellect: ");
-        //health.setBackground(Color.white);
-        intellect.setBounds(20,frameHeight-(tileSize+40),50,50);
-        intellect.setOpaque(false);
-
-        JLabel speed = new JLabel("Player Speed: ");
-        //health.setBackground(Color.white);
-        intellect.setBounds(20,frameHeight-(tileSize+60),50,50);
-        intellect.setOpaque(false);
-
-        statPanel.add(health);
-        statPanel.add(stamina);
-        statPanel.add(intellect);
-        statPanel.add(speed);
-
-        frame.add(statPanel);
-
 
         //Creating the canvas.
         Canvas canvas = new Canvas();
 
-
-        System.out.println(canvas.getSize());
+        canvas.setSize(frameWidth, frameHeight);
         //canvas.setBackground(Color.BLACK);
         canvas.setVisible(true);
         canvas.setFocusable(false);
@@ -206,7 +170,6 @@ public class World {
         bufferStrategy = canvas.getBufferStrategy();
         graphics = bufferStrategy.getDrawGraphics();
 
-        System.out.println(frame.getSize());
 
         while (true) { // will add movements in here and wait for certain motions to keep displaying this
             bufferStrategy = canvas.getBufferStrategy();
@@ -221,7 +184,7 @@ public class World {
 
                     if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);}
                     else if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
-                    /*TODO load a tile image in future sprints*/
+                    /*TODO load a tile image*/
                     graphics.fillRect(x*tileSize,y*tileSize,tileSize,tileSize); //TILE IMAGE WILL GO HERE LATER
                 }
             }
