@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 
 public class World {
@@ -21,6 +22,7 @@ public class World {
     private int[] spawnPoint;
     private int[] currLoc;
     public int tileSize;
+    private Player player;
     JFrame frame;
     JLabel playerLabel;
 
@@ -30,7 +32,8 @@ public class World {
     Action moveRight = new rightAction();
 
 
-    public World(int height, int length, int[][] tileType){
+
+    public World(int height, int length, int[][] tileType){ /*TODO: ADD PLAYER FIELD*/
         this.worldMap = new Tile[height][length];
         this.height = height; //y
         this.length = length; // x
@@ -69,7 +72,7 @@ public class World {
         }
     }//get left
     public int getRight(int x, int y){
-        if (x+1 > this.length){return -1;} else {
+        if (x+1 >= this.length){return -1;} else {
             return worldMap[y][x+1].getType();//right
         }
     }//get right
@@ -91,16 +94,17 @@ public class World {
         this.tileSize = tileSize;
     }
 
+
     public void displayWorld(){ //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
         final String title = "Game World: Software Chasing";
-        final int frameWidth = this.length * tileSize;
-        final int frameHeight = this.height * tileSize;
+        final int frameWidth = (this.length + 1) * tileSize;
+        final int frameHeight = (this.height+1) * tileSize;
 
 
         //Creating the frame.
         frame = new JFrame(title);
 
-        frame.setSize(frameWidth, frameHeight);
+        frame.setSize(frameWidth, frameHeight + 100);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
@@ -108,8 +112,10 @@ public class World {
 
         //creating "player" label
         playerLabel = new JLabel();
-        playerLabel.setBackground(Color.YELLOW); //CHANGE PLAYER APPEARANCE
-        playerLabel.setBounds(this.spawnPoint[0],this.spawnPoint[1],tileSize,tileSize);//start x, start y, width, height
+        playerLabel.setBackground(Color.green); //CHANGE PLAYER APPEARANCE
+        //playerLabel.setBounds(0,0,length*tileSize,height*tileSize);
+        //playerLabel.setBounds(this.spawnPoint[0],this.spawnPoint[1],tileSize,tileSize);//start x, start y, width, height
+        playerLabel.setBounds(this.spawnPoint[0],this.spawnPoint[1],1,1);
         playerLabel.setOpaque(true);
 
         //make actions for player label
@@ -156,7 +162,9 @@ public class World {
                     //get color of tile based on type
                     int type = this.worldMap[y][x].getType();
                     //0 is wall 1 is floor
-                    if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
+
+                    if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);}
+                    else if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
                     /*TODO load a tile image*/
                     graphics.fillRect(x*tileSize,y*tileSize,tileSize,tileSize); //TILE IMAGE WILL GO HERE LATER
                 }
@@ -174,9 +182,10 @@ public class World {
         int count = 1;
         for (int i = 0; i < 50; i++) {
             for (int j = 0; j < 50; j++) {
-                tiles[i][j] = 1;
-                //tiles[i][j] = (count + i)% 2;
-                //count++;
+                //tiles[i][j] = 1;
+                if ((i % 4 ==1 && j % 4 ==1) || i == 49){tiles[i][j] = 0;} else {tiles[i][j] =1;}
+//                tiles[i][j] = (count + i)% 2;
+//                count++;
             }
         }
         Profile profile = new Profile("test@gmail.com", "test", "password");
@@ -193,6 +202,7 @@ public class World {
             if (getUp(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() - tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] - 1 );
+            //player.setLocation(currLoc);
             System.out.println("UP");
         }
     }//up action
@@ -203,6 +213,7 @@ public class World {
             if (getDown(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() + tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] + 1 );
+            //player.setLocation(currLoc);
             System.out.println("down");
         }
     }//down action
@@ -213,6 +224,7 @@ public class World {
             if (getLeft(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX() - tileSize,playerLabel.getY());//x then y
             setCurrLoc(currLoc[0] - 1, currLoc[1] );
+            //player.setLocation(currLoc);
             System.out.println("left");
         }
     }//left action
@@ -223,8 +235,10 @@ public class World {
             if (getRight(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX() + tileSize,playerLabel.getY());//x then y
             setCurrLoc(currLoc[0] + 1, currLoc[1] );
+            //player.setLocation(currLoc);
             System.out.println("right");
         }
     }//up action
+
 
 }// END CLASS
