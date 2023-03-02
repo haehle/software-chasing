@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 
 public class World {
@@ -21,6 +22,7 @@ public class World {
     private int[] spawnPoint;
     private int[] currLoc;
     public int tileSize;
+    private Player player;
     JFrame frame;
     JLabel playerLabel;
 
@@ -28,20 +30,24 @@ public class World {
     Action moveDown = new downAction();
     Action moveLeft = new leftAction();
     Action moveRight = new rightAction();
+    boolean exit;
 
 
-    public World(int height, int length, int[][] tileType){
+
+    public World(int height, int length, int[][] tileType, Player player){ /*TODO: ADD PLAYER FIELD*/
         this.worldMap = new Tile[height][length];
         this.height = height; //y
         this.length = length; // x
-        this.spawnPoint = new int[]{0, 0};//spawn point in reference to world map
+        this.player = player;
+        this.spawnPoint = player.getLocation(); //pick up where last left    //new int[]{0, 0};//spawn point in reference to world map
         this.currLoc = spawnPoint;//location in tiles (reference to current map
-        this.tileSize = 16;
+        this.tileSize = 10;
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.length; x++) {
                 worldMap[y][x] = new Tile(tileType[y][x]);
             }
         }
+        exit = false;
     }//constructor of world
 
     public int[] getAdjTiles(int x, int y){// will teturn the tile type to the player -1 if it doesnt exist up down left right
@@ -69,7 +75,7 @@ public class World {
         }
     }//get left
     public int getRight(int x, int y){
-        if (x+1 > this.length){return -1;} else {
+        if (x+1 >= this.length){return -1;} else {
             return worldMap[y][x+1].getType();//right
         }
     }//get right
@@ -91,16 +97,21 @@ public class World {
         this.tileSize = tileSize;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     public void displayWorld(){ //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
         final String title = "Game World: Software Chasing";
-        final int frameWidth = this.length * tileSize;
-        final int frameHeight = this.height * tileSize;
-
+        final int frameWidth = 916;//(this.length + 1) * tileSize;
+        final int frameHeight = 1016;//(this.height+1) * tileSize;
+        setTileSize(18);
 
         //Creating the frame.
         frame = new JFrame(title);
 
-        frame.setSize(frameWidth, frameHeight);
+
+        frame.setSize(frameWidth, frameHeight );
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
@@ -108,9 +119,9 @@ public class World {
 
         //creating "player" label
         playerLabel = new JLabel();
-        playerLabel.setBackground(Color.YELLOW); //CHANGE PLAYER APPEARANCE
-        playerLabel.setBounds(this.spawnPoint[0],this.spawnPoint[1],tileSize,tileSize);//start x, start y, width, height
-        playerLabel.setOpaque(true);
+        //playerLabel.setBackground(Color.green); //CHANGE PLAYER APPEARANCE
+        playerLabel.setBounds(this.spawnPoint[0],this.spawnPoint[1],1,1);
+        playerLabel.setOpaque(false);
 
         //make actions for player label
         playerLabel.getInputMap().put(KeyStroke.getKeyStroke('w'), "upAction");
@@ -124,6 +135,66 @@ public class World {
 
         //add player label to the frame
         frame.add(playerLabel);
+
+        //create the logout button
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.setBounds(0,900,100,100);
+        logoutButton.setBackground(Color.decode("#daaa00"));
+        //add logout action
+        logoutButton.addActionListener(new ActionListener() {
+            //logout was hit, so we write player data out and return to caller
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                /*TODO HUNTER: WRITE OUT PLAYER INFO HERE*/
+                exit = true;//break out of display loop
+                frame.dispose();
+                //System.exit(69); Nice
+            }
+        });
+
+        //add the logout button to the frame
+        frame.add(logoutButton);
+
+        //create the stats bar
+        JPanel statPanel = new JPanel();
+        statPanel.setBackground(Color.decode("#ddb945"));
+        statPanel.setSize(frameWidth-100,100);
+        statPanel.setLocation(100,900);
+        //statPanel.setBounds(100,frameHeight-tileSize,frameWidth-100,100);
+        statPanel.setVisible(true);
+        statPanel.setOpaque(true);
+
+        //TODO add player stat
+        JLabel health = new JLabel("MAX HEALTH: "+player.getMaxHP()+" Current Health: " + player.getHp());
+        health.setBackground(Color.white);
+        //health.setBounds(20,20,50,50);
+        health.setOpaque(false);
+        health.setVisible(true);
+
+        JLabel stamina = new JLabel("MAX STAMINA: "+player.getMaxStamina()+" Stamina: " + player.getStamina());
+        stamina.setBackground(Color.white);
+        //stamina.setBounds(20,frameHeight-(tileSize+20),50,50);
+        health.setOpaque(false);
+        stamina.setVisible(true);
+
+        JLabel intellect = new JLabel("Intellect: " + 5);
+        //health.setBackground(Color.white);
+        //intellect.setBounds(20,frameHeight-(tileSize+40),50,50);
+        intellect.setOpaque(false);
+        intellect.setVisible(true);
+
+        JLabel speed = new JLabel("Speed: " + player.getSpeed());
+        //health.setBackground(Color.white);
+        //intellect.setBounds(20,frameHeight-(tileSize+60),50,50);
+        intellect.setOpaque(false);
+        intellect.setVisible(true);
+
+        statPanel.add(health);
+        statPanel.add(stamina);
+        statPanel.add(intellect);
+        statPanel.add(speed);
+
+        frame.add(statPanel);
 
 
         //Creating the canvas.
@@ -156,7 +227,9 @@ public class World {
                     //get color of tile based on type
                     int type = this.worldMap[y][x].getType();
                     //0 is wall 1 is floor
-                    if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
+
+                    if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);}
+                    else if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
                     /*TODO load a tile image*/
                     graphics.fillRect(x*tileSize,y*tileSize,tileSize,tileSize); //TILE IMAGE WILL GO HERE LATER
                 }
@@ -165,8 +238,9 @@ public class World {
 
             bufferStrategy.show();
             graphics.dispose();
+            if (exit){break;}
+        }//DISPLAY LOOP
 
-        }
     }//END DISPLAY WORLD
 
     public static void main(String[] args) {
@@ -174,15 +248,15 @@ public class World {
         int count = 1;
         for (int i = 0; i < 50; i++) {
             for (int j = 0; j < 50; j++) {
-                tiles[i][j] = 1;
-                //tiles[i][j] = (count + i)% 2;
-                //count++;
+                //tiles[i][j] = 1;
+                if ((i % 4 ==1 && j % 4 ==1) || i == 49){tiles[i][j] = 0;} else {tiles[i][j] =1;}
+//                tiles[i][j] = (count + i)% 2;
+//                count++;
             }
         }
-        Profile profile = new Profile("test@gmail.com", "test", "password");
-        CharSelect charSelect = new CharSelect(profile);
-        Player currentPlayer = charSelect.currentPlayer;
-        World test = new World(50,50,tiles);
+        Player player = new Player("RILEY6215","Riley",1);
+        World test = new World(50,50,tiles,player);
+        //test.setPlayer(player);
         test.displayWorld();
     }
 
@@ -193,6 +267,7 @@ public class World {
             if (getUp(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() - tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] - 1 );
+            player.setLocation(currLoc);
             System.out.println("UP");
         }
     }//up action
@@ -203,6 +278,7 @@ public class World {
             if (getDown(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() + tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] + 1 );
+            player.setLocation(currLoc);
             System.out.println("down");
         }
     }//down action
@@ -213,6 +289,7 @@ public class World {
             if (getLeft(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX() - tileSize,playerLabel.getY());//x then y
             setCurrLoc(currLoc[0] - 1, currLoc[1] );
+            player.setLocation(currLoc);
             System.out.println("left");
         }
     }//left action
@@ -223,6 +300,7 @@ public class World {
             if (getRight(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX() + tileSize,playerLabel.getY());//x then y
             setCurrLoc(currLoc[0] + 1, currLoc[1] );
+            player.setLocation(currLoc);
             System.out.println("right");
         }
     }//up action

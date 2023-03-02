@@ -14,11 +14,10 @@ public class Game {//used to load in the game to start levels from the main menu
 
 
     /** CONSTRUCTOR IN FUTURE IT WILL BE A LEVEL NO ie (0-4) */
-    public Game(World level, int tileSize){
+    public Game(World level){
         /*TODO ADD MAIN MENU TO GET PLAYER*/
-        //player =
-        this.level = level;//FUTURE THIS WILL BE levels[levelNo]
-        this.tileSize = tileSize;
+        this.level = level;//FUTURE THIS WILL BE levels[WlevelNo]
+
     }
 
 
@@ -28,6 +27,7 @@ public class Game {//used to load in the game to start levels from the main menu
     /** THis will handle displaying the world as well as player movements*/
     public void run(){
         //DISPLAY THE WORLD
+        //this.level.setTileSize(tileSize);//resize per game specification
         this.level.displayWorld();
 
         /*TODO UPON EXIT WRITE THE DATA OF PLAYER TO DB*/
@@ -37,5 +37,31 @@ public class Game {//used to load in the game to start levels from the main menu
 
     /*TODO Actions such as the report button need to go in here and be hooked into the run() function*/
 
+    public static void main(String[] args) {
+        /*TODO FILL THIS OUT*/
 
+        //TODO GET PLAYER
+        Player player = new Player("RILEY6215","Riley",1);
+
+        //make tile type map for the world
+        int[][] tiles = new int[50][50];
+        int count = 1;
+        for (int i = 0; i < 50; i++) {
+            for (int j = 0; j < 50; j++) {
+                //tiles[i][j] = 1;
+                if ((i % 4 ==1 && j % 4 ==1) || i == 49){tiles[i][j] = 0;} else {tiles[i][j] =1;}
+//                tiles[i][j] = (count + i)% 2;
+//                count++;
+            }
+        }
+        //make the world
+        World test = new World(50,50,tiles,player);
+
+        //make game object and run it
+        Game game = new Game(test);
+        game.run();
+        /**IF CODE GETS HERE .run has completed/window was closed*/
+
+
+    }//END MAIN
 }// END GAME CLASS
