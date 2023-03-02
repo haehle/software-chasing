@@ -15,16 +15,13 @@ public class MenuButtons implements ActionListener {
     private String userName;
     public int identifier = 0;
 
-    private static boolean visible = true;
-
-
     public MenuButtons(String userName) {
         this.userName = userName;
 
 
 
         frame = new JFrame("Buttons");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         panel = new JPanel();
         panel.setLayout(null);
@@ -270,7 +267,6 @@ public class MenuButtons implements ActionListener {
     // Method to store reports in a text file called Reports.txt
 
     public static void storeReport(String name, String message) throws IOException {
-        System.out.println("Name: " + name + " Message: " + message);
         BufferedWriter out = new BufferedWriter(new FileWriter("Reports.txt", true));
 
         out.write("Name: " + name + " Message: " + message + "\n");
@@ -282,7 +278,6 @@ public class MenuButtons implements ActionListener {
     // Method to store feedback in a text file called Feedback.txt
 
     public static void storeFeedback(String name, String message) throws IOException {
-        System.out.println("Name: " + name + " Message: " + message);
         BufferedWriter out = new BufferedWriter(new FileWriter("Feedback.txt", true));
 
         out.write("Name: " + name + " Message: " + message + "\n");
@@ -292,18 +287,6 @@ public class MenuButtons implements ActionListener {
     // Method used to change the visibility of the frame such that it will only show up in certain instances
 
     public static void changeVisibility() {
-        frame.setVisible(visible);
-        visible = !visible;
+        frame.setVisible(true);
     }
-
-
-
-       public static void main(String[] args) {
-         Scanner scanner = new Scanner(System.in);
-          System.out.print("Enter your name: ");
-         String userName = scanner.nextLine();
-          MenuButtons problem = new MenuButtons(userName);
-          changeVisibility();
-
-     }
 }
