@@ -212,11 +212,18 @@ class RegistrationPage extends JFrame implements ActionListener {
             }
             else {
                 Util.createProfile(email, username, password);
+                dispose();
+                LoginForm.main(null);
+                if (tout != null) {
+                    tout.setEditable(false);
+                }
+                res.setText("Registration Successfully..");
             }
 
 
-
-            tout.setEditable(false);
+            if (tout != null) {
+                tout.setEditable(false);
+            }
             res.setText("Registration Successfully..");
         }
 

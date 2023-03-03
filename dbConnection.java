@@ -255,4 +255,42 @@ public class dbConnection {
             throw new IllegalStateException("Error occurred while connecting to database", e);
         }
     }
+
+    public static void updatePlayer(Player player) {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                int locationX = player.getLocation()[0];
+                int locationY = player.getLocation()[1];
+
+                String query = "UPDATE Players SET LocationX=" + locationX + ", " +
+                        "LocationY=" + locationY + ", " +
+                        "HP=" + player.getHp() + ", " +
+                        "MaxHP=" + player.getMaxHP() + ", " +
+                        "Speed=" + player.getSpeed() + ", " +
+                        "Stamina=" + player.getStamina() + ", " +
+                        "MaxStamina=" + player.getMaxStamina() + ", " +
+                        "Level=" + player.getLevel() + ", " +
+                        "LevelXP=" + player.getLevelXP() + ", " +
+                        "InitialLevelXP=" + player.getInitialLevelXP() + " " +
+                        "WHERE Username=\"" + player.getUsername() + "\" " +
+                        "AND Name=\"" + player.getName() + "\";";
+
+                System.out.println(query);
+                statement.execute(query);
+                System.out.println("Player data updated successfully.");
+
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not update player data", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
 }

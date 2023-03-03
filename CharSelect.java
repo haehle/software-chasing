@@ -87,6 +87,7 @@ public class CharSelect {
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char1;
                 window.dispose();
+                Game.StartGame(profile, currentPlayer);
             }
             
         });
@@ -117,6 +118,8 @@ public class CharSelect {
             @Override
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char2;
+                window.dispose();
+                Game.StartGame(profile, currentPlayer);
             }
             
         });
@@ -147,6 +150,7 @@ public class CharSelect {
             @Override
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char3;
+                window.dispose();
             }
             
         });

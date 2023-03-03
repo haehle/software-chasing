@@ -121,7 +121,7 @@ public class World{
         frame.setSize(frameWidth, frameHeight );
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.setVisible(true);
 //KEY LISTEN
 //        frame.addKeyListener(new KeyAdapter() {
@@ -166,6 +166,7 @@ public class World{
             @Override
             public void actionPerformed(ActionEvent e) {
                 /*TODO HUNTER: WRITE OUT PLAYER INFO HERE*/
+                dbConnection.updatePlayer(player);
                 exit = true;//break out of display loop
                 frame.dispose();
                 //System.exit(69); Nice
@@ -209,10 +210,24 @@ public class World{
         intellect.setOpaque(false);
         intellect.setVisible(true);
 
+        JLabel level = new JLabel("Level: " + player.getLevel());
+        //health.setBackground(Color.white);
+        //intellect.setBounds(20,frameHeight-(tileSize+60),50,50);
+        intellect.setOpaque(false);
+        intellect.setVisible(true);
+
+        JLabel xp = new JLabel("XP Needed: " + player.getLevelXP());
+        //health.setBackground(Color.white);
+        //intellect.setBounds(20,frameHeight-(tileSize+60),50,50);
+        intellect.setOpaque(false);
+        intellect.setVisible(true);
+
         statPanel.add(health);
         statPanel.add(stamina);
-        statPanel.add(intellect);
+        //statPanel.add(intellect);
         statPanel.add(speed);
+        statPanel.add(level);
+        statPanel.add(xp);
 
         frame.add(statPanel);
 
@@ -300,6 +315,8 @@ public class World{
             setCurrLoc(currLoc[0], currLoc[1] + 1 );
             player.setLocation(currLoc);
             System.out.println("down");
+            player.gainXP(1);
+            System.out.println("XP = " + player.getLevelXP());
         }
     }//down action
     public class leftAction extends AbstractAction{
