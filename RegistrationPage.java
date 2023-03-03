@@ -143,14 +143,6 @@ class RegistrationPage extends JFrame implements ActionListener {
         reset.addActionListener(this);
         c.add(reset);
 
-        tout = new JTextArea();
-        tout.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
-        tout.setSize(300, 400);
-        tout.setLocation(500, 100);
-        tout.setLineWrap(true);
-        tout.setEditable(false);
-        c.add(tout);
-
         res = new JLabel("");
         res.setFont(new Font("Acumin Pro", Font.PLAIN, 20));
         res.setSize(500, 25);
@@ -167,6 +159,29 @@ class RegistrationPage extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    private Boolean capitalCheck(String password) {
+
+        for (int i=0;i < password.length();i++){
+            char ch = password.charAt(i);
+            if (Character.isUpperCase(ch)) {
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
+    }
+
+
+    private Boolean numericCheck(String password) {
+
+        for (int i=0;i < password.length();i++){
+            char ch = password.charAt(i);
+            if (Character.isDigit(ch)) {
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
+    }
+
     // method actionPerformed()
     // to get the action performed
     // by the user and act accordingly
@@ -175,11 +190,31 @@ class RegistrationPage extends JFrame implements ActionListener {
             email = tem.getText();
             username = tuse.getText();
             password = tpas.getText();
-            if (!tpas.getText().equals(tcpa.getText())) {
-                System.out.println("Passwords do not match");
+            if (!password.equals(tcpa.getText())) {
+                c.add(par4);
+                c.revalidate();
+                c.repaint();
+            } else if (password.length() < 6) {
+                par1.setForeground(Color.red);
+                tpas.setText("");
+                tcpa.setText("");
+            } else if (capitalCheck(password) == Boolean.FALSE) {
+                par1.setForeground(Color.BLACK);
+                par2.setForeground(Color.red);
+                tpas.setText("");
+                tcpa.setText("");
+            } else if (numericCheck(password) == Boolean.FALSE) {
+                par1.setForeground(Color.BLACK);
+                par2.setForeground(Color.BLACK);
+                par3.setForeground(Color.red);
+                tpas.setText("");
+                tcpa.setText("");
+            }
+            else {
+                Util.createProfile(email, username, password);
             }
 
-            Util.createProfile(email, username, password);
+
 
             tout.setEditable(false);
             res.setText("Registration Successfully..");
@@ -188,6 +223,7 @@ class RegistrationPage extends JFrame implements ActionListener {
 
         else if (e.getSource() == reset) {
             String def = "";
+            tem.setText(def);
             tuse.setText(def);
             tpas.setText(def);
             tcpa.setText(def);

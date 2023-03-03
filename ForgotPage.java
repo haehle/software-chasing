@@ -91,7 +91,7 @@
 //            // Send an email from us (developers) to the user's email specifying a one time password to be used to login
 //
 //            try {
-//                EmailUtil.sendEmail("smtp.gmail.com", "25", "thewheatman1234@gmail.com", "SoftwareChasing", "twgxqmjyekanixul", emailText.getText(), "Password Reset", "Here is a one time password, please use this to login: " + sb);
+//                EmailUtil.sendEmail("smtp.gmail.com", "25", "CHANGE THIS TO A DEVELOPER EMAIL", "SoftwareChasing", "CHANGE THIS TO A DEVELOPER PASSWORD", emailText.getText(), "Password Reset", "Here is a one time password, please use this to login: " + sb);
 //                confirmation = new JLabel("Check your email for a forgot password message");
 //               confirmation.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
 //                confirmation.setSize(350, 25);
