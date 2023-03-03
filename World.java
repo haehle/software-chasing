@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 
-public class World extends MenuButtons {
+public class World{
     /*
     * Class Will load the world in ie the iterations of tiles and display it as a canvas
     * Enjoy :)
@@ -29,12 +29,13 @@ public class World extends MenuButtons {
     Action moveDown = new downAction();
     Action moveLeft = new leftAction();
     Action moveRight = new rightAction();
+    Action menuAction = new menuAction();
     boolean exit;
 
 
 
     public World(int height, int length, int[][] tileType, Player player){ /*TODO: ADD PLAYER FIELD*/
-        super(player.getName());
+        //super(player.getName());
         this.worldMap = new Tile[height][length];
         this.height = height; //y
         this.length = length; // x
@@ -82,6 +83,10 @@ public class World extends MenuButtons {
 
     public Tile getTile(int x, int y){return this.worldMap[y][x];}
 
+    public JFrame getFrame() {
+        return frame;
+    }
+
     public void setSpawnPoint(int x, int y){
         this.spawnPoint[0] = x;
         this.spawnPoint[1] = y;
@@ -116,15 +121,15 @@ public class World extends MenuButtons {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
-
-        frame.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    changeVisibility();
-                }
-            }
-        });
+//KEY LISTEN
+//        frame.addKeyListener(new KeyAdapter() {
+//            @Override
+//            public void keyPressed(KeyEvent e) {
+//                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+//                    frame.changeVisibility();
+//                }
+//            }
+//        });
 
         //creating "player" label
         playerLabel = new JLabel();
@@ -141,6 +146,10 @@ public class World extends MenuButtons {
         playerLabel.getActionMap().put("leftAction", moveLeft);
         playerLabel.getInputMap().put(KeyStroke.getKeyStroke('d'), "rightAction");
         playerLabel.getActionMap().put("rightAction", moveRight);
+
+    /*TODO This is the input for the player label to access the MENU ACTION AJ */
+        playerLabel.getInputMap().put(KeyStroke.getKeyStroke('m'), "menuAction");
+        playerLabel.getActionMap().put("menuAction", menuAction);
 
         //add player label to the frame
         frame.add(playerLabel);
@@ -311,6 +320,15 @@ public class World extends MenuButtons {
             setCurrLoc(currLoc[0] + 1, currLoc[1] );
             player.setLocation(currLoc);
             System.out.println("right");
+        }
+    }//up action
+    /*TODO THIS IS THE MENU ACTION AJ*/
+    public class menuAction extends AbstractAction{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("MENU:");
+            MenuButtons menu = new MenuButtons(player.getUsername());
+//            menu.actionPerformed(e);
         }
     }//up action
 
