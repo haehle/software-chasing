@@ -289,4 +289,10 @@ public class MenuButtons implements ActionListener {
     public static void changeVisibility() {
         frame.setVisible(true);
     }
+
+
+    public static void main(String[] args) {
+        MenuButtons tester = new MenuButtons("DEFAULT");
+        changeVisibility();
+    }
 }
