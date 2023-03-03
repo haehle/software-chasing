@@ -60,6 +60,7 @@ public class Game {//used to load in the game to start levels from the main menu
         //make game object and run it
         Game game = new Game(test);
         game.run();
+        System.out.println("HOPE YOU ENJOYED!");
         /**IF CODE GETS HERE .run has completed/window was closed*/
 
 
