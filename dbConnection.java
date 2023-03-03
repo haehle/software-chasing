@@ -178,7 +178,7 @@ public class dbConnection {
 
                 ResultSet rs = statement.executeQuery(query);
 
-                if (rs == null) {
+                if (!rs.isBeforeFirst()) {
                     //User not found
                     System.out.println("User with given credentials not found in database.");
                     return null;
