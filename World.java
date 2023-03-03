@@ -328,7 +328,8 @@ public class World{
         public void actionPerformed(ActionEvent e) {
             System.out.println("MENU:");
             MenuButtons menu = new MenuButtons(player.getUsername());
-//            menu.actionPerformed(e);
+            MenuButtons.changeVisibility();
+
         }
     }//up action
 
