@@ -86,6 +86,7 @@ public class CharSelect {
             @Override
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char1;
+                window.dispose();
             }
             
         });
