@@ -108,9 +108,11 @@ public class World{
 
     public void displayWorld(){ //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
         final String title = "Game World: Software Chasing";
-        final int frameWidth = 916;//(this.length + 1) * tileSize;
-        final int frameHeight = 1016;//(this.height+1) * tileSize;
-        setTileSize(18);
+        //final int frameWidth = 916;//(this.length + 1) * tileSize;
+        //final int frameHeight = 1016;//(this.height+1) * tileSize;
+        setTileSize(10);
+        int frameWidth = tileSize * this.length;
+        int frameHeight = frameWidth + 100;
 
         //Creating the frame.
         frame = new JFrame(title);
@@ -156,7 +158,7 @@ public class World{
 
         //create the logout button
         JButton logoutButton = new JButton("Logout");
-        logoutButton.setBounds(0,900,100,100);
+        logoutButton.setBounds(0,frameHeight-100,100,100);
         logoutButton.setBackground(Color.decode("#daaa00"));
         //add logout action
         logoutButton.addActionListener(new ActionListener() {
@@ -177,7 +179,7 @@ public class World{
         JPanel statPanel = new JPanel();
         statPanel.setBackground(Color.decode("#ddb945"));
         statPanel.setSize(frameWidth-100,100);
-        statPanel.setLocation(100,900);
+        statPanel.setLocation(100,frameHeight-100);
         //statPanel.setBounds(100,frameHeight-tileSize,frameWidth-100,100);
         statPanel.setVisible(true);
         statPanel.setOpaque(true);
