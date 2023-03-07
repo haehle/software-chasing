@@ -11,7 +11,6 @@ public class CharSelect {
     JPanel titlePanel;
     JPanel editPanel;
 
-    // public static Profile profile = new Profile("test@gmail.com", "test", "password"); //Temporary placeholder object
     public static String username;//Get current users username
 
     public static Player[] players;
@@ -104,9 +103,35 @@ public class CharSelect {
             }
             
         });
+
+        JButton char1DeleteButton = new JButton();
+        char1DeleteButton.setBounds(550, 300, 80, 60);
+        char1DeleteButton.setBackground(Color.white);
+        char1DeleteButton.setText("Delete");
+        char1DeleteButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Produce pop-up that asks user to confirm player deletion
+                int result = JOptionPane.showConfirmDialog(window,"Are you sure you want to delete this player?", "Delete Player",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+                if(result == JOptionPane.YES_OPTION){
+                    //Delete player
+                    //Util.deletePlayer(username, players[0].getName());
+                    //window.dispose();
+                    //new CharSelect(profile);
+                }else {
+                    //Do nothing
+                }
+            }
+
+        });
+
         if(char1Name != null){
             con.add(char1Button);
             con.add(char1EditButton);
+            con.add(char1DeleteButton);
         }
 
         JButton char2Button = new JButton();
@@ -136,9 +161,35 @@ public class CharSelect {
             }
             
         });
+
+        JButton char2DeleteButton = new JButton();
+        char2DeleteButton.setBounds(550, 380, 80, 60);
+        char2DeleteButton.setBackground(Color.white);
+        char2DeleteButton.setText("Delete");
+        char2DeleteButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Produce pop-up that asks user to confirm player deletion
+                int result = JOptionPane.showConfirmDialog(window,"Are you sure you want to delete this player?", "Delete Player",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+                if(result == JOptionPane.YES_OPTION){
+                    //Delete player
+                    //Util.deletePlayer(username, players[0].getName());
+                    //window.dispose();
+                    //new CharSelect(profile);
+                }else {
+                    //Do nothing
+                }
+            }
+
+        });
+
         if(char2Name != null){
             con.add(char2Button);
             con.add(char2EditButton);
+            con.add(char2DeleteButton);
         }
 
         JButton char3Button = new JButton();
@@ -165,11 +216,37 @@ public class CharSelect {
             public void actionPerformed(ActionEvent e) {
                 editPanel(profile, "char3");
             }
-            
+
         });
+
+        JButton char3DeleteButton = new JButton();
+        char3DeleteButton.setBounds(550, 460, 80, 60);
+        char3DeleteButton.setBackground(Color.white);
+        char3DeleteButton.setText("Delete");
+        char3DeleteButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Produce pop-up that asks user to confirm player deletion
+                int result = JOptionPane.showConfirmDialog(window,"Are you sure you want to delete this player?", "Delete Player",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+                if(result == JOptionPane.YES_OPTION){
+                    //Delete player
+                    //Util.deletePlayer(username, players[0].getName());
+                    //window.dispose();
+                    //new CharSelect(profile);
+                }else {
+                    //Do nothing
+                }
+            }
+
+        });
+
         if(char3Name != null){
             con.add(char3Button);
             con.add(char3EditButton);
+            con.add(char3DeleteButton);
         }
 
     }
@@ -217,19 +294,19 @@ public class CharSelect {
                 if(character.equals("char1")){//Save new character name(Hunter)
                     char1Name = CharNameText.getText();
                     Player newPlayer = new Player(char1.getUsername(), char1Name, char1.getType());
-                    dbConnection.deletePlayer(char1.getUsername(), char1.getName());
+                    Util.deletePlayer(char1.getUsername(), char1.getName());
                     dbConnection.addPlayer(newPlayer);
                     new CharSelect(profile);
                 }else if(character.equals("char2")){
                     char2Name = CharNameText.getText();
                     Player newPlayer = new Player(char2.getUsername(), char2Name, char2.getType());
-                    dbConnection.deletePlayer(char2.getUsername(), char2.getName());
+                    Util.deletePlayer(char2.getUsername(), char2.getName());
                     dbConnection.addPlayer(newPlayer);
                     new CharSelect(profile);
                 } else if(character.equals("char3")){
                     char3Name = CharNameText.getText();
                     Player newPlayer = new Player(char3.getUsername(), char3Name, char3.getType());
-                    dbConnection.deletePlayer(char3.getUsername(), char3.getName());
+                    Util.deletePlayer(char3.getUsername(), char3.getName());
                     dbConnection.addPlayer(newPlayer);
                     new CharSelect(profile);
                 }
@@ -327,7 +404,7 @@ public class CharSelect {
                 if(charNameField.getText().length() > 0){
                     window.dispose();  
                     Player newPlayer;              
-                    if(type1.isSelected()){ //Save newPlayer to database(Hunter)
+                    if(type1.isSelected()){ //Save new player to database
                         newPlayer = new Player(username, charNameField.getText(), 1);
                         dbConnection.addPlayer(newPlayer);
                     }else if(type2.isSelected()){
@@ -337,7 +414,7 @@ public class CharSelect {
                         newPlayer = new Player(username, charNameField.getText(), 3);
                         dbConnection.addPlayer(newPlayer);
                     }
-                    if(char1Name == null){//temporary
+                    if(char1Name == null){
                         char1Name = charNameField.getText();
                         char1 = newPlayer;
                     } else if(char2Name == null){
@@ -350,7 +427,7 @@ public class CharSelect {
                     createFrame.dispose();
                     new CharSelect(profile);
 
-                } 
+                }
                 
             }
             
@@ -371,11 +448,6 @@ public class CharSelect {
         });
         createCon.add(cancelButton);
     }
-
-    // public static void main(String args[]) {
-    //     new CharSelect(Profile);
-    // }
-
     public static void GeneratePage(Profile profile) {
         new CharSelect(profile);
     }
