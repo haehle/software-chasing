@@ -127,8 +127,8 @@
  
         else if (e.getSource() == b3) {
             dispose();
-            //ForgotPage a = new ForgotPage();
-            //a.setVisible(true);
+            ForgotPage a = new ForgotPage();
+            a.setVisible(true);
         }
  
         else {

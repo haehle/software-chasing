@@ -270,6 +270,12 @@ public class World{
                 }
             }
 
+            //Keep health updated
+            health.setText("MAX HEALTH: " + player.getMaxHP() + " Current Health: " + player.getHp());
+            stamina.setText("MAX STAMINA: " + player.getMaxStamina() + " Stamina: " + player.getStamina());
+            level.setText("Level: " + player.getLevel());
+            xp.setText("XP Needed: " + player.getLevelXP());
+
 
             bufferStrategy.show();
             graphics.dispose();
@@ -315,8 +321,8 @@ public class World{
             setCurrLoc(currLoc[0], currLoc[1] + 1 );
             player.setLocation(currLoc);
             System.out.println("down");
-            player.gainXP(1);
-            System.out.println("XP = " + player.getLevelXP());
+            //player.gainXP(1);
+            //System.out.println("XP = " + player.getLevelXP());
         }
     }//down action
     public class leftAction extends AbstractAction{
@@ -327,6 +333,8 @@ public class World{
             playerLabel.setLocation(playerLabel.getX() - tileSize,playerLabel.getY());//x then y
             setCurrLoc(currLoc[0] - 1, currLoc[1] );
             player.setLocation(currLoc);
+            //player.setHp((player.getHp() - 1));
+            //player.setStamina((player.getStamina() + 1));
             System.out.println("left");
         }
     }//left action
@@ -338,6 +346,8 @@ public class World{
             playerLabel.setLocation(playerLabel.getX() + tileSize,playerLabel.getY());//x then y
             setCurrLoc(currLoc[0] + 1, currLoc[1] );
             player.setLocation(currLoc);
+            //player.setStamina((player.getStamina() - 1));
+            //player.setHp((player.getHp() + 1));
             System.out.println("right");
         }
     }//up action

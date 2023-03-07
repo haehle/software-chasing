@@ -38,7 +38,7 @@ class RegistrationPage extends JFrame implements ActionListener {
     public RegistrationPage()
     {
         setTitle("Software Chasing Registration");
-        setBounds(300, 90, 500, 500);
+        setBounds(300, 90, 500, 550);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -217,14 +217,14 @@ class RegistrationPage extends JFrame implements ActionListener {
                 if (tout != null) {
                     tout.setEditable(false);
                 }
-                res.setText("Registration Successfully..");
+                //res.setText("Registration Successfully..");
             }
 
 
             if (tout != null) {
                 tout.setEditable(false);
             }
-            res.setText("Registration Successfully..");
+            //res.setText("Registration Successfully..");
         }
 
 
