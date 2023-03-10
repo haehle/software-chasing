@@ -1,3 +1,4 @@
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.sql.*;
 
 public class dbConnection {
@@ -286,6 +287,38 @@ public class dbConnection {
 
             } catch (SQLException e) {
                 throw new IllegalStateException("Could not update player data", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
+    public static boolean checkPassword(Profile profile, String encryptedPassword)
+    {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "SELECT * FROM Users WHERE username=\"" + profile.getUsername() +
+                        "\" AND password=\"" + encryptedPassword + "\";";
+
+                ResultSet rs = statement.executeQuery(query);
+
+                if (!rs.isBeforeFirst()) {
+                    //User not found
+                    System.out.println("Incorrect password.");
+                    return false;
+                } else {
+                    return true;
+                }
+
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not access user profile.", e);
             }
 
 

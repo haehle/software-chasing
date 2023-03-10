@@ -26,6 +26,11 @@ public class CharSelect {
     public static String char3Name = null; 
 
     public CharSelect(Profile profile){
+        //Reset previous values if exist
+        char1Name = null;
+        char2Name = null;
+        char3Name = null;
+
         username = profile.getUsername();
         players = dbConnection.getPlayers(username);
         if(players[0] != null) {
@@ -112,18 +117,7 @@ public class CharSelect {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Produce pop-up that asks user to confirm player deletion
-                int result = JOptionPane.showConfirmDialog(window,"Are you sure you want to delete this player?", "Delete Player",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
-                if(result == JOptionPane.YES_OPTION){
-                    //Delete player
-                    //Util.deletePlayer(username, players[0].getName());
-                    //window.dispose();
-                    //new CharSelect(profile);
-                }else {
-                    //Do nothing
-                }
+                DeleteWindow(profile, char1Name);
             }
 
         });
@@ -170,18 +164,7 @@ public class CharSelect {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Produce pop-up that asks user to confirm player deletion
-                int result = JOptionPane.showConfirmDialog(window,"Are you sure you want to delete this player?", "Delete Player",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
-                if(result == JOptionPane.YES_OPTION){
-                    //Delete player
-                    //Util.deletePlayer(username, players[0].getName());
-                    //window.dispose();
-                    //new CharSelect(profile);
-                }else {
-                    //Do nothing
-                }
+                DeleteWindow(profile, char2Name);
             }
 
         });
@@ -227,18 +210,7 @@ public class CharSelect {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Produce pop-up that asks user to confirm player deletion
-                int result = JOptionPane.showConfirmDialog(window,"Are you sure you want to delete this player?", "Delete Player",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
-                if(result == JOptionPane.YES_OPTION){
-                    //Delete player
-                    //Util.deletePlayer(username, players[0].getName());
-                    //window.dispose();
-                    //new CharSelect(profile);
-                }else {
-                    //Do nothing
-                }
+                DeleteWindow(profile, char3Name);
             }
 
         });
@@ -450,5 +422,33 @@ public class CharSelect {
     }
     public static void GeneratePage(Profile profile) {
         new CharSelect(profile);
+    }
+
+    public void DeleteWindow(Profile profile, String name)
+    {
+        boolean exit = false;
+        //Produce pop-up that asks user to confirm player deletion
+        while (exit == false) {
+            JPasswordField pwd = new JPasswordField(10);
+            int action = JOptionPane.showConfirmDialog(null, pwd, "Enter your password to confirm deletion:", JOptionPane.OK_CANCEL_OPTION);
+            String confirmedPassword = String.valueOf(pwd.getPassword());
+            boolean valid = Util.checkPassword(profile, confirmedPassword);
+
+            if (action == 2)
+            {
+                exit = true;
+                break;
+            }
+
+            if (valid) {
+                //Valid password, delete player
+                Util.deletePlayer(username, name);
+                window.dispose();
+                exit = true;
+                new CharSelect(profile);
+            } else {
+                //Invalid password, prompt for password again
+            }
+        }
     }
 }

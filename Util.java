@@ -21,6 +21,12 @@ public final class Util {
         dbConnection.deleteUserProfile(username);
     }
 
+    public static boolean checkPassword(Profile profile, String password)
+    {
+        String encryptedPassword = EncryptPassword(password);
+        return dbConnection.checkPassword(profile, encryptedPassword);
+    }
+
     public static String EncryptPassword(String p) {
         String encryptedPassword = "";
         try {
