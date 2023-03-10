@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
+import java.util.concurrent.*;
 
 public class World{
     /*
@@ -106,7 +107,7 @@ public class World{
         this.player = player;
     }
 
-    public void displayWorld(){ //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
+    public void displayWorld() { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
         final String title = "Game World: Software Chasing";
         //final int frameWidth = 916;//(this.length + 1) * tileSize;
         //final int frameHeight = 1016;//(this.height+1) * tileSize;
@@ -251,8 +252,15 @@ public class World{
         bufferStrategy = canvas.getBufferStrategy();
         graphics = bufferStrategy.getDrawGraphics();
 
+        // Testing to see if adding a new ability shows up in the world
+        player.addAbilities("MULTISHOT");
+
+        // Test to see if adding the same ability does not show up in the world
+        player.addAbilities("MULTISHOT");
+
 
         while (true) { // will add movements in here and wait for certain motions to keep displaying this
+
             bufferStrategy = canvas.getBufferStrategy();
             graphics = bufferStrategy.getDrawGraphics();
             //graphics.clearRect(0, 0, width, height);
@@ -357,7 +365,7 @@ public class World{
         public void actionPerformed(ActionEvent e) {
             System.out.println("MENU:");
             MenuButtons menu = new MenuButtons(player.getUsername());
-//            menu.actionPerformed(e);
+           menu.actionPerformed(e);
         }
     }//up action
 

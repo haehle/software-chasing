@@ -78,8 +78,7 @@ public class Game {//used to load in the game to start levels from the main menu
 
     }//END MAIN
 
-    public static void StartGame(Profile profile, Player player)
-    {
+    public static void StartGame(Profile profile, Player player) {
         //make tile type map for the world
         int[][] tiles = new int[50][50];
         int count = 1;

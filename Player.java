@@ -1,8 +1,22 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Player {
+
+    private static JFrame frame;
+    private JPanel panel;
+
+    private JButton backButton;
+
+    private JLabel prompt, prompt2, prompt3, image;
+
+    private ActionListener listener;
+
+    //private ActionEvent e;
 
     private String username;
     private String name;
@@ -17,7 +31,7 @@ public class Player {
     private int levelXP;
     private int initialLevelXP;
     private String[] skills;
-    private String[] abilities;
+    private ArrayList<String> abilities;
 
     public Player(String username, String name, int type) {
         this.username = username;
@@ -34,7 +48,7 @@ public class Player {
             this.stamina = 20;
             this.maxStamina = 20;
             this.skills = new String[]{};
-            this.abilities = new String[]{};
+            this.abilities = new ArrayList<>();
         } else if (type == 2) {
             this.hp = 60;
             this.maxHP = 100;
@@ -42,7 +56,7 @@ public class Player {
             this.stamina = 30;
             this.maxStamina = 30;
             this.skills = new String[]{};
-            this.abilities = new String[]{};
+            this.abilities = new ArrayList<>();;
         } else if (type == 3) {
             this.hp = 200;
             this.maxHP = 200;
@@ -50,7 +64,7 @@ public class Player {
             this.stamina = 5;
             this.maxStamina = 5;
             this.skills = new String[]{};
-            this.abilities = new String[]{};
+            this.abilities = new ArrayList<>();;
         }
     }
 
@@ -72,7 +86,7 @@ public class Player {
 
         //Need to get these from alternate table
         this.skills = new String[]{};
-        this.abilities = new String[]{};
+        this.abilities = new ArrayList<>();;
     }
 
         public String getUsername () {
@@ -183,16 +197,78 @@ public class Player {
             this.skills = updatedSkills;
         }
 
-        public String[] getAbilities () {
+        public ArrayList<String> getAbilities () {
             return this.abilities;
         }
 
-        public void setAbilities (String[]abilities){
-            List<String> list = new ArrayList<String>(Arrays.asList(abilities));
-            list.addAll(Arrays.asList(this.abilities));
-            String[] updatedAbilities = (String[]) list.toArray();
-            this.abilities = updatedAbilities;
+        public void setAbilities (ArrayList<String> set_abilities){
+            this.abilities = set_abilities;
         }
+
+        // This function will add a new ability and display it for the user
+        public void addAbilities(String ability) {
+
+            if (!this.abilities.contains(ability)) {
+                this.abilities.add(ability);
+
+                frame = new JFrame("New Ability");
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                panel = new JPanel();
+                panel.setLayout(null);
+
+                // Set the size of the panel
+                panel.setPreferredSize(new Dimension(500, 400));
+                panel.setBackground(Color.decode("#cfb991"));
+
+                frame.getContentPane().add(panel);
+                frame.pack();
+                frame.setVisible(true);
+
+                prompt = new JLabel("New ability unlocked: " + ability + "!");
+                prompt.setBounds(150, 25, 200, 30);
+                panel.add(prompt);
+
+                String description = "holder";
+                String description2 = "holder";
+
+                // Get a specific description based on the ability achieved
+
+                if (ability.equals("MULTISHOT")) {
+                    description = "When firing your bow you can now shoot multiple arrows at once!";
+                    description2 = "Your damage by your bow is now multiplied by 3!";
+                }
+
+                prompt2 = new JLabel("Description: " + description);
+                prompt2.setBounds(25, 75, 500, 30);
+                panel.add(prompt2);
+
+                prompt3 = new JLabel(description2);
+                prompt3.setBounds(100, 100, 400, 30);
+                panel.add(prompt3);
+
+                image = new JLabel(new ImageIcon("multi.png"));
+                image.setBounds(125, 125, 200, 200);
+                panel.add(image);
+
+                backButton = new JButton("Back");
+                backButton.setBounds(175, 325, 100, 50);
+                backButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                       if(e.getSource() == backButton) {
+                           frame.dispose();
+                       }
+                    }
+                });
+                backButton.setBackground(Color.decode("#9d9795"));
+                panel.add(backButton);
+            }
+
+        }
+
+
+
 
         public void gainXP ( int amt){
             //Check for level up
@@ -227,6 +303,4 @@ public class Player {
 
             //Later on, will also have to check for new skills/abilities unlocked at each level
         }
-
-
     }
