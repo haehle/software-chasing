@@ -48,7 +48,7 @@ public class CharSelect {
             char3Name = players[2].getName();
         }
 
-    
+        BackgroundMusic bm = new BackgroundMusic("lobby");
 
         window = new JFrame();
         window.setSize(800,600);
