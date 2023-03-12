@@ -48,6 +48,8 @@ public class CharSelect {
             char3Name = players[2].getName();
         }
 
+    
+
         window = new JFrame();
         window.setSize(800,600);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

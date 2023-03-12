@@ -37,6 +37,9 @@ public class World{
 
     public World(int height, int length, int[][] tileType, Player player){ /*TODO: ADD PLAYER FIELD*/
         //super(player.getName());
+        
+        BackgroundMusic bm = new BackgroundMusic("game");//plays music
+
         this.worldMap = new Tile[height][length];
         this.height = height; //y
         this.length = length; // x

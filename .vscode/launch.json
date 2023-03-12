@@ -1,0 +1,70 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CharSelect",
+            "request": "launch",
+            "mainClass": "CharSelect",
+            "projectName": "software-chasing_8caf16ec"
+        },
+        {
+            "type": "java",
+            "name": "BackgroundMusic",
+            "request": "launch",
+            "mainClass": "BackgroundMusic",
+            "projectName": "software-chasing_8caf16ec"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "DatabaseTests",
+            "request": "launch",
+            "mainClass": "DatabaseTests",
+            "projectName": "software-chasing_8caf16ec"
+        },
+        {
+            "type": "java",
+            "name": "Game",
+            "request": "launch",
+            "mainClass": "Game",
+            "projectName": "software-chasing_8caf16ec"
+        },
+        {
+            "type": "java",
+            "name": "LoginForm",
+            "request": "launch",
+            "mainClass": "LoginForm",
+            "projectName": "software-chasing_8caf16ec"
+        },
+        {
+            "type": "java",
+            "name": "Registration",
+            "request": "launch",
+            "mainClass": "Registration",
+            "projectName": "software-chasing_8caf16ec"
+        },
+        {
+            "type": "java",
+            "name": "World",
+            "request": "launch",
+            "mainClass": "World",
+            "projectName": "software-chasing_8caf16ec"
+        },
+        {
+            "type": "java",
+            "name": "dbConnection",
+            "request": "launch",
+            "mainClass": "dbConnection",
+            "projectName": "software-chasing_8caf16ec"
+        }
+    ]
+}
