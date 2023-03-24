@@ -25,7 +25,7 @@ public class Game {//used to load in the game to start levels from the main menu
 
     /*TODO MOVE DISPLAY OF WORLD HERE (RILEY)*/
     /** THis will handle displaying the world as well as player movements*/
-    public void run(){
+    public void run() {
         //DISPLAY THE WORLD
         //this.level.setTileSize(tileSize);//resize per game specification
         this.level.displayWorld();
@@ -37,7 +37,7 @@ public class Game {//used to load in the game to start levels from the main menu
 
     /*TODO Actions such as the report button need to go in here and be hooked into the run() function*/
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         /*TODO FILL THIS OUT*/
 
         //TODO GET PLAYER
@@ -78,7 +78,7 @@ public class Game {//used to load in the game to start levels from the main menu
 
     }//END MAIN
 
-    public static void StartGame(Profile profile, Player player) {
+    public static void StartGame(Profile profile, Player player)  {
         //make tile type map for the world
         int[][] tiles = new int[50][50];
         int count = 1;

@@ -19,6 +19,8 @@ public class Player {
     //private ActionEvent e;
 
     private String username;
+
+    private int gold;
     private String name;
     private int type;
     private int[] location;
@@ -41,6 +43,7 @@ public class Player {
         this.level = 1;
         this.levelXP = 100;
         this.initialLevelXP = 100;
+        this.gold = 200;
         if (type == 1) {
             this.hp = 100;
             this.maxHP = 100;
@@ -88,6 +91,14 @@ public class Player {
         this.skills = new String[]{};
         this.abilities = new ArrayList<>();;
     }
+
+        public int getGold() {
+            return this.gold;
+        }
+
+        public void setGold(int gold) {
+            this.gold = gold;
+        }
 
         public String getUsername () {
             return this.username;
@@ -247,7 +258,7 @@ public class Player {
                 prompt3.setBounds(100, 100, 400, 30);
                 panel.add(prompt3);
 
-                image = new JLabel(new ImageIcon("multi.png"));
+                image = new JLabel(new ImageIcon("Images/multi.png"));
                 image.setBounds(125, 125, 200, 200);
                 panel.add(image);
 

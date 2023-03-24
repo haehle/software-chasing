@@ -93,7 +93,11 @@ public class CharSelect {
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char1;
                 window.dispose();
-                Game.StartGame(profile, currentPlayer);
+               // try {
+                //    Game.StartGame(profile, currentPlayer);
+               // } catch (InterruptedException ex) {
+              //      throw new RuntimeException(ex);
+              //  }
             }
             
         });
@@ -140,7 +144,11 @@ public class CharSelect {
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char2;
                 window.dispose();
-                Game.StartGame(profile, currentPlayer);
+              //  try {
+             //       Game.StartGame(profile, currentPlayer);
+             //   } catch (InterruptedException ex) {
+            //        throw new RuntimeException(ex);
+             //   }
             }
             
         });

@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class World{
@@ -22,6 +23,12 @@ public class World{
     private int[] spawnPoint;
     private int[] currLoc;
     public int tileSize;
+
+    private JButton shop, shop2, menubuttons;
+
+    private boolean checker;
+
+    private boolean checker2;
     private Player player;
     JFrame frame;
     JLabel playerLabel;
@@ -37,7 +44,7 @@ public class World{
 
     public World(int height, int length, int[][] tileType, Player player){ /*TODO: ADD PLAYER FIELD*/
         //super(player.getName());
-        
+
         BackgroundMusic bm = new BackgroundMusic("game");//plays music
 
         this.worldMap = new Tile[height][length];
@@ -110,7 +117,33 @@ public class World{
         this.player = player;
     }
 
-    public void displayWorld() { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
+    public void displayWorld()   { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
+
+        // Testing a shop window
+
+        MenuButtons a = new MenuButtons(player.getName());
+
+
+        NPC test = new NPC("Ron", "Neutral");
+
+        NPC test2 = new NPC("Natalie", "Neutral");
+
+        test.setStock1(1);
+        test.setStock2(1);
+        test.setStock3(3);
+
+        test2.setStock1(2);
+        test2.setStock2(2);
+        test2.setStock3(4);
+
+        // Testing to see if adding a new ability shows up in the world
+        player.addAbilities("MULTISHOT");
+
+        // Test to see if adding the same ability does not show up in the world
+        // player.addAbilities("MULTISHOT");
+
+
+
         final String title = "Game World: Software Chasing";
         //final int frameWidth = 916;//(this.length + 1) * tileSize;
         //final int frameHeight = 1016;//(this.height+1) * tileSize;
@@ -121,12 +154,13 @@ public class World{
         //Creating the frame.
         frame = new JFrame(title);
 
-
         frame.setSize(frameWidth, frameHeight );
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setResizable(true);
         frame.setVisible(true);
+
+
 //KEY LISTEN
 //        frame.addKeyListener(new KeyAdapter() {
 //            @Override
@@ -179,6 +213,63 @@ public class World{
 
         //add the logout button to the frame
         frame.add(logoutButton);
+
+        // Create shop button for interacting with NPCs
+
+        shop = new JButton("Shop");
+        shop.setBounds(175, 400, 100, 50);
+        shop.setBackground(Color.decode("#9d9795"));
+        shop.setVisible(false);
+
+        shop.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == shop) {
+                    test.displayShop(player);
+                    shop.setVisible(false);
+                }
+            }
+        });
+
+        frame.add(shop);
+
+        // Create shop button for interacting with NPCs
+
+        shop2 = new JButton("Shop");
+        shop2.setBounds(175, 400, 100, 50);
+        shop2.setBackground(Color.decode("#9d9795"));
+        shop2.setVisible(false);
+
+        shop2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == shop2) {
+                    test2.displayShop(player);
+                    shop2.setVisible(false);
+                }
+            }
+        });
+
+        frame.add(shop2);
+
+        // Create menu buttons for extra things like reporting and feedback
+
+        menubuttons = new JButton("Menu");
+        menubuttons.setBounds(25, 450, 100, 50);
+        menubuttons.setBackground(Color.decode("#9d9795"));
+        menubuttons.setVisible(true);
+
+        menubuttons.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == menubuttons) {
+                    a.changeVisibility();
+                    menubuttons.setVisible(false);
+                }
+            }
+        });
+
+        frame.add(menubuttons);
 
         //create the stats bar
         JPanel statPanel = new JPanel();
@@ -236,6 +327,7 @@ public class World{
         frame.add(statPanel);
 
 
+
         //Creating the canvas.
         Canvas canvas = new Canvas();
 
@@ -255,17 +347,41 @@ public class World{
         bufferStrategy = canvas.getBufferStrategy();
         graphics = bufferStrategy.getDrawGraphics();
 
-        // Testing to see if adding a new ability shows up in the world
-        player.addAbilities("MULTISHOT");
-
-        // Test to see if adding the same ability does not show up in the world
-        player.addAbilities("MULTISHOT");
-
 
         while (true) { // will add movements in here and wait for certain motions to keep displaying this
 
             bufferStrategy = canvas.getBufferStrategy();
             graphics = bufferStrategy.getDrawGraphics();
+
+            menubuttons.setVisible(true);
+
+
+            // Tester to see if when a player reaches a certain tile with an NPC they can open a shop
+
+            if(currLoc[0] == 3 && currLoc[1] == 3) {
+                if(!checker) {
+                    shop.setVisible(true);
+                    checker = true;
+                }
+            }
+            else {
+                checker = false;
+                shop.setVisible(false);
+            }
+
+            // Now add another NPC and see if they can both work together
+
+            if(currLoc[0] == 6 && currLoc[1] == 6) {
+                if(!checker2) {
+                    shop2.setVisible(true);
+                    checker2 = true;
+                }
+            }
+            else {
+                checker2 = false;
+                shop2.setVisible(false);
+            }
+
             //graphics.clearRect(0, 0, width, height);
 
             for (int y = 0; y < this.height; y++) {
@@ -295,7 +411,7 @@ public class World{
 
     }//END DISPLAY WORLD
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         int[][] tiles = new int[50][50];
         int count = 1;
         for (int i = 0; i < 50; i++) {
@@ -310,6 +426,7 @@ public class World{
         World test = new World(50,50,tiles,player);
         //test.setPlayer(player);
         test.displayWorld();
+
     }
 
     public class upAction extends AbstractAction{

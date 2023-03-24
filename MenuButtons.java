@@ -286,13 +286,12 @@ public class MenuButtons implements ActionListener {
 
     // Method used to change the visibility of the frame such that it will only show up in certain instances
 
-    public static void changeVisibility() {
+    public void  changeVisibility() {
         frame.setVisible(true);
     }
 
 
     public static void main(String[] args) {
         MenuButtons tester = new MenuButtons("DEFAULT");
-        changeVisibility();
     }
 }
