@@ -7,12 +7,12 @@ import java.util.concurrent.*;
 
 public class World{
     /*
-    * Class Will load the world in ie the iterations of tiles and display it as a canvas
-    * Enjoy :)
-    * World map of tiles
-    * Ability to check adjacent tiles (up down left right)
-    *       when player moves it will check if it can go there first then if it returns true, the player will move tiles
-    */
+     * Class Will load the world in ie the iterations of tiles and display it as a canvas
+     * Enjoy :)
+     * World map of tiles
+     * Ability to check adjacent tiles (up down left right)
+     *       when player moves it will check if it can go there first then if it returns true, the player will move tiles
+     */
 
     /*
      * Jave functionality Array[height/#rows][width/#col]
@@ -124,17 +124,17 @@ public class World{
         MenuButtons a = new MenuButtons(player.getName());
 
 
-        NPC test = new NPC("Ron", "Neutral");
+        NPC ron = new NPC("Ron", "Neutral");
 
-        NPC test2 = new NPC("Natalie", "Neutral");
+        NPC natalie = new NPC("Natalie", "Neutral");
 
-        test.setStock1(1);
-        test.setStock2(1);
-        test.setStock3(3);
+        ron.setStock1(1);
+        ron.setStock2(1);
+        ron.setStock3(3);
 
-        test2.setStock1(2);
-        test2.setStock2(2);
-        test2.setStock3(4);
+        natalie.setStock1(2);
+        natalie.setStock2(2);
+        natalie.setStock3(4);
 
         // Testing to see if adding a new ability shows up in the world
         player.addAbilities("MULTISHOT");
@@ -187,7 +187,7 @@ public class World{
         playerLabel.getInputMap().put(KeyStroke.getKeyStroke('d'), "rightAction");
         playerLabel.getActionMap().put("rightAction", moveRight);
 
-    /*TODO This is the input for the player label to access the MENU ACTION AJ */
+        /*TODO This is the input for the player label to access the MENU ACTION AJ */
         playerLabel.getInputMap().put(KeyStroke.getKeyStroke('m'), "menuAction");
         playerLabel.getActionMap().put("menuAction", menuAction);
 
@@ -225,7 +225,7 @@ public class World{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == shop) {
-                    test.displayShop(player);
+                    ron.displayShop(player);
                     shop.setVisible(false);
                 }
             }
@@ -244,7 +244,7 @@ public class World{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == shop2) {
-                    test2.displayShop(player);
+                    natalie.displayShop(player);
                     shop2.setVisible(false);
                 }
             }
@@ -391,6 +391,9 @@ public class World{
                     //0 is wall 1 is floor
 
                     if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);}
+                    else if ((x == 3 && y == 3) | (x == 6 && y == 6) | (x == 15 && y == 25)) {graphics.setColor(Color.BLUE);}
+                    else if ((x == 10 && y == 30) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
+                    else if (x == 40 && y == 30) {graphics.setColor(Color.RED);}
                     else if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
                     /*TODO load a tile image*/
                     graphics.fillRect(x*tileSize,y*tileSize,tileSize,tileSize); //TILE IMAGE WILL GO HERE LATER
@@ -485,7 +488,7 @@ public class World{
         public void actionPerformed(ActionEvent e) {
             System.out.println("MENU:");
             MenuButtons menu = new MenuButtons(player.getUsername());
-           menu.actionPerformed(e);
+            menu.actionPerformed(e);
         }
     }//up action
 

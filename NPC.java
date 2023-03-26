@@ -14,7 +14,7 @@ public class NPC {
 
     private JLabel prompt, item1_prompt, item1_cost, item2_prompt, item2_cost, item3_prompt, item3_cost, total_gold;
     private String name;
-    private String type;
+    private String NPCtype;
     private Color color;
     private String encounter;
     private int[] location;
@@ -42,13 +42,13 @@ public class NPC {
     private ArrayList<String> abilities;
 
 
-    public NPC(String name, String type) {
-        this.type = type;
+    public NPC(String name, String NPCtype) {
+        this.NPCtype = NPCtype;
         this.name = name;
         this.location = new int[]{0, 0};
-        switch (type) {
+        switch (NPCtype) {
             case "Boss" -> {
-                this.encounter = "You are about to encounter a boss";
+                this.encounter = "You are about to encounter the boss, " + name;
                 this.color = Color.RED;
                 this.hp = 500;
                 this.maxHP = 500;
@@ -59,7 +59,7 @@ public class NPC {
                 this.abilities = new ArrayList<>();
             }
             case "Enemy" -> {
-                this.encounter = "You are about to encounter an enemy";
+                this.encounter = "You are about to encounter the enemy, " + name;
                 this.color = Color.ORANGE;
                 this.hp = 60;
                 this.maxHP = 100;
@@ -70,10 +70,8 @@ public class NPC {
                 this.abilities = new ArrayList<>();
             }
             case "Neutral" -> {
-                this.encounter = "Interact with [name]";
+                this.encounter = "Interact with " + name;
                 this.color = Color.BLUE;
-                this.hp = 200;
-                this.maxHP = 200;
                 this.speed = 5;
                 this.stamina = 5;
                 this.maxStamina = 5;
@@ -87,27 +85,36 @@ public class NPC {
         return this.name;
     }
 
-    public void setType (String type){
-        this.type = type;
+    public void setNPCType (String type){
+        this.NPCtype = type;
     }
 
-    public String getType () {
-        return this.type;
+    public String getNPCType () {
+        return this.NPCtype;
+    }
+
+    public Color getColor() {
+        return this.color;
+    }
+
+    public String getEncounter() {
+        return this.encounter;
     }
 
     public int[] getLocation () {
         return this.location;
     }
 
-    public void setLocation ( int[] location){
-        this.location = location;
+    public void setLocation(int x, int y){
+        this.location[0] = x;
+        this.location[1] = y;
     }
 
     public int getHp () {
         return this.hp;
     }
 
-    public void setHp ( int hp){
+    public void setHp (int hp){
         this.hp = hp;
     }
 
@@ -115,7 +122,7 @@ public class NPC {
         return this.maxHP;
     }
 
-    public void setMaxHP ( int maxHP){
+    public void setMaxHP (int maxHP){
         this.maxHP = maxHP;
     }
 
@@ -123,7 +130,7 @@ public class NPC {
         return this.speed;
     }
 
-    public void setSpeed ( int speed){
+    public void setSpeed (int speed){
         this.speed = speed;
     }
 
@@ -131,7 +138,7 @@ public class NPC {
         return this.stamina;
     }
 
-    public void setStamina ( int stamina){
+    public void setStamina (int stamina){
         this.stamina = stamina;
     }
 
@@ -139,7 +146,7 @@ public class NPC {
         return this.maxStamina;
     }
 
-    public void setMaxStamina ( int maxStamina){
+    public void setMaxStamina (int maxStamina){
         this.maxStamina = maxStamina;
     }
 
