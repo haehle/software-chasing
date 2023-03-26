@@ -26,12 +26,11 @@ public class World{
 
     private JButton shop, shop2, menubuttons;
 
-    private boolean checker;
+    private boolean checker, checker2, checker3, checker4, checker5, checker6, checker7;
 
-    private boolean checker2;
     private Player player;
     JFrame frame;
-    JLabel playerLabel;
+    JLabel playerLabel, NPC1label, NPC2label, NPC3label, NPC4label, NPC5label, NPC6label, NPC7label;
 
     Action moveUp = new upAction();
     Action moveDown = new downAction();
@@ -119,7 +118,7 @@ public class World{
 
     public void displayWorld()   { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
 
-        // Testing a shop window
+        // Creating NPCs and shop windows
 
         MenuButtons a = new MenuButtons(player.getName());
 
@@ -128,13 +127,37 @@ public class World{
 
         NPC natalie = new NPC("Natalie", "Neutral");
 
+        NPC sam = new NPC("Sam", "Neutral");
+
+        NPC hello = new NPC("Hello", "Enemy");
+
+        NPC loopy = new NPC("Loopy", "Enemy");
+
+        NPC ray = new NPC("Ray", "Enemy");
+
+        NPC jeff = new NPC("Jeff", "Boss");
+
+        ron.setLocation(3, 3);
+
         ron.setStock1(1);
         ron.setStock2(1);
         ron.setStock3(3);
 
+        natalie.setLocation(6, 6);
+
         natalie.setStock1(2);
         natalie.setStock2(2);
         natalie.setStock3(4);
+
+        sam.setLocation(15, 25);
+
+        hello.setLocation(10, 6);
+
+        loopy.setLocation(35, 5);
+
+        ray.setLocation(28, 45);
+
+        jeff.setLocation(40,30);
 
         // Testing to see if adding a new ability shows up in the world
         player.addAbilities("MULTISHOT");
@@ -214,7 +237,13 @@ public class World{
         //add the logout button to the frame
         frame.add(logoutButton);
 
-        // Create shop button for interacting with NPCs
+        // Create pop up and shop button for interacting with NPCs
+
+        NPC1label = new JLabel(ron.getEncounter());
+        NPC1label.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
+        NPC1label.setSize(130, 25);
+        NPC1label.setLocation(150, 380);
+        NPC1label.setVisible(false);
 
         shop = new JButton("Shop");
         shop.setBounds(175, 400, 100, 50);
@@ -231,9 +260,16 @@ public class World{
             }
         });
 
+        frame.add(NPC1label);
         frame.add(shop);
 
-        // Create shop button for interacting with NPCs
+        // Create pop up and shop button for interacting with NPCs
+
+        NPC2label = new JLabel(natalie.getEncounter());
+        NPC2label.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
+        NPC2label.setSize(150, 25);
+        NPC2label.setLocation(130, 380);
+        NPC2label.setVisible(false);
 
         shop2 = new JButton("Shop");
         shop2.setBounds(175, 400, 100, 50);
@@ -250,7 +286,48 @@ public class World{
             }
         });
 
+        frame.add(NPC2label);
         frame.add(shop2);
+
+        NPC3label = new JLabel(sam.getEncounter());
+        NPC3label.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
+        NPC3label.setSize(150, 25);
+        NPC3label.setLocation(130, 380);
+        NPC3label.setVisible(false);
+
+        frame.add(NPC3label);
+
+        NPC4label = new JLabel(hello.getEncounter());
+        NPC4label.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
+        NPC4label.setSize(350, 25);
+        NPC4label.setLocation(50, 380);
+        NPC4label.setVisible(false);
+
+        frame.add(NPC4label);
+
+        NPC5label = new JLabel(loopy.getEncounter());
+        NPC5label.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
+        NPC5label.setSize(350, 25);
+        NPC5label.setLocation(50, 380);
+        NPC5label.setVisible(false);
+
+        frame.add(NPC5label);
+
+        NPC6label = new JLabel(ray.getEncounter());
+        NPC6label.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
+        NPC6label.setSize(350, 25);
+        NPC6label.setLocation(50, 380);
+        NPC6label.setVisible(false);
+
+        frame.add(NPC6label);
+
+        NPC7label = new JLabel(jeff.getEncounter());
+        NPC7label.setFont(new Font("Acumin Pro", Font.PLAIN, 15));
+        NPC7label.setSize(350, 25);
+        NPC7label.setLocation(50, 380);
+        NPC7label.setVisible(false);
+
+        frame.add(NPC7label);
 
         // Create menu buttons for extra things like reporting and feedback
 
@@ -358,28 +435,97 @@ public class World{
 
             // Tester to see if when a player reaches a certain tile with an NPC they can open a shop
 
-            if(currLoc[0] == 3 && currLoc[1] == 3) {
+            if(currLoc[0] == ron.getLocation()[0] && currLoc[1] == ron.getLocation()[1]) {
                 if(!checker) {
+                    NPC1label.setVisible(true);
                     shop.setVisible(true);
                     checker = true;
                 }
             }
             else {
                 checker = false;
+                NPC1label.setVisible(false);
                 shop.setVisible(false);
             }
 
             // Now add another NPC and see if they can both work together
 
-            if(currLoc[0] == 6 && currLoc[1] == 6) {
+            if(currLoc[0] == natalie.getLocation()[0] && currLoc[1] == natalie.getLocation()[1]) {
                 if(!checker2) {
+                    NPC2label.setVisible(true);
                     shop2.setVisible(true);
                     checker2 = true;
                 }
             }
             else {
                 checker2 = false;
+                NPC2label.setVisible(false);
                 shop2.setVisible(false);
+            }
+
+            // Now add NPC3
+
+            if(currLoc[0] == sam.getLocation()[0] && currLoc[1] == sam.getLocation()[1]) {
+                if(!checker3) {
+                    NPC3label.setVisible(true);
+                    checker3 = true;
+                }
+            }
+            else {
+                checker3 = false;
+                NPC3label.setVisible(false);
+            }
+
+            // Now add NPC4
+
+            if(currLoc[0] == hello.getLocation()[0] && currLoc[1] == hello.getLocation()[1]) {
+                if(!checker4) {
+                    NPC4label.setVisible(true);
+                    checker4 = true;
+                }
+            }
+            else {
+                checker4 = false;
+                NPC4label.setVisible(false);
+            }
+
+            // Now add NPC5
+
+            if(currLoc[0] == loopy.getLocation()[0] && currLoc[1] == loopy.getLocation()[1]) {
+                if(!checker5) {
+                    NPC5label.setVisible(true);
+                    checker5 = true;
+                }
+            }
+            else {
+                checker5 = false;
+                NPC5label.setVisible(false);
+            }
+
+            // Now add NPC6
+
+            if(currLoc[0] == ray.getLocation()[0] && currLoc[1] == ray.getLocation()[1]) {
+                if(!checker6) {
+                    NPC6label.setVisible(true);
+                    checker6 = true;
+                }
+            }
+            else {
+                checker6 = false;
+                NPC6label.setVisible(false);
+            }
+
+            // Now add NPC7
+
+            if(currLoc[0] == jeff.getLocation()[0] && currLoc[1] == jeff.getLocation()[1]) {
+                if(!checker7) {
+                    NPC7label.setVisible(true);
+                    checker7 = true;
+                }
+            }
+            else {
+                checker7 = false;
+                NPC7label.setVisible(false);
             }
 
             //graphics.clearRect(0, 0, width, height);
@@ -392,7 +538,7 @@ public class World{
 
                     if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);}
                     else if ((x == 3 && y == 3) | (x == 6 && y == 6) | (x == 15 && y == 25)) {graphics.setColor(Color.BLUE);}
-                    else if ((x == 10 && y == 30) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
+                    else if ((x == 10 && y == 6) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
                     else if (x == 40 && y == 30) {graphics.setColor(Color.RED);}
                     else if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
                     /*TODO load a tile image*/
