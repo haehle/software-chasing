@@ -1,7 +1,10 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class CharSelect {
@@ -32,7 +35,12 @@ public class CharSelect {
         char3Name = null;
 
         username = profile.getUsername();
-        players = dbConnection.getPlayers(username);
+        //players = dbConnection.getPlayers(username);
+        players = new Player[3];
+        players[1] = new Player("Saheer", "char1Name", 2);
+        players[0] = new Player("Saheer", "char0Name", 1);
+        players[2] = null;
+        
         if(players[0] != null) {
             char1 = players[0];
             char1Name = players[0].getName();
@@ -273,7 +281,7 @@ public class CharSelect {
                 window.dispose();
                 editFrame.dispose();
 
-                if(character.equals("char1")){//Save new character name(Hunter)
+                if(character.equals("char1")){//Save new character name
                     char1Name = CharNameText.getText();
                     Player newPlayer = new Player(char1.getUsername(), char1Name, char1.getType());
                     Util.deletePlayer(char1.getUsername(), char1.getName());
@@ -373,7 +381,15 @@ public class CharSelect {
         form.add(type1);
         form.add(type2);
         form.add(type3);
-        createCon.add(form);
+
+        try {
+            JLabel img = new JLabel(new ImageIcon("Path/To/Your/Image.png"));
+            img.setLocation(150,400);
+            createCon.add(img);
+            createCon.add(form);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         JButton createCharButton = new JButton();
         createCharButton.setBounds(270, 400, 100, 50);
@@ -388,13 +404,13 @@ public class CharSelect {
                     Player newPlayer;              
                     if(type1.isSelected()){ //Save new player to database
                         newPlayer = new Player(username, charNameField.getText(), 1);
-                        dbConnection.addPlayer(newPlayer);
+                        //dbConnection.addPlayer(newPlayer);
                     }else if(type2.isSelected()){
                         newPlayer = new Player(username, charNameField.getText(), 2);
-                        dbConnection.addPlayer(newPlayer);
+                        //dbConnection.addPlayer(newPlayer);
                     } else{
                         newPlayer = new Player(username, charNameField.getText(), 3);
-                        dbConnection.addPlayer(newPlayer);
+                        //dbConnection.addPlayer(newPlayer);
                     }
                     if(char1Name == null){
                         char1Name = charNameField.getText();
@@ -460,5 +476,9 @@ public class CharSelect {
                 //Invalid password, prompt for password again
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new CharSelect(new Profile("mail@mail", "Saheer", "pass"));
     }
 }
