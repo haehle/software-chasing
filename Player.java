@@ -34,8 +34,10 @@ public class Player {
     private int initialLevelXP;
     private String[] skills;
     private ArrayList<String> abilities;
+    private long timePlayed;
 
     public Player(String username, String name, int type) {
+        this.timePlayed = 0;
         this.username = username;
         this.name = name;
         this.type = type;
@@ -74,6 +76,7 @@ public class Player {
     //Constructor used to initialize Player object from database information
     public Player(String username, String name, int type, int locationX, int locationY, int hp, int maxHP,
                   int speed, int stamina, int maxStamina, int level, int levelXP, int initialLevelXP) {
+        this.timePlayed = 0;
         this.username = username;
         this.name = name;
         this.type = type;
@@ -91,6 +94,13 @@ public class Player {
         this.skills = new String[]{};
         this.abilities = new ArrayList<>();;
     }
+        public long getTimePlayed(){
+            return this.timePlayed;
+        }
+
+        public void setTimePlayed(long timePlayed){
+            this.timePlayed = timePlayed;
+        }
 
         public int getGold() {
             return this.gold;
