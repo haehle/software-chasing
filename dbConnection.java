@@ -357,6 +357,45 @@ public class dbConnection {
         }
     }
 
+    public static int getNextId() {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "SELECT * FROM Items";
+                String itemName = null;
+
+                ResultSet rs = statement.executeQuery(query);
+                if (!rs.isBeforeFirst()) {
+                    //User not found
+                    System.out.println("No items found.");
+                    return 0;
+                } else {
+                    //Items found
+                    System.out.println("Items found in database.");
+
+                    //Parse data
+                    int i = 0;
+                    while (rs.next()) {
+                        int num = rs.getInt("id");
+                        i++;
+                    }
+
+                    return i;
+                }
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not get items from database", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
     public static void updatePlayer(Player player) {
         try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
 
@@ -419,6 +458,54 @@ public class dbConnection {
 
             } catch (SQLException e) {
                 throw new IllegalStateException("Could not access user profile.", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
+    public static void addItem(Item item) {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "INSERT INTO Items VALUES (" +
+                        "\"" + item.getId() + "\", " +
+                        "\"" + item.getName() + "\");";
+
+                statement.execute(query);
+                System.out.println("Item added successfully.");
+
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not add item", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
+    public static void deleteItem(int id) {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "DELETE FROM Items WHERE id = \"" + id + "\"";
+
+                statement.execute(query);
+                System.out.println("Item deleted successfully.");
+
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not delete item", e);
             }
 
 

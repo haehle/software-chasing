@@ -57,4 +57,9 @@ public final class Util {
 
         return encryptedPassword;
     }
+
+    public static int getNextId()
+    {
+        return dbConnection.getNextId();
+    }
 }
