@@ -35,6 +35,7 @@ public class Player {
     private String[] skills;
     private ArrayList<String> abilities;
     private long timePlayed;
+    private Inventory inventory;
 
     public Player(String username, String name, int type) {
         this.timePlayed = 0;
@@ -46,6 +47,7 @@ public class Player {
         this.levelXP = 100;
         this.initialLevelXP = 100;
         this.gold = 200;
+        this.inventory = new Inventory();
         if (type == 1) {
             this.hp = 100;
             this.maxHP = 100;
@@ -75,7 +77,7 @@ public class Player {
 
     //Constructor used to initialize Player object from database information
     public Player(String username, String name, int type, int locationX, int locationY, int hp, int maxHP,
-                  int speed, int stamina, int maxStamina, int level, int levelXP, int initialLevelXP) {
+                  int speed, int stamina, int maxStamina, int level, int levelXP, int initialLevelXP, Inventory inventory) {
         this.timePlayed = 0;
         this.username = username;
         this.name = name;
@@ -89,6 +91,7 @@ public class Player {
         this.speed = speed;
         this.stamina = stamina;
         this.maxStamina = maxStamina;
+        this.inventory = inventory;
 
         //Need to get these from alternate table
         this.skills = new String[]{};
@@ -181,6 +184,10 @@ public class Player {
         public void setMaxStamina ( int maxStamina){
             this.maxStamina = maxStamina;
         }
+
+        public Inventory getInventory () { return this.inventory; }
+
+        public void setInventory (Inventory inventory ) { this.inventory = inventory; }
 
         public int getLevel () {
             return this.level;
