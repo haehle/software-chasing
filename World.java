@@ -23,8 +23,9 @@ public class World{
     private int[] spawnPoint;
     private int[] currLoc;
     public int tileSize;
+    private boolean pause;
 
-    private JButton shop, shop2, menubuttons;
+    private JButton shop, shop2, menubuttons,pauseButton;
 
     private boolean checker, checker2, checker3, checker4, checker5, checker6, checker7;
 
@@ -329,10 +330,21 @@ public class World{
 
         frame.add(NPC7label);
 
+
+
+        //create the stats bar
+        JPanel statPanel = new JPanel();
+        statPanel.setBackground(Color.decode("#ddb945"));
+        statPanel.setSize(frameWidth-100,100);
+        statPanel.setLocation(100,frameHeight-100);
+        //statPanel.setBounds(100,frameHeight-tileSize,frameWidth-100,100);
+        statPanel.setVisible(true);
+        statPanel.setOpaque(true);
+
         // Create menu buttons for extra things like reporting and feedback
 
         menubuttons = new JButton("Menu");
-        menubuttons.setBounds(25, 450, 100, 50);
+        menubuttons.setBounds(100, frameHeight-100, 100, 50); //fix this later to make it pretty (riley)
         menubuttons.setBackground(Color.decode("#9d9795"));
         menubuttons.setVisible(true);
 
@@ -345,17 +357,10 @@ public class World{
                 }
             }
         });
+        statPanel.add(menubuttons);
 
-        frame.add(menubuttons);
-
-        //create the stats bar
-        JPanel statPanel = new JPanel();
-        statPanel.setBackground(Color.decode("#ddb945"));
-        statPanel.setSize(frameWidth-100,100);
-        statPanel.setLocation(100,frameHeight-100);
-        //statPanel.setBounds(100,frameHeight-tileSize,frameWidth-100,100);
-        statPanel.setVisible(true);
-        statPanel.setOpaque(true);
+//        pauseButton = new JButton("Pause");
+//        pauseButton.setBounds(100);
 
         //TODO add player stat
         JLabel health = new JLabel("MAX HEALTH: "+player.getMaxHP()+" Current Health: " + player.getHp());
@@ -536,7 +541,13 @@ public class World{
                     int type = this.worldMap[y][x].getType();
                     //0 is wall 1 is floor
 
-                    if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);}
+                    if (currLoc[0] == x && currLoc[1] == y){
+                        //graphics.drawImage("Images/idle(4)",x,y)
+//                        ImageIcon icon = new ImageIcon("Images/idle(4)");
+//                        icon.paintIcon(frame,graphics,0,0);
+//                        graphics.drawImage()
+                        graphics.setColor(Color.YELLOW);
+                    }
                     else if ((x == 3 && y == 3) | (x == 6 && y == 6) | (x == 15 && y == 25)) {graphics.setColor(Color.BLUE);}
                     else if ((x == 10 && y == 6) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
                     else if (x == 40 && y == 30) {graphics.setColor(Color.RED);}
