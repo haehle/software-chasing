@@ -1,7 +1,11 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -125,6 +129,8 @@ public class World{
 
     public int displayWorld()   { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
 
+        long start = System.currentTimeMillis();//sets start time to calculate time played
+
         // Creating NPCs and shop windows
 
         MenuButtons a = new MenuButtons(player.getName());
@@ -231,11 +237,19 @@ public class World{
         JButton logoutButton = new JButton("Logout");
         logoutButton.setBounds(0,frameHeight-100,100,100);
         logoutButton.setBackground(Color.decode("#daaa00"));
+
         //add logout action
         logoutButton.addActionListener(new ActionListener() {
             //logout was hit, so we write player data out and return to caller
             @Override
             public void actionPerformed(ActionEvent e) {
+
+
+                //calculate time played
+                long end = System.currentTimeMillis();
+                long played = end - start;
+                player.setTimePlayed(player.getTimePlayed() + played);
+
                 /*TODO HUNTER: WRITE OUT PLAYER INFO HERE*/
                 dbConnection.updatePlayer(player);
                 exit = true;//break out of display loop
@@ -280,6 +294,8 @@ public class World{
         NPC2label.setSize(150, 25);
         NPC2label.setLocation(130, 380);
         NPC2label.setVisible(false);
+
+        // Create shop button for interacting with NPCs
 
         shop2 = new JButton("Shop");
         shop2.setBounds(175, 400, 100, 50);
@@ -381,7 +397,7 @@ public class World{
         JLabel stamina = new JLabel("MAX STAMINA: "+player.getMaxStamina()+" Stamina: " + player.getStamina());
         stamina.setBackground(Color.white);
         //stamina.setBounds(20,frameHeight-(tileSize+20),50,50);
-        health.setOpaque(false);
+        stamina.setOpaque(false);
         stamina.setVisible(true);
 
         JLabel intellect = new JLabel("Intellect: " + 5);
@@ -393,20 +409,24 @@ public class World{
         JLabel speed = new JLabel("Speed: " + player.getSpeed());
         //health.setBackground(Color.white);
         //intellect.setBounds(20,frameHeight-(tileSize+60),50,50);
-        intellect.setOpaque(false);
-        intellect.setVisible(true);
+        speed.setOpaque(false);
+        speed.setVisible(true);
 
         JLabel level = new JLabel("Level: " + player.getLevel());
         //health.setBackground(Color.white);
         //intellect.setBounds(20,frameHeight-(tileSize+60),50,50);
-        intellect.setOpaque(false);
-        intellect.setVisible(true);
+        level.setOpaque(false);
+        level.setVisible(true);
 
         JLabel xp = new JLabel("XP Needed: " + player.getLevelXP());
         //health.setBackground(Color.white);
         //intellect.setBounds(20,frameHeight-(tileSize+60),50,50);
-        intellect.setOpaque(false);
-        intellect.setVisible(true);
+        xp.setOpaque(false);
+        xp.setVisible(true);
+
+        JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
+        playerClass.setOpaque(false);
+        playerClass.setVisible(true);
 
         statPanel.add(health);
         statPanel.add(stamina);
@@ -414,6 +434,7 @@ public class World{
         statPanel.add(speed);
         statPanel.add(level);
         statPanel.add(xp);
+        statPanel.add(playerClass);
 
         frame.add(statPanel);
 
@@ -554,6 +575,7 @@ public class World{
                     else if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);} //player is here
                     else if (x == endPoint[0] && y == endPoint[1]){graphics.setColor(Color.GREEN);}//end point color
                     else if ((x == 3 && y == 3) | (x == 6 && y == 6) | (x == 15 && y == 25)) {graphics.setColor(Color.BLUE);}
+                    else if ((x == 10 && y == 30) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
                     else if ((x == 10 && y == 6) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
                     else if (x == 40 && y == 30) {graphics.setColor(Color.RED);}
                     else if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}

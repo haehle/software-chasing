@@ -57,4 +57,14 @@ public final class Util {
 
         return encryptedPassword;
     }
+
+    public static int getNextId()
+    {
+        return dbConnection.getNextId();
+    }
+
+    public static String getPlayerClassName(int id)
+    {
+        return dbConnection.getPlayerClassName(id);
+    }
 }
