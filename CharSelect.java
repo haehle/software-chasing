@@ -275,19 +275,19 @@ public class CharSelect {
 
                 if(character.equals("char1")){//Save new character name(Hunter)
                     char1Name = CharNameText.getText();
-                    Player newPlayer = new Player(char1.getUsername(), char1Name, char1.getType());
+                    Player newPlayer = new Player(char1.getUsername(), char1Name, char1.getPlayerClass());
                     Util.deletePlayer(char1.getUsername(), char1.getName());
                     dbConnection.addPlayer(newPlayer);
                     new CharSelect(profile);
                 }else if(character.equals("char2")){
                     char2Name = CharNameText.getText();
-                    Player newPlayer = new Player(char2.getUsername(), char2Name, char2.getType());
+                    Player newPlayer = new Player(char2.getUsername(), char2Name, char2.getPlayerClass());
                     Util.deletePlayer(char2.getUsername(), char2.getName());
                     dbConnection.addPlayer(newPlayer);
                     new CharSelect(profile);
                 } else if(character.equals("char3")){
                     char3Name = CharNameText.getText();
-                    Player newPlayer = new Player(char3.getUsername(), char3Name, char3.getType());
+                    Player newPlayer = new Player(char3.getUsername(), char3Name, char3.getPlayerClass());
                     Util.deletePlayer(char3.getUsername(), char3.getName());
                     dbConnection.addPlayer(newPlayer);
                     new CharSelect(profile);
@@ -332,8 +332,8 @@ public class CharSelect {
         createCon.add(createTitlePanel);
 
         JPanel form = new JPanel();
-        form.setSize(250,80);
-        form.setLocation(250, 200);
+        form.setSize(600,150);
+        form.setLocation(100, 200);
         form.setBackground(Color.blue);
 
         JLabel charNameLabel = new JLabel("Character Name: ");
@@ -348,31 +348,31 @@ public class CharSelect {
         charNameField.setLocation(350, 150);
         createCon.add(charNameField);
 
-        JLabel typeLabel = new JLabel();
-        typeLabel.setText("Please select the type of character!");
-        typeLabel.setLocation(150, 200);
-        typeLabel.setSize(200, 25);
-        typeLabel.setFont(new Font("Acumin Pro", Font.PLAIN, 18));
-        typeLabel.setForeground(Color.white);
+        JLabel classLabel = new JLabel();
+        classLabel.setText("Select character class:");
+        classLabel.setLocation(150, 200);
+        classLabel.setSize(200, 25);
+        classLabel.setFont(new Font("Acumin Pro", Font.PLAIN, 18));
+        classLabel.setForeground(Color.white);
 
-        ButtonGroup typeGroup = new ButtonGroup();
-        JRadioButton type1 = new JRadioButton();
-        type1.setText("Type 1");
-        type1.setLocation(150, 300);
-        JRadioButton type2 = new JRadioButton();
-        type2.setText("Type 2");
-        type2.setLocation(150, 300);
-        JRadioButton type3 = new JRadioButton();
-        type3.setText("Type 3");
-        type3.setLocation(150, 300);
-        typeGroup.add(type1);
-        typeGroup.add(type2);
-        typeGroup.add(type3);
+        ButtonGroup classGroup = new ButtonGroup();
+        JRadioButton class1 = new JRadioButton();
+        class1.setText("Software Engineering - creative player focused on designing new and useful systems");
+        class1.setLocation(150, 300);
+        JRadioButton class2 = new JRadioButton();
+        class2.setText("Machine Learning - analytical player focused on data and its applications in systems");
+        class2.setLocation(150, 300);
+        JRadioButton class3 = new JRadioButton();
+        class3.setText("Security - determined player focused on building thoroughly-secure systems");
+        class3.setLocation(150, 300);
+        classGroup.add(class1);
+        classGroup.add(class2);
+        classGroup.add(class3);
         
-        form.add(typeLabel);
-        form.add(type1);
-        form.add(type2);
-        form.add(type3);
+        form.add(classLabel);
+        form.add(class1);
+        form.add(class2);
+        form.add(class3);
         createCon.add(form);
 
         JButton createCharButton = new JButton();
@@ -386,10 +386,10 @@ public class CharSelect {
                 if(charNameField.getText().length() > 0){
                     window.dispose();  
                     Player newPlayer;              
-                    if(type1.isSelected()){ //Save new player to database
+                    if(class1.isSelected()){ //Save new player to database
                         newPlayer = new Player(username, charNameField.getText(), 1);
                         dbConnection.addPlayer(newPlayer);
-                    }else if(type2.isSelected()){
+                    }else if(class2.isSelected()){
                         newPlayer = new Player(username, charNameField.getText(), 2);
                         dbConnection.addPlayer(newPlayer);
                     } else{

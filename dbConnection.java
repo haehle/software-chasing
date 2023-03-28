@@ -65,7 +65,7 @@ public class dbConnection {
                 String query = "INSERT INTO Players VALUES (" +
                         "\"" + player.getName() + "\", " +
                         "\"" + player.getUsername() + "\", " +
-                        "\"" + player.getType() + "\", " +
+                        "\"" + player.getPlayerClass() + "\", " +
                         "\"" + locationX + "\", " +
                         "\"" + locationY + "\", " +
                         "\"" + player.getHp() + "\", " +
@@ -237,7 +237,7 @@ public class dbConnection {
                         Inventory inventory = new Inventory();
                         inventory = getInventory(username, name);
 
-                        Player player = new Player(username, name, rs.getInt("type"),
+                        Player player = new Player(username, name, rs.getInt("playerClass"),
                                 rs.getInt("locationX"), rs.getInt("locationY"), rs.getInt("hp"),
                                 rs.getInt("maxHP"), rs.getInt("speed"), rs.getInt("stamina"),
                                 rs.getInt("maxStamina"), rs.getInt("level"), rs.getInt("levelXP"),

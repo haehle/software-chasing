@@ -22,7 +22,7 @@ public class Player {
 
     private int gold;
     private String name;
-    private int type;
+    private int playerClass;
     private int[] location;
     private int hp;
     private int maxHP;
@@ -37,18 +37,18 @@ public class Player {
     private long timePlayed;
     private Inventory inventory;
 
-    public Player(String username, String name, int type) {
+    public Player(String username, String name, int playerClass) {
         this.timePlayed = 0;
         this.username = username;
         this.name = name;
-        this.type = type;
+        this.playerClass = playerClass;
         this.location = new int[]{0, 0};
         this.level = 1;
         this.levelXP = 100;
         this.initialLevelXP = 100;
         this.gold = 200;
         this.inventory = new Inventory();
-        if (type == 1) {
+        if (playerClass == 1) {
             this.hp = 100;
             this.maxHP = 100;
             this.speed = 15;
@@ -56,7 +56,7 @@ public class Player {
             this.maxStamina = 20;
             this.skills = new String[]{};
             this.abilities = new ArrayList<>();
-        } else if (type == 2) {
+        } else if (playerClass == 2) {
             this.hp = 60;
             this.maxHP = 100;
             this.speed = 25;
@@ -64,7 +64,7 @@ public class Player {
             this.maxStamina = 30;
             this.skills = new String[]{};
             this.abilities = new ArrayList<>();;
-        } else if (type == 3) {
+        } else if (playerClass == 3) {
             this.hp = 200;
             this.maxHP = 200;
             this.speed = 5;
@@ -76,12 +76,12 @@ public class Player {
     }
 
     //Constructor used to initialize Player object from database information
-    public Player(String username, String name, int type, int locationX, int locationY, int hp, int maxHP,
+    public Player(String username, String name, int playerClass, int locationX, int locationY, int hp, int maxHP,
                   int speed, int stamina, int maxStamina, int level, int levelXP, int initialLevelXP, Inventory inventory) {
         this.timePlayed = 0;
         this.username = username;
         this.name = name;
-        this.type = type;
+        this.playerClass = playerClass;
         this.location = new int[]{locationX, locationY};
         this.level = level;
         this.levelXP = levelXP;
@@ -129,12 +129,12 @@ public class Player {
             this.name = name;
         }
 
-        public int getType () {
-            return this.type;
+        public int getPlayerClass () {
+            return this.playerClass;
         }
 
-        public void setType ( int type){
-            this.type = type;
+        public void setPlayerClass ( int playerClass){
+            this.playerClass = playerClass;
         }
 
         public int[] getLocation () {
