@@ -15,15 +15,17 @@ public class World{
      */
 
     /*
-     * Jave functionality Array[height/#rows][width/#col]
+     * Java functionality Array[height/#rows][width/#col]
      * */
     private Tile[][] worldMap;
     private final int height; //y coord
     private final int length; // x coord
     private int[] spawnPoint;
+    private int[] endPoint;
     private int[] currLoc;
     public int tileSize;
     boolean pause;
+    boolean complete;
 
     private JButton shop, shop2, menubuttons,pauseButton;
 
@@ -54,13 +56,16 @@ public class World{
         this.player = player;
         this.spawnPoint = player.getLocation(); //pick up where last left    //new int[]{0, 0};//spawn point in reference to world map
         this.currLoc = spawnPoint;//location in tiles (reference to current map
+        this.endPoint = new int[] {27,43};
         this.tileSize = 10;
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.length; x++) {
                 worldMap[y][x] = new Tile(tileType[y][x]);
             }
         }
-        exit = false;
+        exit = false; //exit the graphics loop
+        complete = false; //level was completed
+        pause = false; //is game paused
     }//constructor of world
 
     public int[] getAdjTiles(int x, int y){// will teturn the tile type to the player -1 if it doesnt exist up down left right
@@ -118,7 +123,7 @@ public class World{
         this.player = player;
     }
 
-    public void displayWorld()   { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
+    public int displayWorld()   { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
 
         // Creating NPCs and shop windows
 
@@ -363,28 +368,7 @@ public class World{
         });
         statPanel.add(menubuttons);
 
-//        pauseButton = new JButton("Pause");
-//        pauseButton.setBounds(100, frameHeight-150, 100, 50);
-//        pauseButton.setBackground(Color.black);
-//        pauseButton.setVisible(true);
-//
-//        pauseButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//                if (pause){//game is currently paused
-//                    pause = false;
-//                    System.out.println("GAME resumed");
-//                }else {//game is not paused / pause it
-//                    pause = true;
-//                    System.out.println("GAME PAUSED");
-//                }
-//
-//            }
-//        });
-//
-//        statPanel.add(pauseButton);
-
+        //add a pause button in the future?
 
 
         //TODO add player stat
@@ -567,7 +551,8 @@ public class World{
                     //0 is wall 1 is floor
 
                     if (pause == true){graphics.setColor(Color.BLACK);}//game is paused
-                    else if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);}
+                    else if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);} //player is here
+                    else if (x == endPoint[0] && y == endPoint[1]){graphics.setColor(Color.GREEN);}//end point color
                     else if ((x == 3 && y == 3) | (x == 6 && y == 6) | (x == 15 && y == 25)) {graphics.setColor(Color.BLUE);}
                     else if ((x == 10 && y == 6) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
                     else if (x == 40 && y == 30) {graphics.setColor(Color.RED);}
@@ -588,7 +573,8 @@ public class World{
             graphics.dispose();
             if (exit){break;}
         }//DISPLAY LOOP
-
+        frame.dispose();
+        if (complete){return 1;} else {return 0;}
     }//END DISPLAY WORLD
 
     public static void main(String[] args)  {
@@ -618,6 +604,7 @@ public class World{
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() - tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] - 1 );
             player.setLocation(currLoc);
+            checkLevelFinish(currLoc);
             System.out.println("UP");
         }
     }//up action
@@ -630,6 +617,7 @@ public class World{
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() + tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] + 1 );
             player.setLocation(currLoc);
+            checkLevelFinish(currLoc);
             System.out.println("down");
             //player.gainXP(1);
             //System.out.println("XP = " + player.getLevelXP());
@@ -646,6 +634,7 @@ public class World{
             player.setLocation(currLoc);
             //player.setHp((player.getHp() - 1));
             //player.setStamina((player.getStamina() + 1));
+            checkLevelFinish(currLoc);
             System.out.println("left");
         }
     }//left action
@@ -660,6 +649,7 @@ public class World{
             player.setLocation(currLoc);
             //player.setStamina((player.getStamina() - 1));
             //player.setHp((player.getHp() + 1));
+            checkLevelFinish(currLoc);
             System.out.println("right");
         }
     }//up action
@@ -682,5 +672,20 @@ public class World{
             menu.actionPerformed(e);
         }
     }//up action
+
+    public void resetPlayer() {
+        this.player.setLocation(new int[]{0,0});
+        this.currLoc = new int[]{0,0};
+    }
+
+    public void checkLevelFinish(int[] currLoc1){
+        if (currLoc1[0] == endPoint[0] && currLoc1[1] == endPoint[1]){//player got to the end point
+            System.out.println("ENDPOINT!");
+            complete = true;
+            exit = true;
+        } //player got to the end point
+
+    }
+
 
 }// END CLASS

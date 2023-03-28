@@ -34,6 +34,7 @@ public class Player {
     private int initialLevelXP;
     private String[] skills;
     private ArrayList<String> abilities;
+    private int currentLevelNo;
 
     public Player(String username, String name, int type) {
         this.username = username;
@@ -44,6 +45,7 @@ public class Player {
         this.levelXP = 100;
         this.initialLevelXP = 100;
         this.gold = 200;
+        this.currentLevelNo = 0;
         if (type == 1) {
             this.hp = 100;
             this.maxHP = 100;
@@ -92,7 +94,15 @@ public class Player {
         this.abilities = new ArrayList<>();;
     }
 
-        public int getGold() {
+    public int getCurrentLevelNo() {
+        return currentLevelNo;
+    }
+
+    public void setCurrentLevelNo(int currentLevelNo) {
+        this.currentLevelNo = currentLevelNo;
+    }
+
+    public int getGold() {
             return this.gold;
         }
 
