@@ -137,6 +137,8 @@ public class Player {
             this.playerClass = playerClass;
         }
 
+        public String getPlayerClassName () { return Util.getPlayerClassName(this.playerClass); }
+
         public int[] getLocation () {
             return this.location;
         }

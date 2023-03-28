@@ -386,7 +386,7 @@ public class World{
         JLabel stamina = new JLabel("MAX STAMINA: "+player.getMaxStamina()+" Stamina: " + player.getStamina());
         stamina.setBackground(Color.white);
         //stamina.setBounds(20,frameHeight-(tileSize+20),50,50);
-        health.setOpaque(false);
+        stamina.setOpaque(false);
         stamina.setVisible(true);
 
         JLabel intellect = new JLabel("Intellect: " + 5);
@@ -398,20 +398,24 @@ public class World{
         JLabel speed = new JLabel("Speed: " + player.getSpeed());
         //health.setBackground(Color.white);
         //intellect.setBounds(20,frameHeight-(tileSize+60),50,50);
-        intellect.setOpaque(false);
-        intellect.setVisible(true);
+        speed.setOpaque(false);
+        speed.setVisible(true);
 
         JLabel level = new JLabel("Level: " + player.getLevel());
         //health.setBackground(Color.white);
         //intellect.setBounds(20,frameHeight-(tileSize+60),50,50);
-        intellect.setOpaque(false);
-        intellect.setVisible(true);
+        level.setOpaque(false);
+        level.setVisible(true);
 
         JLabel xp = new JLabel("XP Needed: " + player.getLevelXP());
         //health.setBackground(Color.white);
         //intellect.setBounds(20,frameHeight-(tileSize+60),50,50);
-        intellect.setOpaque(false);
-        intellect.setVisible(true);
+        xp.setOpaque(false);
+        xp.setVisible(true);
+
+        JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
+        playerClass.setOpaque(false);
+        playerClass.setVisible(true);
 
         statPanel.add(health);
         statPanel.add(stamina);
@@ -419,6 +423,7 @@ public class World{
         statPanel.add(speed);
         statPanel.add(level);
         statPanel.add(xp);
+        statPanel.add(playerClass);
 
         frame.add(statPanel);
 

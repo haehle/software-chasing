@@ -62,4 +62,9 @@ public final class Util {
     {
         return dbConnection.getNextId();
     }
+
+    public static String getPlayerClassName(int id)
+    {
+        return dbConnection.getPlayerClassName(id);
+    }
 }

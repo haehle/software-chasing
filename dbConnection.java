@@ -357,6 +357,44 @@ public class dbConnection {
         }
     }
 
+    public static String getPlayerClassName(int id) {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "SELECT * FROM PlayerClasses WHERE id=\"" + id + "\"";
+                String className = null;
+
+                ResultSet rs = statement.executeQuery(query);
+                if (!rs.isBeforeFirst()) {
+                    //Item not found
+                    System.out.println("Class not found.");
+                    return null;
+                } else {
+                    //Item found
+                    System.out.println("Class found.");
+
+                    //Parse data
+                    while (rs.next()) {
+                        className = rs.getString("name");
+                        System.out.println("CLASS NAME: " + className);
+                    }
+                }
+
+                return className;
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not get classes from database", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
     public static int getNextId() {
         try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
 
