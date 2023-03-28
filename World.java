@@ -23,7 +23,7 @@ public class World{
     private int[] spawnPoint;
     private int[] currLoc;
     public int tileSize;
-    private boolean pause;
+    boolean pause;
 
     private JButton shop, shop2, menubuttons,pauseButton;
 
@@ -38,6 +38,7 @@ public class World{
     Action moveLeft = new leftAction();
     Action moveRight = new rightAction();
     Action menuAction = new menuAction();
+    Action pauseGame = new pauseAction();
     boolean exit;
 
 
@@ -211,6 +212,9 @@ public class World{
         playerLabel.getInputMap().put(KeyStroke.getKeyStroke('d'), "rightAction");
         playerLabel.getActionMap().put("rightAction", moveRight);
 
+        playerLabel.getInputMap().put(KeyStroke.getKeyStroke('p'),"pauseAction");
+        playerLabel.getActionMap().put("pauseAction",pauseGame);
+
         /*TODO This is the input for the player label to access the MENU ACTION AJ */
         playerLabel.getInputMap().put(KeyStroke.getKeyStroke('m'), "menuAction");
         playerLabel.getActionMap().put("menuAction", menuAction);
@@ -360,7 +364,28 @@ public class World{
         statPanel.add(menubuttons);
 
 //        pauseButton = new JButton("Pause");
-//        pauseButton.setBounds(100);
+//        pauseButton.setBounds(100, frameHeight-150, 100, 50);
+//        pauseButton.setBackground(Color.black);
+//        pauseButton.setVisible(true);
+//
+//        pauseButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//                if (pause){//game is currently paused
+//                    pause = false;
+//                    System.out.println("GAME resumed");
+//                }else {//game is not paused / pause it
+//                    pause = true;
+//                    System.out.println("GAME PAUSED");
+//                }
+//
+//            }
+//        });
+//
+//        statPanel.add(pauseButton);
+
+
 
         //TODO add player stat
         JLabel health = new JLabel("MAX HEALTH: "+player.getMaxHP()+" Current Health: " + player.getHp());
@@ -541,13 +566,8 @@ public class World{
                     int type = this.worldMap[y][x].getType();
                     //0 is wall 1 is floor
 
-                    if (currLoc[0] == x && currLoc[1] == y){
-                        //graphics.drawImage("Images/idle(4)",x,y)
-//                        ImageIcon icon = new ImageIcon("Images/idle(4)");
-//                        icon.paintIcon(frame,graphics,0,0);
-//                        graphics.drawImage()
-                        graphics.setColor(Color.YELLOW);
-                    }
+                    if (pause == true){graphics.setColor(Color.BLACK);}//game is paused
+                    else if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);}
                     else if ((x == 3 && y == 3) | (x == 6 && y == 6) | (x == 15 && y == 25)) {graphics.setColor(Color.BLUE);}
                     else if ((x == 10 && y == 6) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
                     else if (x == 40 && y == 30) {graphics.setColor(Color.RED);}
@@ -592,6 +612,7 @@ public class World{
     public class upAction extends AbstractAction{
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (pause == true){return;}
             System.out.println(" UP LOCATION" + currLoc[0] +"  Y: "+ currLoc[1]);
             if (getUp(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() - tileSize);//x then y
@@ -603,6 +624,7 @@ public class World{
     public class downAction extends AbstractAction{
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (pause == true){return;}
             System.out.println(" DOWN LOCATION" + " X: "+ currLoc[0] +"  Y: "+ currLoc[1]);
             if (getDown(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() + tileSize);//x then y
@@ -616,6 +638,7 @@ public class World{
     public class leftAction extends AbstractAction{
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (pause == true){return;}
             System.out.println("LOCATION X: " + currLoc[0] +"  Y: "+ currLoc[1]);
             if (getLeft(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX() - tileSize,playerLabel.getY());//x then y
@@ -629,6 +652,7 @@ public class World{
     public class rightAction extends AbstractAction{
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (pause == true){return;}
             System.out.println("LOCATION X: " + currLoc[0] +"  Y: "+ currLoc[1]);
             if (getRight(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX() + tileSize,playerLabel.getY());//x then y
@@ -639,6 +663,16 @@ public class World{
             System.out.println("right");
         }
     }//up action
+
+    public class pauseAction extends AbstractAction{ //hit p to pause and resume
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pause = !pause;
+            System.out.println("pause");
+        }
+    }//pause action
+
+
     /*TODO THIS IS THE MENU ACTION AJ*/
     public class menuAction extends AbstractAction{
         @Override
