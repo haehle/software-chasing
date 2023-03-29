@@ -252,6 +252,7 @@ public class Player {
         // This function will add a new ability and display it for the user
         public void addAbilities(String ability) {
 
+
             if (!this.abilities.contains(ability)) {
                 this.abilities.add(ability);
 
