@@ -3,9 +3,9 @@ import java.sql.*;
 
 public class dbConnection {
     //Fields necessary for database connection
-    private final static String url = "jdbc:mysql://localhost:3306/software_chasing";
-    private final static String loginUsername = "java";
-    private final static String loginPassword = "password";
+    private final static String url = "jdbc:mysql://34.68.213.44:3306/software-chasing";
+    private final static String loginUsername = "root";
+    private final static String loginPassword = "OU^_Eq^R@zr5rd^,";
 
     public static void main(String[] args) {
         /*
@@ -75,7 +75,8 @@ public class dbConnection {
                         "\"" + player.getMaxStamina() + "\", " +
                         "\"" + player.getLevel() + "\", " +
                         "\"" + player.getLevelXP() + "\", " +
-                        "\"" + player.getInitialLevelXP() + "\");";
+                        "\"" + player.getInitialLevelXP() + "\", " +
+                        "\"" + player.getCurrentLevelNo() + "\");";
 
                 statement.execute(query);
                 System.out.println("Player added successfully.");
