@@ -154,7 +154,9 @@ public class World{
 
         NPC jeff = new NPC("Jeff", "Boss");
 
+
         ron.setLocation(3, 3);
+
 
         ron.setStock1(1);
         ron.setStock2(1);
@@ -162,19 +164,30 @@ public class World{
 
         natalie.setLocation(6, 6);
 
+
         natalie.setStock1(2);
         natalie.setStock2(2);
         natalie.setStock3(4);
 
         sam.setLocation(15, 25);
 
+
         hello.setLocation(10, 6);
+
+
 
         loopy.setLocation(35, 5);
 
+
+
         ray.setLocation(28, 45);
 
+
+
+
         jeff.setLocation(40,30);
+
+
 
 
         // Adding a base set of abilities
@@ -498,6 +511,17 @@ public class World{
 
             menubuttons.setVisible(true);
 
+            // Make sure the home button can be seen on multiple NPCs
+
+            if(currLoc[0] == ron.getLocation()[0] && currLoc[1] == ron.getLocation()[1] || currLoc[0] == natalie.getLocation()[0] && currLoc[1] == natalie.getLocation()[1]) {
+                home.setVisible(true);
+            }
+
+            else {
+                home.setVisible(false);
+            }
+
+
 
             // Tester to see if when a player reaches a certain tile with an NPC they can open a shop
 
@@ -505,7 +529,6 @@ public class World{
                 if(!checker) {
                     NPC1label.setVisible(true);
                     shop.setVisible(true);
-                    home.setVisible(true);
                     checker = true;
                 }
             }
@@ -513,7 +536,6 @@ public class World{
                 checker = false;
                 NPC1label.setVisible(false);
                 shop.setVisible(false);
-                home.setVisible(false);
             }
 
             // Now add another NPC and see if they can both work together

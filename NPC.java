@@ -318,6 +318,7 @@ public class NPC {
                         player.setGold(player.getGold() - cost1);
                         setStock1(getStock1() - 1);
                         total_gold.setText("Gold: " + player.getGold());
+                        player.getInventory().addItem(item1);
                         if(getStock1() == 0) {
                             item1_cost.setText("OUT OF STOCK!");
                             item1_cost.setForeground(Color.RED);
@@ -354,6 +355,7 @@ public class NPC {
                         player.setGold(player.getGold() - cost2);
                         setStock2(getStock2() - 1);
                         total_gold.setText("Gold: " + player.getGold());
+                        player.getInventory().addItem(item2);
                         if(getStock2() == 0) {
                             item2_cost.setText("OUT OF STOCK!");
                             item2_cost.setForeground(Color.RED);
@@ -389,6 +391,7 @@ public class NPC {
                     if(player.getGold() >= cost3) {
                         player.setGold(player.getGold() - cost3);
                         total_gold.setText("Gold: " + player.getGold());
+                        player.getInventory().addItem(item3);
                         setStock3(getStock3() - 1);
                         if(getStock3() == 0) {
                             item3_cost.setText("OUT OF STOCK!");
