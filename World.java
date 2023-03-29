@@ -28,7 +28,7 @@ public class World{
     private int[] currLoc;
     public int tileSize;
 
-    private JButton shop, shop2, menubuttons;
+    private JButton shop, shop2, home, menubuttons;
 
     private boolean checker;
 
@@ -124,26 +124,30 @@ public class World{
         this.player = player;
     }
 
-    public void displayWorld()   { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
+    public void displayWorld() throws IOException { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
         
         long start = System.currentTimeMillis();//sets start time to calculate time played
+
+        Home tester = new Home(player);
+        tester.setImage("Images/house.jpg");
+
 
         // Testing a shop window
 
         MenuButtons a = new MenuButtons(player.getName());
 
 
-       // NPC test = new NPC("Ron", "Neutral");
+        NPC test = new NPC("Ron", "Neutral");
 
-       // NPC test2 = new NPC("Natalie", "Neutral");
+        NPC test2 = new NPC("Natalie", "Neutral");
 
-        // test.setStock1(1);
-        // test.setStock2(1);
-        // test.setStock3(3);
+         test.setStock1(1);
+         test.setStock2(1);
+         test.setStock3(3);
 
-        // test2.setStock1(2);
-        // test2.setStock2(2);
-        // test2.setStock3(4);
+         test2.setStock1(2);
+         test2.setStock2(2);
+         test2.setStock3(4);
 
         // Testing to see if adding a new ability shows up in the world
         player.addAbilities("MULTISHOT");
@@ -234,7 +238,7 @@ public class World{
         // Create shop button for interacting with NPCs
 
         shop = new JButton("Shop");
-        shop.setBounds(175, 400, 100, 50);
+        shop.setBounds(250, 400, 100, 50);
         shop.setBackground(Color.decode("#9d9795"));
         shop.setVisible(false);
 
@@ -242,7 +246,7 @@ public class World{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == shop) {
-                    //test.displayShop(player);
+                    test.displayShop(player);
                     shop.setVisible(false);
                 }
             }
@@ -252,8 +256,27 @@ public class World{
 
         // Create shop button for interacting with NPCs
 
+        home = new JButton("Home");
+        home.setBounds(125, 400, 100, 50);
+        home.setBackground(Color.decode("#9d9795"));
+        home.setVisible(false);
+
+        home.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == home) {
+                    tester.changeVisibility(true);
+                    home.setVisible(false);
+                }
+            }
+        });
+
+        frame.add(home);
+
+        // Create shop button for interacting with NPCs
+
         shop2 = new JButton("Shop");
-        shop2.setBounds(175, 400, 100, 50);
+        shop2.setBounds(250, 400, 100, 50);
         shop2.setBackground(Color.decode("#9d9795"));
         shop2.setVisible(false);
 
@@ -261,7 +284,7 @@ public class World{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == shop2) {
-                    //test2.displayShop(player);
+                    test2.displayShop(player);
                     shop2.setVisible(false);
                 }
             }
@@ -378,12 +401,14 @@ public class World{
             if(currLoc[0] == 3 && currLoc[1] == 3) {
                 if(!checker) {
                     shop.setVisible(true);
+                    home.setVisible(true);
                     checker = true;
                 }
             }
             else {
                 checker = false;
                 shop.setVisible(false);
+                home.setVisible(false);
             }
 
             // Now add another NPC and see if they can both work together
@@ -391,7 +416,7 @@ public class World{
             if(currLoc[0] == 6 && currLoc[1] == 6) {
                 if(!checker2) {
                     shop2.setVisible(true);
-                    checker2 = true;
+                    home.setVisible(true);
                 }
             }
             else {
@@ -414,7 +439,7 @@ public class World{
                          } catch (IOException ex) {
                               // handle exception...
                          }
-                        graphics.drawImage(image, 0, 0);
+                        //graphics.drawImage(image, 0, 0);
                     }
                     else if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
                     /*TODO load a tile image*/
@@ -436,7 +461,7 @@ public class World{
 
     }//END DISPLAY WORLD
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws IOException {
         int[][] tiles = new int[50][50];
         int count = 1;
         for (int i = 0; i < 50; i++) {
