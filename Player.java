@@ -37,6 +37,7 @@ public class Player {
     private int currentLevelNo;
     private long timePlayed;
     private Inventory inventory;
+    int playerClass;
 
     public Player(String username, String name, int playerClass) {
         this.timePlayed = 0;
@@ -50,33 +51,35 @@ public class Player {
         this.gold = 200;
         this.currentLevelNo = 0;
         if (type == 1) {
-        this.inventory = new Inventory();
-        if (playerClass == 1) {
-            this.hp = 100;
-            this.maxHP = 100;
-            this.speed = 15;
-            this.stamina = 20;
-            this.maxStamina = 20;
-            this.skills = new String[]{};
-            this.abilities = new ArrayList<>();
-        } else if (playerClass == 2) {
-            this.hp = 60;
-            this.maxHP = 100;
-            this.speed = 25;
-            this.stamina = 30;
-            this.maxStamina = 30;
-            this.skills = new String[]{};
-            this.abilities = new ArrayList<>();;
-        } else if (playerClass == 3) {
-            this.hp = 200;
-            this.maxHP = 200;
-            this.speed = 5;
-            this.stamina = 5;
-            this.maxStamina = 5;
-            this.skills = new String[]{};
-            this.abilities = new ArrayList<>();;
+            this.inventory = new Inventory();
+            if (playerClass == 1) {
+                this.hp = 100;
+                this.maxHP = 100;
+                this.speed = 15;
+                this.stamina = 20;
+                this.maxStamina = 20;
+                this.skills = new String[]{};
+                this.abilities = new ArrayList<>();
+            } else if (playerClass == 2) {
+                this.hp = 60;
+                this.maxHP = 100;
+                this.speed = 25;
+                this.stamina = 30;
+                this.maxStamina = 30;
+                this.skills = new String[]{};
+                this.abilities = new ArrayList<>();
+            } else if (playerClass == 3) {
+                this.hp = 200;
+                this.maxHP = 200;
+                this.speed = 5;
+                this.stamina = 5;
+                this.maxStamina = 5;
+                this.skills = new String[]{};
+                this.abilities = new ArrayList<>();
+
+            }
         }
-    }
+    }//end constructor 1
 
     //Constructor used to initialize Player object from database information
     public Player(String username, String name, int playerClass, int locationX, int locationY, int hp, int maxHP,
@@ -98,7 +101,7 @@ public class Player {
 
         //Need to get these from alternate table
         this.skills = new String[]{};
-        this.abilities = new ArrayList<>();;
+        this.abilities = new ArrayList<>();
     }
         public long getTimePlayed(){
             return this.timePlayed;
@@ -114,7 +117,7 @@ public class Player {
 
     public void setCurrentLevelNo(int currentLevelNo) {
         this.currentLevelNo = currentLevelNo;
-    }
+        }
 
     public int getGold() {
             return this.gold;
