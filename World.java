@@ -455,9 +455,9 @@ public class World{
         xp.setOpaque(false);
         xp.setVisible(true);
 
-       // JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
-      //  playerClass.setOpaque(false);
-      //  playerClass.setVisible(true);
+        //JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
+        //playerClass.setOpaque(false);
+        //playerClass.setVisible(true);
 
         statPanel.add(health);
         statPanel.add(stamina);
@@ -465,7 +465,7 @@ public class World{
         statPanel.add(speed);
         statPanel.add(level);
         statPanel.add(xp);
-     //   statPanel.add(playerClass);
+        //statPanel.add(playerClass);
 
         frame.add(statPanel);
 
@@ -643,7 +643,8 @@ public class World{
 //                count++;
             }
         }
-        Player player = new Player("RILEY6215","Riley",1);
+        //Player player = new Player("RILEY6215","Riley",1);
+        Player player = dbConnection.getPlayers("RILEY6215")[0];
         World test = new World(50,50,tiles,player);
         //test.setPlayer(player);
         test.displayWorld();

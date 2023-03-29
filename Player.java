@@ -50,7 +50,7 @@ public class Player {
         this.initialLevelXP = 100;
         this.gold = 200;
         this.currentLevelNo = 0;
-        if (type == 1) {
+        //if (type == 1) {
             this.inventory = new Inventory();
             if (playerClass == 1) {
                 this.hp = 100;
@@ -78,7 +78,7 @@ public class Player {
                 this.abilities = new ArrayList<>();
 
             }
-        }
+        //}
     }//end constructor 1
 
     //Constructor used to initialize Player object from database information
