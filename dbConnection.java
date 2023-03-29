@@ -65,7 +65,7 @@ public class dbConnection {
                 String query = "INSERT INTO Players VALUES (" +
                         "\"" + player.getName() + "\", " +
                         "\"" + player.getUsername() + "\", " +
-                        "\"" + player.getType() + "\", " +
+                        "\"" + player.getPlayerClass() + "\", " +
                         "\"" + locationX + "\", " +
                         "\"" + locationY + "\", " +
                         "\"" + player.getHp() + "\", " +
@@ -237,7 +237,7 @@ public class dbConnection {
                         Inventory inventory = new Inventory();
                         inventory = getInventory(username, name);
 
-                        Player player = new Player(username, name, rs.getInt("type"),
+                        Player player = new Player(username, name, rs.getInt("playerClass"),
                                 rs.getInt("locationX"), rs.getInt("locationY"), rs.getInt("hp"),
                                 rs.getInt("maxHP"), rs.getInt("speed"), rs.getInt("stamina"),
                                 rs.getInt("maxStamina"), rs.getInt("level"), rs.getInt("levelXP"),
@@ -349,6 +349,44 @@ public class dbConnection {
                     return itemName;
                 } catch (SQLException e) {
                 throw new IllegalStateException("Could not get inventory items from database", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
+    public static String getPlayerClassName(int id) {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "SELECT * FROM PlayerClasses WHERE id=\"" + id + "\"";
+                String className = null;
+
+                ResultSet rs = statement.executeQuery(query);
+                if (!rs.isBeforeFirst()) {
+                    //Item not found
+                    System.out.println("Class not found.");
+                    return null;
+                } else {
+                    //Item found
+                    System.out.println("Class found.");
+
+                    //Parse data
+                    while (rs.next()) {
+                        className = rs.getString("name");
+                        System.out.println("CLASS NAME: " + className);
+                    }
+                }
+
+                return className;
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not get classes from database", e);
             }
 
 

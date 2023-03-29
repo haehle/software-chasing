@@ -35,15 +35,15 @@ public class Tile { // the fundamental type of the map can be various types
                 break;
             case 2://npc insert NPC object
                 tileColor = Color.orange;
-                walkable = false;
+                walkable = true;
                 break;
             case 3: //enemy insert enemy object
                 tileColor = Color.pink;
-                walkable = false;
+                walkable = true;
                 break;
             case 4://boss insert boss
                 tileColor = Color.red;
-                walkable = false;
+                walkable = true;
                 break;
             //case 5: //escape time
 

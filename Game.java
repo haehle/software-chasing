@@ -11,14 +11,17 @@ public class Game {//used to load in the game to start levels from the main menu
     private World level;
     private World[] levels;//user levels can move to the next one when it is complete
     private Player player;//character used by player with its stats
-    int tileSize;
+
+    private int numLevels;
 
 
 
     /** CONSTRUCTOR IN FUTURE IT WILL BE A LEVEL NO ie (0-4) */
-    public Game(World level){
+    public Game(World[] levels,Player player1){
         /*TODO ADD MAIN MENU TO GET PLAYER*/
-        this.level = level;//FUTURE THIS WILL BE levels[WlevelNo]
+        this.levels = levels;//FUTURE THIS WILL BE levels[WlevelNo]
+        this.numLevels = levels.length;
+        this.player = player1;
 
     }
 
@@ -30,7 +33,22 @@ public class Game {//used to load in the game to start levels from the main menu
     public void run() throws IOException {
         //DISPLAY THE WORLD
         //this.level.setTileSize(tileSize);//resize per game specification
-        this.level.displayWorld();
+        int levelNo = player.getCurrentLevelNo(); //make this saved in the player class as current level
+        int complete;
+        //System.out.println("RETURN" + this.level.displayWorld());
+        while (true){
+            if (this.numLevels == levelNo){break;}
+            complete = this.levels[levelNo].displayWorld();
+            if (complete != 1  || levelNo == (this.numLevels-1)){break;} //map was not completed or it finished last level
+
+            levelNo++;//move to the next level since the last was completed
+            player.setCurrentLevelNo(levelNo);
+            //new world was completed and there is another, reset the player to the spawn location of the next level
+            levels[levelNo].resetPlayer();
+//            player.setLocation(levels[levelNo].getSpawnPoint());
+        }
+
+//        this.level.displayWorld();
 
         /*TODO UPON EXIT WRITE THE DATA OF PLAYER TO DB*/
 
@@ -56,7 +74,7 @@ public class Game {//used to load in the game to start levels from the main menu
         {
             Util.createPlayer("RILEY6215", "Riley", 1);
         }
-
+        //Player currentPlayer = new Player("Riley6215","Riley",1);
         //make tile type map for the world
         int[][] tiles = new int[50][50];
         int count = 1;
@@ -86,11 +104,11 @@ public class Game {//used to load in the game to start levels from the main menu
         World test = new World(50,50,tiles,currentPlayer);
 
         //make game object and run it
-        Game game = new Game(levels[1]);
+        Game game = new Game(levels,currentPlayer);
         game.run();
         System.out.println("HOPE YOU ENJOYED!");
         /**IF CODE GETS HERE .run has completed/window was closed*/
-
+        System.exit(0);
 
     }//END MAIN
 
@@ -112,8 +130,8 @@ public class Game {//used to load in the game to start levels from the main menu
         World test = new World(50,50,tiles,player);
 
         //make game object and run it
-        Game game = new Game(test);
-        game.run();
+        //Game game = new Game(test);
+        //game.run();
         System.out.println("HOPE YOU ENJOYED!");
         /**IF CODE GETS HERE .run has completed/window was closed*/
     }
