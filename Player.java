@@ -98,6 +98,7 @@ public class Player {
         this.stamina = stamina;
         this.maxStamina = maxStamina;
         this.inventory = inventory;
+        this.currentLevelNo = 0;
 
         //Need to get these from alternate table
         this.skills = new String[]{};
