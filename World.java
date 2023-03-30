@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
@@ -31,7 +32,7 @@ public class World{
     boolean pause;
     boolean complete;
 
-    private JButton shop, shop2, home, menubuttons,pauseButton;
+    private JButton shop, shop2, battle, battle2, battle3, battle4, home, menubuttons,pauseButton;
 
     private boolean checker, checker2, checker3, checker4, checker5, checker6, checker7;
 
@@ -45,6 +46,7 @@ public class World{
     Action moveRight = new rightAction();
     Action menuAction = new menuAction();
     Action pauseGame = new pauseAction();
+    Action inventoryAction = new inventoryAction();
     boolean exit;
 
 
@@ -52,7 +54,7 @@ public class World{
     public World(int height, int length, int[][] tileType, Player player){ /*TODO: ADD PLAYER FIELD*/
         //super(player.getName());
 
-        //BackgroundMusic bm = new BackgroundMusic("game");//plays music
+        BackgroundMusic bm = new BackgroundMusic("game");//plays music
 
         this.worldMap = new Tile[height][length];
         this.height = height; //y
@@ -202,12 +204,6 @@ public class World{
         // Testing to see if adding a new ability shows up in the world
         player.addAbilities("MULTISHOT");
 
-        Inventory hold = new Inventory();
-
-        player.setInventory(hold);
-
-        hold.addItem("banana");
-
         // Test to see if adding the same ability does not show up in the world
         // player.addAbilities("MULTISHOT");
 
@@ -262,6 +258,9 @@ public class World{
         /*TODO This is the input for the player label to access the MENU ACTION AJ */
         playerLabel.getInputMap().put(KeyStroke.getKeyStroke('m'), "menuAction");
         playerLabel.getActionMap().put("menuAction", menuAction);
+
+        playerLabel.getInputMap().put(KeyStroke.getKeyStroke('i'), "inventoryAction");
+        playerLabel.getActionMap().put("inventoryAction", inventoryAction);
 
         //add player label to the frame
         frame.add(playerLabel);
@@ -345,8 +344,76 @@ public class World{
             }
         });
 
+        battle = new JButton("Battle");
+        battle.setBounds(250, 400, 100, 50);
+        battle.setBackground(Color.decode("#9d9795"));
+        battle.setVisible(false);
+
+        battle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == battle) {
+                    hello.displayBattle(player);
+                    battle.setVisible(false);
+                }
+            }
+        });
+
+        battle2 = new JButton("Battle");
+        battle2.setBounds(250, 400, 100, 50);
+        battle2.setBackground(Color.decode("#9d9795"));
+        battle2.setVisible(false);
+
+        battle2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == battle2) {
+                    loopy.displayBattle(player);
+                    battle2.setVisible(false);
+                }
+            }
+        });
+
+        battle3 = new JButton("Battle");
+        battle3.setBounds(250, 400, 100, 50);
+        battle3.setBackground(Color.decode("#9d9795"));
+        battle3.setVisible(false);
+
+        battle3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == battle3) {
+                    ray.displayBattle(player);
+                    battle3.setVisible(false);
+                }
+            }
+        });
+
+        battle4 = new JButton("Battle");
+        battle4.setBounds(250, 400, 100, 50);
+        battle4.setBackground(Color.decode("#9d9795"));
+        battle4.setVisible(false);
+
+        battle4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == battle4) {
+                    jeff.displayBattle(player);
+                    battle4.setVisible(false);
+                }
+            }
+        });
+
+        frame.add(NPC1label);
+        frame.add(shop);
+
         frame.add(NPC2label);
         frame.add(shop2);
+
+        frame.add(battle);
+        frame.add(battle2);
+        frame.add(battle3);
+        frame.add(battle4);
 
         home = new JButton("Home");
         home.setBounds(125, 400, 100, 50);
@@ -474,9 +541,29 @@ public class World{
         xp.setOpaque(false);
         xp.setVisible(true);
 
-    //   JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
-     //   playerClass.setOpaque(false);
-    //    playerClass.setVisible(true);
+        //JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
+        //playerClass.setOpaque(false);
+        //playerClass.setVisible(true);
+
+        //Implement current time clock
+        JLabel clockLabel = new JLabel();
+        clockLabel.setOpaque(false);
+        clockLabel.setVisible(true);
+
+        Timer t = new Timer(1000, new ActionListener () {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                long millis = System.currentTimeMillis();
+
+                clockLabel.setText(String.format("Current Time: %s %d:%d",
+                        java.time.LocalDate.now(),
+                        (int) (((millis / (1000*60*60)) % 24) - 4),
+                        (int) ((millis / (1000*60)) % 60)
+                ));
+
+            }
+        });
+        t.start();
 
         statPanel.add(health);
         statPanel.add(stamina);
@@ -484,7 +571,8 @@ public class World{
         statPanel.add(speed);
         statPanel.add(level);
         statPanel.add(xp);
-     //   statPanel.add(playerClass);
+        //statPanel.add(playerClass);
+        statPanel.add(clockLabel);
 
         frame.add(statPanel);
 
@@ -577,12 +665,14 @@ public class World{
             if(currLoc[0] == hello.getLocation()[0] && currLoc[1] == hello.getLocation()[1]) {
                 if(!checker4) {
                     NPC4label.setVisible(true);
+                    battle.setVisible(true);
                     checker4 = true;
                 }
             }
             else {
                 checker4 = false;
                 NPC4label.setVisible(false);
+                battle.setVisible(false);
             }
 
             // Now add NPC5
@@ -590,12 +680,14 @@ public class World{
             if(currLoc[0] == loopy.getLocation()[0] && currLoc[1] == loopy.getLocation()[1]) {
                 if(!checker5) {
                     NPC5label.setVisible(true);
+                    battle2.setVisible(true);
                     checker5 = true;
                 }
             }
             else {
                 checker5 = false;
                 NPC5label.setVisible(false);
+                battle2.setVisible(false);
             }
 
             // Now add NPC6
@@ -603,12 +695,14 @@ public class World{
             if(currLoc[0] == ray.getLocation()[0] && currLoc[1] == ray.getLocation()[1]) {
                 if(!checker6) {
                     NPC6label.setVisible(true);
+                    battle3.setVisible(true);
                     checker6 = true;
                 }
             }
             else {
                 checker6 = false;
                 NPC6label.setVisible(false);
+                battle3.setVisible(false);
             }
 
             // Now add NPC7
@@ -616,12 +710,14 @@ public class World{
             if(currLoc[0] == jeff.getLocation()[0] && currLoc[1] == jeff.getLocation()[1]) {
                 if(!checker7) {
                     NPC7label.setVisible(true);
+                    battle4.setVisible(true);
                     checker7 = true;
                 }
             }
             else {
                 checker7 = false;
                 NPC7label.setVisible(false);
+                battle4.setVisible(false);
             }
 
             //graphics.clearRect(0, 0, width, height);
@@ -636,7 +732,6 @@ public class World{
                     else if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);} //player is here
                     else if (x == endPoint[0] && y == endPoint[1]){graphics.setColor(Color.GREEN);}//end point color
                     else if ((x == 3 && y == 3) | (x == 6 && y == 6) | (x == 15 && y == 25)) {graphics.setColor(Color.BLUE);}
-                    else if ((x == 10 && y == 30) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
                     else if ((x == 10 && y == 6) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
                     else if (x == 40 && y == 30) {graphics.setColor(Color.RED);}
                     else if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
@@ -671,7 +766,8 @@ public class World{
 //                count++;
             }
         }
-        Player player = new Player("RILEY6215","Riley",1);
+//        Player player = new Player("RILEY6215","Riley",1);
+        Player player = dbConnection.getPlayers("RILEY6215")[0];
         World test = new World(50,50,tiles,player);
         //test.setPlayer(player);
         test.displayWorld();
@@ -755,6 +851,15 @@ public class World{
             menu.actionPerformed(e);
         }
     }//up action
+
+    public class inventoryAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("INVENTORY:");
+            InventoryDisplay inventoryDisplay = new InventoryDisplay();
+            inventoryDisplay.actionPerformed(e);
+        }
+    }
 
     public void resetPlayer() {
         this.player.setLocation(new int[]{0,0});
