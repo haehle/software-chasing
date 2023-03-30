@@ -52,7 +52,7 @@ public class World{
     public World(int height, int length, int[][] tileType, Player player){ /*TODO: ADD PLAYER FIELD*/
         //super(player.getName());
 
-        BackgroundMusic bm = new BackgroundMusic("game");//plays music
+        //BackgroundMusic bm = new BackgroundMusic("game");//plays music
 
         this.worldMap = new Tile[height][length];
         this.height = height; //y
@@ -201,6 +201,12 @@ public class World{
 
         // Testing to see if adding a new ability shows up in the world
         player.addAbilities("MULTISHOT");
+
+        Inventory hold = new Inventory();
+
+        player.setInventory(hold);
+
+        hold.addItem("banana");
 
         // Test to see if adding the same ability does not show up in the world
         // player.addAbilities("MULTISHOT");
@@ -468,9 +474,9 @@ public class World{
         xp.setOpaque(false);
         xp.setVisible(true);
 
-       // JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
-      //  playerClass.setOpaque(false);
-      //  playerClass.setVisible(true);
+    //   JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
+     //   playerClass.setOpaque(false);
+    //    playerClass.setVisible(true);
 
         statPanel.add(health);
         statPanel.add(stamina);
