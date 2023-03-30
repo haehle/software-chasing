@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
@@ -472,6 +473,25 @@ public class World{
         //playerClass.setOpaque(false);
         //playerClass.setVisible(true);
 
+        //Implement current time clock
+        JLabel clockLabel = new JLabel();
+        clockLabel.setOpaque(false);
+        clockLabel.setVisible(true);
+
+        Timer t = new Timer(1000, new ActionListener () {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                long millis = System.currentTimeMillis();
+
+                clockLabel.setText(String.format("Current Time: %d:%d",
+                        (int) (((millis / (1000*60*60)) % 24) - 4),
+                        (int) ((millis / (1000*60)) % 60)
+                ));
+
+            }
+        });
+        t.start();
+
         statPanel.add(health);
         statPanel.add(stamina);
         //statPanel.add(intellect);
@@ -479,6 +499,7 @@ public class World{
         statPanel.add(level);
         statPanel.add(xp);
         //statPanel.add(playerClass);
+        statPanel.add(clockLabel);
 
         frame.add(statPanel);
 
