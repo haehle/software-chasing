@@ -551,7 +551,8 @@ public class World{
             public void actionPerformed(ActionEvent e) {
                 long millis = System.currentTimeMillis();
 
-                clockLabel.setText(String.format("Current Time: %d:%d",
+                clockLabel.setText(String.format("Current Time: %s %d:%d",
+                        java.time.LocalDate.now(),
                         (int) (((millis / (1000*60*60)) % 24) - 4),
                         (int) ((millis / (1000*60)) % 60)
                 ));
