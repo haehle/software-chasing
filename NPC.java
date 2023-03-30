@@ -11,7 +11,9 @@ public class NPC {
     private JPanel panel;
 
     private JButton backButton, button1, button2, button3;
+    private JButton startButton, battleButton1, battleButton2, battleButton3;
 
+    private JLabel start, q1, q2, q3;
     private JLabel prompt, item1_prompt, item1_cost, item2_prompt, item2_cost, item3_prompt, item3_cost, total_gold;
     private String name;
     private String NPCtype;
@@ -174,6 +176,93 @@ public class NPC {
         this.stock3 = stock3;
     }
 
+
+    public void displayBattle (Player player) {
+        frame = new JFrame("Battle against " + getName());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        panel = new JPanel();
+        panel.setLayout(null);
+
+        // Set the size of the panel
+        panel.setPreferredSize(new Dimension(1020, 780));
+        panel.setBackground(Color.decode("#cfb991"));
+
+        frame.getContentPane().add(panel);
+        frame.pack();
+        frame.setVisible(true);
+
+        start = new JLabel("You are about to engage in a battle with 'Hello'. To defeat him, answer the following CS related questions");
+        start.setBounds(250, 400, 500, 100);
+        Font font1 = new Font("Arial", Font.BOLD, 30);
+        start.setForeground(Color.ORANGE);
+        start.setFont(font1);
+        panel.add(start);
+
+        startButton = new JButton("Start");
+        startButton.setBounds(300, 500, 100, 50);
+        startButton.setBackground(Color.decode("#9d9795"));
+
+        backButton = new JButton("Back");
+        backButton.setBounds(800, 500, 100, 50);
+        backButton.setBackground(Color.decode("#9d9795"));
+
+        q1 = new JLabel("How would you print 'Hello World' in Python?");
+        q1.setBounds(250, 400, 500, 100);
+        q1.setForeground(Color.ORANGE);
+        q1.setFont(font1);
+        panel.add(q1);
+
+        battleButton1 = new JButton("print(Hello World);");
+        battleButton1.setBounds(300,500,100,50);
+        battleButton1.setBackground(Color.decode("#9d9795"));
+
+
+        battleButton2 = new JButton("('Hello World').print();");
+        battleButton2.setBounds(300,500,100,50);
+        battleButton2.setBackground(Color.decode("#9d9795"));
+
+        battleButton3 = new JButton("print('Hello World')");
+        battleButton3.setBounds(300,500,100,50);
+        battleButton3.setBackground(Color.decode("#9d9795"));
+
+        q2 = new JLabel("How would you print 'Hello World' in Java?");
+        q2.setBounds(250, 400, 500, 100);
+        q2.setForeground(Color.ORANGE);
+        q2.setFont(font1);
+        panel.add(q2);
+
+        battleButton1.setText("System.out.println('Hello World');");
+        battleButton2.setText("System.out.println('Hello World')");
+        battleButton3.setText("class Hello {\n" +
+                "    public static void main(String[] args) {\n" +
+                "        System.out.println(\"Hello World\"); \n" +
+                "    }\n" +
+                "}");
+
+        q3 = new JLabel("How would you print 'Hello World' in C?");
+        q3.setBounds(250, 400, 500, 100);
+        q3.setForeground(Color.ORANGE);
+        q3.setFont(font1);
+        panel.add(q3);
+
+        battleButton1.setText("int main()\n" +
+                "{ " +
+                "    printf(\"Hello World\");\n" +
+                "  \n" +
+                "    return 0;\n" +
+                "}");
+        battleButton2.setText("int main()\n" +
+                "{ " +
+                "    printf(\"Hello World\");\n" +
+                "  \n" +
+                "    return 'Hello World';\n" +
+                "}");
+        battleButton3.setText("int main()\n" +
+                "{ " +
+                " printf(\"Hello World\");\n" +
+                "}");
+    }
 
     // Method to display the shop for an individual NPC if they have one
     public void displayShop (Player player) {
