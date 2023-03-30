@@ -46,6 +46,7 @@ public class World{
     Action moveRight = new rightAction();
     Action menuAction = new menuAction();
     Action pauseGame = new pauseAction();
+    Action inventoryAction = new inventoryAction();
     boolean exit;
 
 
@@ -257,6 +258,9 @@ public class World{
         /*TODO This is the input for the player label to access the MENU ACTION AJ */
         playerLabel.getInputMap().put(KeyStroke.getKeyStroke('m'), "menuAction");
         playerLabel.getActionMap().put("menuAction", menuAction);
+
+        playerLabel.getInputMap().put(KeyStroke.getKeyStroke('i'), "inventoryAction");
+        playerLabel.getActionMap().put("inventoryAction", inventoryAction);
 
         //add player label to the frame
         frame.add(playerLabel);
@@ -847,6 +851,15 @@ public class World{
             menu.actionPerformed(e);
         }
     }//up action
+
+    public class inventoryAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("INVENTORY:");
+            InventoryDisplay inventoryDisplay = new InventoryDisplay();
+            inventoryDisplay.actionPerformed(e);
+        }
+    }
 
     public void resetPlayer() {
         this.player.setLocation(new int[]{0,0});
