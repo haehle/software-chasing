@@ -48,7 +48,7 @@ public class Player {
         this.level = 1;
         this.levelXP = 100;
         this.initialLevelXP = 100;
-        this.gold = 200;
+        this.gold = 350;
         this.currentLevelNo = 0;
         //if (type == 1) {
             this.inventory = new Inventory();

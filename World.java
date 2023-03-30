@@ -200,12 +200,26 @@ public class World{
 
         player.setAbilities(test);
 
+        System.out.println("Abilities: " + player.getAbilities());
+
 
         // Testing to see if adding a new ability shows up in the world
         player.addAbilities("MULTISHOT");
 
+        System.out.println("Abilities: " + player.getAbilities());
+
         // Test to see if adding the same ability does not show up in the world
-        // player.addAbilities("MULTISHOT");
+         player.addAbilities("MULTISHOT");
+
+        System.out.println("Abilities: " + player.getAbilities());
+
+        // Create a test inventory for the player
+
+        Inventory check = new Inventory();
+
+        player.setInventory(check);
+
+
 
 
 
@@ -855,7 +869,7 @@ public class World{
     public class inventoryAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("INVENTORY:");
+            System.out.println("INVENTORY: " + player.getInventory().getItems());
             InventoryDisplay inventoryDisplay = new InventoryDisplay();
             inventoryDisplay.actionPerformed(e);
         }
