@@ -674,6 +674,7 @@ public class World{
         bufferStrategy = canvas.getBufferStrategy();
         graphics = bufferStrategy.getDrawGraphics();
 
+        //frame.add(new CharacterPanel());
 
         while (true) { // will add movements in here and wait for certain motions to keep displaying this
 
@@ -804,8 +805,7 @@ public class World{
                     //get color of tile based on type
                     int type = this.worldMap[y][x].getType();
                     //0 is wall 1 is floor
-
-                    bm.play();//play backgrounf music if not paused
+                    // bm.play();//play backgrounf music if not paused
                     if (pause == true){
                         graphics.setColor(Color.BLACK);
                         bm.pause();
@@ -919,6 +919,11 @@ public class World{
         @Override
         public void actionPerformed(ActionEvent e) {
             pause = !pause;
+            if(pause == true){//pause or play music with game pause
+                bm.pause();;
+            } else{
+                bm.resume();
+            }
             System.out.println("pause");
         }
     }//pause action
