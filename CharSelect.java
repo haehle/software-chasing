@@ -102,6 +102,7 @@ public class CharSelect {
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char1;
                 window.dispose();
+                new CharacterFrame(currentPlayer.getPlayerClass());
                // try {
                 //    Game.StartGame(profile, currentPlayer);
                // } catch (InterruptedException ex) {
@@ -153,6 +154,7 @@ public class CharSelect {
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char2;
                 window.dispose();
+                new CharacterFrame(currentPlayer.getPlayerClass());
               //  try {
              //       Game.StartGame(profile, currentPlayer);
              //   } catch (InterruptedException ex) {
@@ -204,6 +206,7 @@ public class CharSelect {
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char3;
                 window.dispose();
+                new CharacterFrame(currentPlayer.getPlayerClass());
             }
             
         });
@@ -341,7 +344,7 @@ public class CharSelect {
         createCon.add(createTitlePanel);
 
         JPanel form = new JPanel();
-        form.setSize(600,150);
+        form.setSize(600,300);
         form.setLocation(100, 200);
         form.setBackground(Color.blue);
 
@@ -366,12 +369,24 @@ public class CharSelect {
 
         ButtonGroup classGroup = new ButtonGroup();
         JRadioButton class1 = new JRadioButton();
+        ImageIcon imageIcon1 = new ImageIcon("char1-right.png"); 
+        Image image1 = imageIcon1.getImage(); 
+        Image newimg1 = image1.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
+        class1.setIcon(new ImageIcon(newimg1));
         class1.setText("Software Engineering - creative player focused on designing new and useful systems");
         class1.setLocation(150, 300);
         JRadioButton class2 = new JRadioButton();
+        ImageIcon imageIcon2 = new ImageIcon("char2-right.png"); 
+        Image image2 = imageIcon2.getImage(); 
+        Image newimg2 = image2.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
+        class2.setIcon(new ImageIcon(newimg2));
         class2.setText("Machine Learning - analytical player focused on data and its applications in systems");
         class2.setLocation(150, 300);
         JRadioButton class3 = new JRadioButton();
+        ImageIcon imageIcon3 = new ImageIcon("char3-right.png"); 
+        Image image3 = imageIcon3.getImage(); 
+        Image newimg3 = image3.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
+        class3.setIcon(new ImageIcon(newimg3));
         class3.setText("Security - determined player focused on building thoroughly-secure systems");
         class3.setLocation(150, 300);
         classGroup.add(class1);
@@ -385,7 +400,7 @@ public class CharSelect {
         createCon.add(form);
 
         JButton createCharButton = new JButton();
-        createCharButton.setBounds(270, 400, 100, 50);
+        createCharButton.setBounds(270, 430, 100, 50);
         createCharButton.setBackground(Color.white);
         createCharButton.setText("Create");
         createCharButton.addActionListener(new ActionListener(){
@@ -426,7 +441,7 @@ public class CharSelect {
         createCon.add(createCharButton);
 
         JButton cancelButton = new JButton();
-        cancelButton.setBounds(390, 400, 100, 50);
+        cancelButton.setBounds(390, 430, 100, 50);
         cancelButton.setBackground(Color.white);
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new ActionListener(){
@@ -475,5 +490,10 @@ public class CharSelect {
     {
         dbConnection.logout(username);
         window.dispose();
+    }
+
+    public static void main(String[] args) {
+        Profile profiletemp = dbConnection.login("test", "Password123");
+        new CharSelect(profiletemp);
     }
 }
