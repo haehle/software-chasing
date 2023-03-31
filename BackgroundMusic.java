@@ -1,5 +1,4 @@
 import java.io.File;
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
@@ -10,35 +9,83 @@ public class BackgroundMusic extends JFrame {
     private static final String MUSIC_FILE_LOBBY = "Music/battle-of-the-dragons-8037.wav"; 
     private static final String MUSIC_FILE_GAME = "Music/nightmare-on-imaginationland-8040.wav"; 
 
+    public volatile boolean running, looping;
+    private Clip clip;
+
     public BackgroundMusic(String type) {
-        // create the frame
-        super("My App");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 300);
         
-        // play the background music
-        playMusic(type);
-    }
-
-    private void playMusic(String type) {
+        looping = running = false;
         try {
-            File musicFile = null;
+            clip = AudioSystem.getClip();
             if(type == "game"){
-                musicFile = new File(MUSIC_FILE_GAME);
+                clip.open(AudioSystem.getAudioInputStream(new File(MUSIC_FILE_GAME)));
             } else{
-                musicFile = new File(MUSIC_FILE_LOBBY);    
+                clip.open(AudioSystem.getAudioInputStream(new File(MUSIC_FILE_LOBBY)));
             }
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(musicFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY); // loop the music indefinitely
+            
         } catch (Exception e) {
-            System.out.println("Error playing music: " + e.getMessage());
-        }
+            e.printStackTrace();
+        } 
     }
 
-    public static void main(String[] args) {
-        BackgroundMusic app = new BackgroundMusic("lobby");
-        app.setVisible(true);
+    public void play() {
+        running = true;
+        clip.setFramePosition(0);
+        new Thread(new Runnable(){
+            public void run(){
+                clip.start();
+                while(true){
+                    if(clip.getMicrosecondPosition() == clip.getMicrosecondLength())
+                        break;
+                    if(!running)
+                        break;
+                }
+            }
+        }).start();
+    }
+
+    
+    public void pause(){
+        running = false;
+        clip.stop();
+    }
+
+    public void resume(){
+        running = true;
+        new Thread(new Runnable(){
+            public void run(){
+                clip.start();
+                while(true){
+                    if(clip.getMicrosecondPosition() == clip.getMicrosecondLength())
+                        break;
+                    if(!running)
+                        break;
+                }
+            }
+        }).start();
+    }
+
+    public void stop(){
+        running = false;
+        looping = false;
+        clip.setFramePosition(0);
+    }
+
+    
+    public void loop(){
+        looping = true;
+        new Thread(new Runnable(){
+            public void run(){
+                clip.start();
+                while(looping){
+                    clip.loop(Clip.LOOP_CONTINUOUSLY);
+                }
+            }
+        }).start();
+    }
+    public boolean isResumed(){
+        if(clip.getMicrosecondPosition()>0)
+            return true;
+        return false;
     }
 }

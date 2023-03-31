@@ -1,5 +1,3 @@
-  import javax.mail.MessagingException;
- import javax.mail.*;
  import javax.swing.*;
  import java.awt.*;
  import java.awt.event.*;

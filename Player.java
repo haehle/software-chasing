@@ -35,9 +35,10 @@ public class Player {
     private String[] skills;
     private ArrayList<String> abilities;
     private int currentLevelNo;
-    private long timePlayed;
     private Inventory inventory;
     int playerClass;
+    private long timePlayed;
+    private long points;
 
     public Player(String username, String name, int playerClass) {
         this.timePlayed = 0;
