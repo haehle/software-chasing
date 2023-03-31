@@ -115,6 +115,7 @@ public class Home extends JFrame {
         customization.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                total_gold.setText("Gold: " + player.getGold());
                     blue_cost.setText("100 Gold");
                     Font font1 = new Font("SansSerif", Font.BOLD, 12);
                     blue_cost.setForeground(Color.BLACK);

@@ -35,9 +35,10 @@ public class Player {
     private String[] skills;
     private ArrayList<String> abilities;
     private int currentLevelNo;
-    private long timePlayed;
     private Inventory inventory;
     int playerClass;
+    private long timePlayed;
+    private long points;
 
     public Player(String username, String name, int playerClass) {
         this.timePlayed = 0;
@@ -48,7 +49,7 @@ public class Player {
         this.level = 1;
         this.levelXP = 100;
         this.initialLevelXP = 100;
-        this.gold = 200;
+        this.gold = 350;
         this.currentLevelNo = 0;
         //if (type == 1) {
             this.inventory = new Inventory();

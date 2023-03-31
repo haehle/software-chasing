@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "dbConnection",
+            "request": "launch",
+            "mainClass": "dbConnection",
+            "projectName": "software-chasing_9c492f81"
+        },
+        {
+            "type": "java",
             "name": "Game",
             "request": "launch",
             "mainClass": "Game",
