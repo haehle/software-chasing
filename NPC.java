@@ -193,7 +193,7 @@ public class NPC {
         frame.pack();
         frame.setVisible(true);
 
-        start = new JLabel("<html>You are about to engage in a battle with 'Hello' <br/> To defeat him, answer the following CS related questions</html>");
+        start = new JLabel("<html>You are about to engage in a battle with " + getName() + ". <br/> To defeat him, answer the following CS related questions</html>");
         start.setBounds(250, 100, 700, 300);
         Font font1 = new Font("Arial", Font.BOLD, 20);
         start.setForeground(Color.BLACK);
@@ -215,25 +215,109 @@ public class NPC {
         backButton.setBackground(Color.decode("#9d9795"));
 
 
-        q1 = new JLabel("How would you print 'Hello World' in Python?");
+        q1 = new JLabel("");
         q1.setBounds(250, 100, 700, 100);
         q1.setForeground(Color.decode("#555960"));
         q1.setFont(font1);
         panel.add(q1);
         q1.setVisible(false);
 
-        battleButton1 = new JButton("print(Hello World);");
+        q2 = new JLabel("");
+        q2.setBounds(250, 100, 700, 100);
+        q2.setForeground(Color.decode("#555960"));
+        q2.setFont(font1);
+        panel.add(q2);
+
+        q2.setVisible(false);
+        q2checker = false;
+
+
+        q3 = new JLabel("");
+        q3.setBounds(250, 100, 700, 100);
+        q3.setForeground(Color.decode("#555960"));
+        q3.setFont(font1);
+        panel.add(q3);
+
+        q3.setVisible(false);
+        q3checker = false;
+
+        battleButton1 = new JButton("");
         battleButton1.setBounds(250,200,250,50);
         battleButton1.setBackground(Color.decode("#555960"));
 
 
-        battleButton2 = new JButton("('Hello World').print();");
+        battleButton2 = new JButton("");
         battleButton2.setBounds(250,300,250,50);
         battleButton2.setBackground(Color.decode("#555960"));
 
-        battleButton3 = new JButton("print('Hello World')");
+        battleButton3 = new JButton("");
         battleButton3.setBounds(250,400,250,50);
         battleButton3.setBackground(Color.decode("#555960"));
+
+        if (getName().equals("Hello")) {
+
+            q1.setText("How would you print 'Hello World' in Python?");
+            q2.setText("How would you print 'Hello World' in Java?");
+            q3.setText("How would you print 'Hello World' in C?");
+
+            battleButton1.setText("print(Hello World);");
+            battleButton2.setText("('Hello World').print();");
+            battleButton3.setText("print('Hello World')");
+
+            battleButton3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(e.getSource() == battleButton3 && !q2checker && !q3checker) {
+                        q1.setVisible(false);
+                        q2.setVisible(true);
+                        q2checker = true;
+                        battleButton3.setBounds(250,400,250,150);
+                        battleButton1.setText("System.out.println('Hello World');");
+                        battleButton2.setText("System.out.println('Hello World')");
+                        battleButton3.setText("<html> class Hello { <br/> public static void main(String[] args) {<br/> System.out.println('Hello World'); <br>  } <br> }</html>");
+                    } else if (e.getSource() == battleButton3 && q2checker) {
+                        q2.setVisible(false);
+                        q3.setVisible(true);
+                        q2checker = false;
+                        q3checker = true;
+                        battleButton1.setBounds(250,600,250,150);
+                        battleButton2.setBounds(250,400,250,150);
+                        battleButton3.setBounds(250,200,250,150);
+                        battleButton3.setText("<html>int main() <br/> {  <br/>   printf('Hello World'); <br/> return 0; <br/> } </html>");
+                        battleButton2.setText("<html>int main() <br/> {  <br/>   printf('Hello World'); <br/> return 'hello world'; <br/> } </html>");
+                        battleButton1.setText("<html>int main() <br/> { <br/>  printf('Hello World'); <br/> }</html>");
+                    } else if (e.getSource() == battleButton3 && q3checker) {
+                        q3.setVisible(false);
+                        q3checker = false;
+                        battleButton1.setVisible(false);
+                        battleButton2.setVisible(false);
+                        battleButton3.setVisible(false);
+                        panel.add(congrats);
+                        fleeButton.setVisible(false);
+                        panel.add(backButton);
+                    }
+                }
+            });
+
+        }
+
+        if (getName().equals("jeff")) {
+            q1.setText("What is synonymous with scrum?");
+            battleButton1.setText("Waterfall");
+            battleButton2.setText("Spiral");
+            battleButton3.setText("Agile");
+
+            battleButton3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(e.getSource() == battleButton3) {
+                        panel.add(congrats);
+                    }
+            }
+        });
+        }
+
+
 
         startButton.addActionListener(new ActionListener() {
             @Override
@@ -283,78 +367,20 @@ public class NPC {
             }
         });
 
-        battleButton3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == battleButton3 && !q2checker && !q3checker) {
-                    q1.setVisible(false);
-                    q2.setVisible(true);
-                    q2checker = true;
-                    battleButton3.setBounds(250,400,250,150);
-                    battleButton1.setText("System.out.println('Hello World');");
-                    battleButton2.setText("System.out.println('Hello World')");
-                    battleButton3.setText("<html> class Hello { <br/> public static void main(String[] args) {<br/> System.out.println('Hello World'); <br>  } <br> }</html>");
-                } else if (e.getSource() == battleButton3 && q2checker) {
-                    q2.setVisible(false);
-                    q3.setVisible(true);
-                    q2checker = false;
-                    q3checker = true;
-                    battleButton1.setBounds(250,600,250,150);
-                    battleButton2.setBounds(250,400,250,150);
-                    battleButton3.setBounds(250,200,250,150);
-                    battleButton3.setText("<html>int main() <br/> {  <br/>   printf('Hello World'); <br/> return 0; <br/> } </html>");
-                    battleButton2.setText("<html>int main() <br/> {  <br/>   printf('Hello World'); <br/> return 'hello world'; <br/> } </html>");
-                    battleButton1.setText("<html>int main() <br/> { <br/>  printf('Hello World'); <br/> }</html>");
-                } else if (e.getSource() == battleButton3 && q3checker) {
-                    q3.setVisible(false);
-                    battleButton1.setVisible(false);
-                    battleButton2.setVisible(false);
-                    battleButton3.setVisible(false);
-                    panel.add(congrats);
-                    fleeButton.setVisible(false);
-                    panel.add(backButton);
-                }
-            }
-        });
-
-        battleButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == battleButton1) {
-
-                }
-            }
-        });
 
 
-        q2 = new JLabel("How would you print 'Hello World' in Java?");
-        q2.setBounds(250, 100, 700, 100);
-        q2.setForeground(Color.decode("#555960"));
-        q2.setFont(font1);
-        panel.add(q2);
-
-        q2.setVisible(false);
-        q2checker = false;
-
-
-        q3 = new JLabel("How would you print 'Hello World' in C?");
-        q3.setBounds(250, 100, 700, 100);
-        q3.setForeground(Color.decode("#555960"));
-        q3.setFont(font1);
-        panel.add(q3);
-
-        q3.setVisible(false);
-        q3checker = false;
-
-        loser = new JLabel("<html>You have been defeated by 'Hello' in a battle, <br/> Better Luck Next time! </html>");
+        loser = new JLabel("<html>You have been defeated by " + getName() + " in a battle, <br/> Better Luck Next time! </html>");
         loser.setBounds(250, 100, 700, 300);
         loser.setForeground(Color.BLACK);
         loser.setFont(font1);
 
-        congrats = new JLabel("<html>You have defeated 'Hello' in a battle, <br/> Congratulations! </html>");
+        congrats = new JLabel("<html>You have defeated " + getName() + " in a battle, <br/> Congratulations! </html>");
         congrats.setBounds(250, 100, 700, 300);
         congrats.setForeground(Color.BLACK);
         congrats.setFont(font1);
+
+        loser.setVisible(false);
+        congrats.setVisible(false);
 
 
         backButton.addActionListener(new ActionListener() {
