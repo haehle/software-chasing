@@ -31,6 +31,7 @@ public class World{
     public int tileSize;
     boolean pause;
     boolean complete;
+    public static int invOpen;
 
     private JButton shop, shop2, battle, battle2, battle3, battle4, home, menubuttons,pauseButton;
 
@@ -505,13 +506,13 @@ public class World{
 
 
         //TODO add player stat
-        JLabel health = new JLabel("MAX HEALTH: "+player.getMaxHP()+" Current Health: " + player.getHp());
+        JLabel health = new JLabel("HP: " + player.getHp() + "/" + player.getMaxHP());
         health.setBackground(Color.white);
         //health.setBounds(20,20,50,50);
         health.setOpaque(false);
         health.setVisible(true);
 
-        JLabel stamina = new JLabel("MAX STAMINA: "+player.getMaxStamina()+" Stamina: " + player.getStamina());
+        JLabel stamina = new JLabel("Stamina: " + player.getStamina() + "/" + player.getMaxStamina());
         stamina.setBackground(Color.white);
         //stamina.setBounds(20,frameHeight-(tileSize+20),50,50);
         stamina.setOpaque(false);
@@ -541,9 +542,13 @@ public class World{
         xp.setOpaque(false);
         xp.setVisible(true);
 
-        //JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
-        //playerClass.setOpaque(false);
-        //playerClass.setVisible(true);
+        JLabel gold = new JLabel("Gold: " + player.getGold());
+        gold.setOpaque(false);
+        gold.setVisible(true);
+
+        JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
+        playerClass.setOpaque(false);
+        playerClass.setVisible(true);
 
         //Implement current time clock
         JLabel clockLabel = new JLabel();
@@ -554,11 +559,78 @@ public class World{
             @Override
             public void actionPerformed(ActionEvent e) {
                 long millis = System.currentTimeMillis();
+                int hour = (int)(((millis / (1000*60*60)) % 24) - 4);
 
-                clockLabel.setText(String.format("Current Time: %s %d:%d",
+                if (hour == 0)
+                {
+                    hour = 12;
+                }
+                else if (hour == -1)
+                {
+                    hour = 11;
+                }
+                else if (hour == -2)
+                {
+                    hour = 10;
+                }
+                else if (hour == -3)
+                {
+                    hour = 9;
+                }
+
+                int minute = (int) ((millis / (1000*60)) % 60);
+                String minString = "";
+
+                if (minute == 0)
+                {
+                    minString = "00";
+                }
+                else if (minute == 1)
+                {
+                    minString = "01";
+                }
+                else if (minute == 2)
+                {
+                    minString = "02";
+                }
+                else if (minute == 3)
+                {
+                    minString = "03";
+                }
+                else if (minute == 4)
+                {
+                    minString = "04";
+                }
+                else if (minute == 5)
+                {
+                    minString = "05";
+                }
+                else if (minute == 6)
+                {
+                    minString = "06";
+                }
+                else if (minute == 7)
+                {
+                    minString = "07";
+                }
+                else if (minute == 8)
+                {
+                    minString = "08";
+                }
+                else if (minute == 9)
+                {
+                    minString = "09";
+                }
+                else
+                {
+                    minString = Integer.toString((int)((millis / (1000*60)) % 60));
+                }
+
+
+                clockLabel.setText(String.format("Current Time: %s %d:%s",
                         java.time.LocalDate.now(),
-                        (int) (((millis / (1000*60*60)) % 24) - 4),
-                        (int) ((millis / (1000*60)) % 60)
+                        hour,
+                        minString
                 ));
 
             }
@@ -571,7 +643,8 @@ public class World{
         statPanel.add(speed);
         statPanel.add(level);
         statPanel.add(xp);
-        //statPanel.add(playerClass);
+        statPanel.add(gold);
+        statPanel.add(playerClass);
         statPanel.add(clockLabel);
 
         frame.add(statPanel);
@@ -741,10 +814,11 @@ public class World{
             }
 
             //Keep health updated
-            health.setText("MAX HEALTH: " + player.getMaxHP() + " Current Health: " + player.getHp());
-            stamina.setText("MAX STAMINA: " + player.getMaxStamina() + " Stamina: " + player.getStamina());
+            health.setText("HP: " + player.getHp() + "/" + player.getMaxHP());
+            stamina.setText("Stamina: " + player.getStamina() + "/" + player.getMaxStamina());
             level.setText("Level: " + player.getLevel());
             xp.setText("XP Needed: " + player.getLevelXP());
+            gold.setText("Gold: " + player.getGold());
 
 
             bufferStrategy.show();
@@ -855,9 +929,17 @@ public class World{
     public class inventoryAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("INVENTORY:");
-            InventoryDisplay inventoryDisplay = new InventoryDisplay();
-            inventoryDisplay.actionPerformed(e);
+            if (invOpen == 1)
+            {
+                //Inventory already open
+
+            }
+            else {
+                System.out.println("INVENTORY");
+                invOpen = 1;
+                InventoryDisplay inventoryDisplay = new InventoryDisplay(player);
+                //inventoryDisplay.actionPerformed(e);
+            }
         }
     }
 
