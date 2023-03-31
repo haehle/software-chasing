@@ -32,7 +32,7 @@ public class World{
     boolean pause;
     boolean complete;
     public static int invOpen;
-    BackgroundMusic bm;
+    //BackgroundMusic bm;
 
     private JButton shop, shop2, battle, battle2, battle3, battle4, home, menubuttons,pauseButton;
 
@@ -56,8 +56,8 @@ public class World{
     public World(int height, int length, int[][] tileType, Player player){ /*TODO: ADD PLAYER FIELD*/
         //super(player.getName());
 
-        bm = new BackgroundMusic("game");
-        bm.play();//plays music
+        //bm = new BackgroundMusic("game");
+        //bm.play();//plays music
 
         this.worldMap = new Tile[height][length];
         this.height = height; //y
@@ -285,10 +285,11 @@ public class World{
                 long played = end - start;
                 player.setTimePlayed(player.getTimePlayed() + played);
 
-                bm.stop();
+                //bm.stop();
 
                 /*TODO HUNTER: WRITE OUT PLAYER INFO HERE*/
                 dbConnection.updatePlayer(player);
+                dbConnection.logout(player.getUsername());
                 exit = true;//break out of display loop
                 frame.dispose();
                 //System.exit(69); Nice
@@ -805,10 +806,10 @@ public class World{
                     int type = this.worldMap[y][x].getType();
                     //0 is wall 1 is floor
 
-                    bm.play();//play backgrounf music if not paused
+                    //bm.play();//play background music if not paused
                     if (pause == true){
                         graphics.setColor(Color.BLACK);
-                        bm.pause();
+                        //bm.pause();
                     }//game is paused
                     else if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);} //player is here
                     else if (x == endPoint[0] && y == endPoint[1]){graphics.setColor(Color.GREEN);}//end point color

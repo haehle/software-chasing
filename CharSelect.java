@@ -1,11 +1,13 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
 public class CharSelect {
-    JFrame window;
+    static JFrame window;
     Container con;
     JPanel menu;
     JPanel titlePanel;
@@ -52,7 +54,14 @@ public class CharSelect {
 
         window = new JFrame();
         window.setSize(800,600);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        window.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent event) {
+                exitProcedure();
+            }
+        });
         window.getContentPane().setBackground(Color.black);
         window.setLayout(null);
         window.setVisible(true);
@@ -460,5 +469,11 @@ public class CharSelect {
                 //Invalid password, prompt for password again
             }
         }
+    }
+
+    public static void exitProcedure()
+    {
+        dbConnection.logout(username);
+        window.dispose();
     }
 }
