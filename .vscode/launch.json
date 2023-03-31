@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CharacterPanel",
+            "request": "launch",
+            "mainClass": "CharacterPanel",
+            "projectName": "software-chasing_9c492f81"
+        },
+        {
+            "type": "java",
             "name": "dbConnection",
             "request": "launch",
             "mainClass": "dbConnection",
