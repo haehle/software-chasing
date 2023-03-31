@@ -6,54 +6,80 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class InventoryDisplay {
+public class InventoryDisplay extends JFrame implements KeyListener {
 
-    private static JFrame frame;
-    private JPanel panel;
+    JLabel closeLabel = new JLabel();
     JList<String> list;
 
     public InventoryDisplay(Player player) {
-        frame = new JFrame("Inventory");
-
-        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        frame.addWindowListener(new WindowAdapter() {
+        super(player.getName() + "'s Inventory");
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent event) {
                 exitProcedure();
+                dispose();
             }
         });
+        setResizable(false);
 
-        frame.setResizable(false);
-
-        panel = new JPanel();
-        panel.setLayout(null);
-
-        //Set the size of the panel
-        panel.setPreferredSize(new Dimension(300, 300));
-        panel.setBackground(Color.decode("#cfb991"));
-
-        frame.getContentPane().add(panel);
-        frame.pack();
+        //Set the size
+        setPreferredSize(new Dimension(300, 300));
+        setBackground(Color.decode("#cfb991"));
 
         //Test
+        /*
         Inventory inv = new Inventory();
         inv.addItem("sword");
+        inv.addItem("shield");
         player.setInventory(inv);
-        System.out.println("Inv item 1: " + player.getInventory().getItems().get(0));
+         */
 
+        String item1 = "";
+        if (player.getInventory().getItems().size() > 0)
+        {
+            item1 = player.getInventory().getItems().get(0);
+        }
 
-        if (frame.isVisible()) {
-            frame.setVisible(false);
+        closeLabel.setText(item1);
+
+        if (item1 == "")
+        {
+            closeLabel.setText("Your inventory is empty.");
         }
         else
         {
-            frame.setVisible(true);
+            closeLabel.setText(item1);
         }
+
+        closeLabel.addKeyListener(this);
+        closeLabel.setFocusable(true);
+        add(closeLabel);
+        pack();
+        setVisible(true);
     }
 
     public static void exitProcedure()
     {
         World.invOpen = 0;
-        frame.dispose();
+    }
+
+    public void keyTyped(KeyEvent input) {
+        char key = input.getKeyChar();
+        if (key == 'i')
+        {
+            exitProcedure();
+            dispose();
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        //Do nothing
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        //Do nothing
     }
 }
