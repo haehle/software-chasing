@@ -285,10 +285,11 @@ public class World{
                 long played = end - start;
                 player.setTimePlayed(player.getTimePlayed() + played);
 
-                bm.stop();
+                bm.pause();
 
                 /*TODO HUNTER: WRITE OUT PLAYER INFO HERE*/
                 dbConnection.updatePlayer(player);
+                System.out.println("timeplayed after: " + + (player.getTimePlayed() / 1000) % 60 + "seconds");
                 dbConnection.logout(player.getUsername());
                 exit = true;//break out of display loop
                 frame.dispose();
@@ -523,6 +524,12 @@ public class World{
         stamina.setOpaque(false);
         stamina.setVisible(true);
 
+        JLabel timeplayed = new JLabel("time played: " + (player.getTimePlayed() / 1000) % 60 + " seconds");
+        timeplayed.setBackground(Color.white);
+        //stamina.setBounds(20,frameHeight-(tileSize+20),50,50);
+        timeplayed.setOpaque(false);
+        timeplayed.setVisible(true);
+
         JLabel intellect = new JLabel("Intellect: " + 5);
         //health.setBackground(Color.white);
         //intellect.setBounds(20,frameHeight-(tileSize+40),50,50);
@@ -644,6 +651,7 @@ public class World{
 
         statPanel.add(health);
         statPanel.add(stamina);
+        statPanel.add(timeplayed);
         //statPanel.add(intellect);
         statPanel.add(speed);
         statPanel.add(level);
@@ -850,11 +858,12 @@ public class World{
             }
         }
 //        Player player = new Player("RILEY6215","Riley",1);
+        
         Player player = dbConnection.getPlayers("RILEY6215")[0];
+        System.out.println("timeplayed before: " + (player.getTimePlayed() / 1000) % 60);
         World test = new World(50,50,tiles,player);
         //test.setPlayer(player);
         test.displayWorld();
-
     }
 
     public class upAction extends AbstractAction{

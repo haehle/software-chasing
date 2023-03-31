@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CharUpgrade",
+            "request": "launch",
+            "mainClass": "CharUpgrade",
+            "projectName": "software-chasing_9c492f81"
+        },
+        {
+            "type": "java",
             "name": "CharSelect",
             "request": "launch",
             "mainClass": "CharSelect",
