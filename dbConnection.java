@@ -76,7 +76,9 @@ public class dbConnection {
                         "\"" + player.getLevel() + "\", " +
                         "\"" + player.getLevelXP() + "\", " +
                         "\"" + player.getInitialLevelXP() + "\", " +
-                        "\"" + player.getCurrentLevelNo() + "\");";
+                        "\"" + player.getCurrentLevelNo() + "\", " +
+                        "\"" + player.getTimePlayed() + "\", " +
+                        "\"" + player.getPoints() + "\");";
 
                 statement.execute(query);
                 System.out.println("Player added successfully.");
@@ -242,7 +244,7 @@ public class dbConnection {
                                 rs.getInt("locationX"), rs.getInt("locationY"), rs.getInt("hp"),
                                 rs.getInt("maxHP"), rs.getInt("speed"), rs.getInt("stamina"),
                                 rs.getInt("maxStamina"), rs.getInt("level"), rs.getInt("levelXP"),
-                                rs.getInt("initialLevelXP"), inventory);
+                                rs.getInt("initialLevelXP"), inventory, rs.getLong("timePlayed"), rs.getLong("points"));
 
                         players[i] = player;
 
