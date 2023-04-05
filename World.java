@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
@@ -41,7 +42,6 @@ public class World{
     private Player player;
     JFrame frame;
     JLabel playerLabel, NPC1label, NPC2label, NPC3label, NPC4label, NPC5label, NPC6label, NPC7label;
-
     Action moveUp = new upAction();
     Action moveDown = new downAction();
     Action moveLeft = new leftAction();
@@ -123,6 +123,14 @@ public class World{
         this.currLoc[1] = y;
     }
 
+    void playSound(String soundFile) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+        File f = new File(soundFile);
+        AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioIn);
+        clip.start();
+    }
+
 
     public void setTileSize(int tileSize) {
         this.tileSize = tileSize;
@@ -132,7 +140,7 @@ public class World{
         this.player = player;
     }
 
-    public int displayWorld()   { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
+    public int displayWorld() throws UnsupportedAudioFileException, LineUnavailableException, IOException { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
 
         long start = System.currentTimeMillis();//sets start time to calculate time played
 
@@ -708,6 +716,8 @@ public class World{
 
             if(currLoc[0] == ron.getLocation()[0] && currLoc[1] == ron.getLocation()[1]) {
                 if(!checker) {
+                    System.out.println(ron.getNPCType());
+                    playSound("Music/doorbell.wav");
                     NPC1label.setVisible(true);
                     shop.setVisible(true);
                     checker = true;
@@ -723,6 +733,7 @@ public class World{
 
             if(currLoc[0] == natalie.getLocation()[0] && currLoc[1] == natalie.getLocation()[1]) {
                 if(!checker2) {
+                    playSound("Music/doorbell.wav");
                     NPC2label.setVisible(true);
                     shop2.setVisible(true);
                     checker2 = true;
@@ -740,6 +751,7 @@ public class World{
                 if(!checker3) {
                     NPC3label.setVisible(true);
                     checker3 = true;
+                    playSound("Music/doorbell.wav");
                 }
             }
             else {
@@ -751,6 +763,7 @@ public class World{
 
             if(currLoc[0] == hello.getLocation()[0] && currLoc[1] == hello.getLocation()[1]) {
                 if(!checker4) {
+                    playSound("Music/drums.wav");
                     NPC4label.setVisible(true);
                     battle.setVisible(true);
                     checker4 = true;
@@ -766,6 +779,7 @@ public class World{
 
             if(currLoc[0] == loopy.getLocation()[0] && currLoc[1] == loopy.getLocation()[1]) {
                 if(!checker5) {
+                    playSound("Music/drums.wav");
                     NPC5label.setVisible(true);
                     battle2.setVisible(true);
                     checker5 = true;
@@ -781,6 +795,7 @@ public class World{
 
             if(currLoc[0] == ray.getLocation()[0] && currLoc[1] == ray.getLocation()[1]) {
                 if(!checker6) {
+                    playSound("Music/drums.wav");
                     NPC6label.setVisible(true);
                     battle3.setVisible(true);
                     checker6 = true;
@@ -796,6 +811,7 @@ public class World{
 
             if(currLoc[0] == jeff.getLocation()[0] && currLoc[1] == jeff.getLocation()[1]) {
                 if(!checker7) {
+                    playSound("Music/boss.wav");
                     NPC7label.setVisible(true);
                     battle4.setVisible(true);
                     checker7 = true;
@@ -846,7 +862,7 @@ public class World{
         if (complete){return 1;} else {return 0;}
     }//END DISPLAY WORLD
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         int[][] tiles = new int[50][50];
         int count = 1;
         for (int i = 0; i < 50; i++) {
@@ -875,8 +891,17 @@ public class World{
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() - tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] - 1 );
             player.setLocation(currLoc);
-            checkLevelFinish(currLoc);
+            try {
+                checkLevelFinish(currLoc);
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+                throw new RuntimeException(ex);
+            }
             System.out.println("UP");
+            try {
+                playSound("Music/footstep.wav");
+            } catch (LineUnavailableException | UnsupportedAudioFileException | IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }//up action
     public class downAction extends AbstractAction{
@@ -888,8 +913,17 @@ public class World{
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() + tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] + 1 );
             player.setLocation(currLoc);
-            checkLevelFinish(currLoc);
+            try {
+                checkLevelFinish(currLoc);
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+                throw new RuntimeException(ex);
+            }
             System.out.println("down");
+            try {
+                playSound("Music/footstep.wav");
+            } catch (LineUnavailableException | IOException | UnsupportedAudioFileException ex) {
+                throw new RuntimeException(ex);
+            }
             //player.gainXP(1);
             //System.out.println("XP = " + player.getLevelXP());
         }
@@ -905,8 +939,17 @@ public class World{
             player.setLocation(currLoc);
             //player.setHp((player.getHp() - 1));
             //player.setStamina((player.getStamina() + 1));
-            checkLevelFinish(currLoc);
+            try {
+                checkLevelFinish(currLoc);
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+                throw new RuntimeException(ex);
+            }
             System.out.println("left");
+            try {
+                playSound("Music/footstep.wav");
+            } catch (LineUnavailableException | UnsupportedAudioFileException | IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }//left action
     public class rightAction extends AbstractAction{
@@ -920,8 +963,18 @@ public class World{
             player.setLocation(currLoc);
             //player.setStamina((player.getStamina() - 1));
             //player.setHp((player.getHp() + 1));
-            checkLevelFinish(currLoc);
+            try {
+                checkLevelFinish(currLoc);
+            } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ex) {
+                throw new RuntimeException(ex);
+            }
             System.out.println("right");
+            try {
+                playSound("Music/footstep.wav");
+            } catch (LineUnavailableException | IOException | UnsupportedAudioFileException ex) {
+                throw new RuntimeException(ex);
+            }
+
         }
     }//up action
 
@@ -971,8 +1024,9 @@ public class World{
         this.currLoc = new int[]{0,0};
     }
 
-    public void checkLevelFinish(int[] currLoc1){
+    public void checkLevelFinish(int[] currLoc1) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         if (currLoc1[0] == endPoint[0] && currLoc1[1] == endPoint[1]){//player got to the end point
+            playSound("Music/level.wav");
             System.out.println("ENDPOINT!");
             complete = true;
             exit = true;
