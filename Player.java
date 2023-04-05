@@ -35,9 +35,10 @@ public class Player {
     private String[] skills;
     private ArrayList<String> abilities;
     private int currentLevelNo;
-    private long timePlayed;
     private Inventory inventory;
     int playerClass;
+    private long timePlayed;
+    private long points;
 
     public Player(String username, String name, int playerClass) {
         this.timePlayed = 0;
@@ -50,6 +51,8 @@ public class Player {
         this.initialLevelXP = 100;
         this.gold = 400;
         this.currentLevelNo = 0;
+        this.timePlayed = 0;
+        this.points = 0;
         //if (type == 1) {
             this.inventory = new Inventory();
             if (playerClass == 1) {
@@ -83,7 +86,8 @@ public class Player {
 
     //Constructor used to initialize Player object from database information
     public Player(String username, String name, int playerClass, int locationX, int locationY, int hp, int maxHP,
-                  int speed, int stamina, int maxStamina, int level, int levelXP, int initialLevelXP, Inventory inventory) {
+                  int speed, int stamina, int maxStamina, int level, int levelXP, int initialLevelXP, Inventory inventory,
+                  long timePlayed, long points) {
         this.timePlayed = 0;
         this.username = username;
         this.name = name;
@@ -99,6 +103,8 @@ public class Player {
         this.maxStamina = maxStamina;
         this.inventory = inventory;
         this.currentLevelNo = 0;
+        this.timePlayed = timePlayed;
+        this.points = points;
 
         //Need to get these from alternate table
         this.skills = new String[]{};
@@ -151,6 +157,15 @@ public class Player {
         public void setPlayerClass ( int playerClass){
             this.playerClass = playerClass;
         }
+
+    public long getPoints () {
+        return this.points;
+    }
+
+    public void setPoints ( long points){
+        this.points = points;
+    }
+
 
         public String getPlayerClassName () { return Util.getPlayerClassName(this.playerClass); }
 

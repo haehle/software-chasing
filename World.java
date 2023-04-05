@@ -31,6 +31,8 @@ public class World{
     public int tileSize;
     boolean pause;
     boolean complete;
+    public static int invOpen;
+    BackgroundMusic bm;
 
     private JButton shop, shop2, battle, battle2, battle3, battle4, home, menubuttons,pauseButton;
 
@@ -54,7 +56,8 @@ public class World{
     public World(int height, int length, int[][] tileType, Player player){ /*TODO: ADD PLAYER FIELD*/
         //super(player.getName());
 
-        BackgroundMusic bm = new BackgroundMusic("game");//plays music
+        bm = new BackgroundMusic("game");
+        bm.play();//plays music
 
         this.worldMap = new Tile[height][length];
         this.height = height; //y
@@ -192,7 +195,7 @@ public class World{
 
 
 
-         //Adding a base set of abilities
+        // Adding a base set of abilities
 
         ArrayList<String> test= new ArrayList<String>();
 
@@ -200,26 +203,12 @@ public class World{
 
         player.setAbilities(test);
 
-        System.out.println("Abilities: " + player.getAbilities());
 
-
-        System.out.println("Testing to see if adding a new ability shows up in the world");
+        // Testing to see if adding a new ability shows up in the world
         player.addAbilities("MULTISHOT");
 
-        System.out.println("Abilities: " + player.getAbilities());
-
-        System.out.println("Test to see if adding the same ability does not show up in the world");
-         player.addAbilities("MULTISHOT");
-
-        System.out.println("Abilities: " + player.getAbilities());
-
-        // Create a test inventory for the player
-
-        Inventory check = new Inventory();
-
-        player.setInventory(check);
-
-
+        // Test to see if adding the same ability does not show up in the world
+        // player.addAbilities("MULTISHOT");
 
 
 
@@ -296,8 +285,12 @@ public class World{
                 long played = end - start;
                 player.setTimePlayed(player.getTimePlayed() + played);
 
+                bm.pause();
+
                 /*TODO HUNTER: WRITE OUT PLAYER INFO HERE*/
                 dbConnection.updatePlayer(player);
+                System.out.println("timeplayed after: " + + (player.getTimePlayed() / 1000) % 60 + "seconds");
+                dbConnection.logout(player.getUsername());
                 exit = true;//break out of display loop
                 frame.dispose();
                 //System.exit(69); Nice
@@ -411,9 +404,9 @@ public class World{
         battle4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == battle4) {
+                if(e.getSource() == battle) {
                     jeff.displayBattle(player);
-                    battle4.setVisible(false);
+                    battle.setVisible(false);
                 }
             }
         });
@@ -519,17 +512,23 @@ public class World{
 
 
         //TODO add player stat
-        JLabel health = new JLabel("MAX HEALTH: "+player.getMaxHP()+" Current Health: " + player.getHp());
+        JLabel health = new JLabel("HP: " + player.getHp() + "/" + player.getMaxHP());
         health.setBackground(Color.white);
         //health.setBounds(20,20,50,50);
         health.setOpaque(false);
         health.setVisible(true);
 
-        JLabel stamina = new JLabel("MAX STAMINA: "+player.getMaxStamina()+" Stamina: " + player.getStamina());
+        JLabel stamina = new JLabel("Stamina: " + player.getStamina() + "/" + player.getMaxStamina());
         stamina.setBackground(Color.white);
         //stamina.setBounds(20,frameHeight-(tileSize+20),50,50);
         stamina.setOpaque(false);
         stamina.setVisible(true);
+
+        JLabel timeplayed = new JLabel("time played: " + (player.getTimePlayed() / 1000) % 60 + " seconds");
+        timeplayed.setBackground(Color.white);
+        //stamina.setBounds(20,frameHeight-(tileSize+20),50,50);
+        timeplayed.setOpaque(false);
+        timeplayed.setVisible(true);
 
         JLabel intellect = new JLabel("Intellect: " + 5);
         //health.setBackground(Color.white);
@@ -555,9 +554,13 @@ public class World{
         xp.setOpaque(false);
         xp.setVisible(true);
 
-        //JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
-        //playerClass.setOpaque(false);
-        //playerClass.setVisible(true);
+        JLabel gold = new JLabel("Gold: " + player.getGold());
+        gold.setOpaque(false);
+        gold.setVisible(true);
+
+        JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
+        playerClass.setOpaque(false);
+        playerClass.setVisible(true);
 
         //Implement current time clock
         JLabel clockLabel = new JLabel();
@@ -568,11 +571,78 @@ public class World{
             @Override
             public void actionPerformed(ActionEvent e) {
                 long millis = System.currentTimeMillis();
+                int hour = (int)(((millis / (1000*60*60)) % 24) - 4);
 
-                clockLabel.setText(String.format("Current Time: %s %d:%d",
+                if (hour == 0)
+                {
+                    hour = 12;
+                }
+                else if (hour == -1)
+                {
+                    hour = 11;
+                }
+                else if (hour == -2)
+                {
+                    hour = 10;
+                }
+                else if (hour == -3)
+                {
+                    hour = 9;
+                }
+
+                int minute = (int) ((millis / (1000*60)) % 60);
+                String minString = "";
+
+                if (minute == 0)
+                {
+                    minString = "00";
+                }
+                else if (minute == 1)
+                {
+                    minString = "01";
+                }
+                else if (minute == 2)
+                {
+                    minString = "02";
+                }
+                else if (minute == 3)
+                {
+                    minString = "03";
+                }
+                else if (minute == 4)
+                {
+                    minString = "04";
+                }
+                else if (minute == 5)
+                {
+                    minString = "05";
+                }
+                else if (minute == 6)
+                {
+                    minString = "06";
+                }
+                else if (minute == 7)
+                {
+                    minString = "07";
+                }
+                else if (minute == 8)
+                {
+                    minString = "08";
+                }
+                else if (minute == 9)
+                {
+                    minString = "09";
+                }
+                else
+                {
+                    minString = Integer.toString((int)((millis / (1000*60)) % 60));
+                }
+
+
+                clockLabel.setText(String.format("Current Time: %s %d:%s",
                         java.time.LocalDate.now(),
-                        (int) (((millis / (1000*60*60)) % 24) - 4),
-                        (int) ((millis / (1000*60)) % 60)
+                        hour,
+                        minString
                 ));
 
             }
@@ -581,11 +651,13 @@ public class World{
 
         statPanel.add(health);
         statPanel.add(stamina);
+        statPanel.add(timeplayed);
         //statPanel.add(intellect);
         statPanel.add(speed);
         statPanel.add(level);
         statPanel.add(xp);
-        //statPanel.add(playerClass);
+        statPanel.add(gold);
+        statPanel.add(playerClass);
         statPanel.add(clockLabel);
 
         frame.add(statPanel);
@@ -611,6 +683,7 @@ public class World{
         bufferStrategy = canvas.getBufferStrategy();
         graphics = bufferStrategy.getDrawGraphics();
 
+        //frame.add(new CharacterPanel());
 
         while (true) { // will add movements in here and wait for certain motions to keep displaying this
 
@@ -741,8 +814,11 @@ public class World{
                     //get color of tile based on type
                     int type = this.worldMap[y][x].getType();
                     //0 is wall 1 is floor
-
-                    if (pause == true){graphics.setColor(Color.BLACK);}//game is paused
+                    // bm.play();//play backgrounf music if not paused
+                    if (pause == true){
+                        graphics.setColor(Color.BLACK);
+                        bm.pause();
+                    }//game is paused
                     else if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);} //player is here
                     else if (x == endPoint[0] && y == endPoint[1]){graphics.setColor(Color.GREEN);}//end point color
                     else if ((x == 3 && y == 3) | (x == 6 && y == 6) | (x == 15 && y == 25)) {graphics.setColor(Color.BLUE);}
@@ -755,10 +831,11 @@ public class World{
             }
 
             //Keep health updated
-            health.setText("MAX HEALTH: " + player.getMaxHP() + " Current Health: " + player.getHp());
-            stamina.setText("MAX STAMINA: " + player.getMaxStamina() + " Stamina: " + player.getStamina());
+            health.setText("HP: " + player.getHp() + "/" + player.getMaxHP());
+            stamina.setText("Stamina: " + player.getStamina() + "/" + player.getMaxStamina());
             level.setText("Level: " + player.getLevel());
             xp.setText("XP Needed: " + player.getLevelXP());
+            gold.setText("Gold: " + player.getGold());
 
 
             bufferStrategy.show();
@@ -781,11 +858,12 @@ public class World{
             }
         }
 //        Player player = new Player("RILEY6215","Riley",1);
+        
         Player player = dbConnection.getPlayers("RILEY6215")[0];
+        System.out.println("timeplayed before: " + (player.getTimePlayed() / 1000) % 60);
         World test = new World(50,50,tiles,player);
         //test.setPlayer(player);
         test.displayWorld();
-
     }
 
     public class upAction extends AbstractAction{
@@ -851,6 +929,11 @@ public class World{
         @Override
         public void actionPerformed(ActionEvent e) {
             pause = !pause;
+            if(pause == true){//pause or play music with game pause
+                bm.pause();;
+            } else{
+                bm.resume();
+            }
             System.out.println("pause");
         }
     }//pause action
@@ -869,9 +952,17 @@ public class World{
     public class inventoryAction extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("INVENTORY: " + player.getInventory().getItems());
-            InventoryDisplay inventoryDisplay = new InventoryDisplay();
-            inventoryDisplay.actionPerformed(e);
+            if (invOpen == 1)
+            {
+                //Inventory already open
+
+            }
+            else {
+                System.out.println("INVENTORY");
+                invOpen = 1;
+                InventoryDisplay inventoryDisplay = new InventoryDisplay(player);
+                //inventoryDisplay.actionPerformed(e);
+            }
         }
     }
 

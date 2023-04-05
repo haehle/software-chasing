@@ -76,7 +76,9 @@ public class dbConnection {
                         "\"" + player.getLevel() + "\", " +
                         "\"" + player.getLevelXP() + "\", " +
                         "\"" + player.getInitialLevelXP() + "\", " +
-                        "\"" + player.getCurrentLevelNo() + "\");";
+                        "\"" + player.getCurrentLevelNo() + "\", " +
+                        "\"" + player.getTimePlayed() + "\", " +
+                        "\"" + player.getPoints() + "\");";
 
                 statement.execute(query);
                 System.out.println("Player added successfully.");
@@ -126,7 +128,8 @@ public class dbConnection {
                 String query = "INSERT INTO Users VALUES (" +
                         "\"" + profile.getUsername() + "\", " +
                         "\"" + profile.getEmail() + "\", " +
-                        "\"" + profile.getEncryptedPassword() + "\");";
+                        "\"" + profile.getEncryptedPassword() + "\", " +
+                        "FALSE);";
 
                 statement.execute(query);
                 System.out.println("User profile added successfully.");
@@ -174,6 +177,7 @@ public class dbConnection {
 
                 String encryptedPassword = Util.EncryptPassword(password);
                 String email = "";
+                boolean loggedIn = false;
 
                 String query = "SELECT * FROM Users WHERE username=\"" + username +
                         "\" AND password=\"" + encryptedPassword + "\";";
@@ -191,12 +195,30 @@ public class dbConnection {
                     //Parse data
                     while (rs.next()) {
                         email = rs.getString("email");
+                        loggedIn = rs.getBoolean("loggedIn");
                         System.out.println("EMAIL: " + email + "\nUSERNAME: " + username);
                     }
 
                     //Create new User object with fetched data
                     Profile profile = new Profile(email, username, password);
-                    return profile;
+
+                    //Changed loggedIn status
+                    if (loggedIn)
+                    {
+                        throw new IllegalStateException("User already logged in");
+                    } else {
+                        try (Statement newStatement = connection.createStatement()) {
+                            String newQuery = "UPDATE Users SET loggedIn = true WHERE username = '" + username + "';";
+
+                            statement.execute(newQuery);
+                            System.out.println("loggedIn status changed successfully.");
+
+                        } catch (SQLException e) {
+                            throw new IllegalStateException("Could not change loggedIn status", e);
+                        }
+
+                        return profile;
+                    }
                 }
 
             } catch (SQLException e) {
@@ -242,7 +264,7 @@ public class dbConnection {
                                 rs.getInt("locationX"), rs.getInt("locationY"), rs.getInt("hp"),
                                 rs.getInt("maxHP"), rs.getInt("speed"), rs.getInt("stamina"),
                                 rs.getInt("maxStamina"), rs.getInt("level"), rs.getInt("levelXP"),
-                                rs.getInt("initialLevelXP"), inventory);
+                                rs.getInt("initialLevelXP"), inventory, rs.getLong("timePlayed"), rs.getLong("points"));
 
                         players[i] = player;
 
@@ -455,7 +477,10 @@ public class dbConnection {
                         "MaxStamina=" + player.getMaxStamina() + ", " +
                         "Level=" + player.getLevel() + ", " +
                         "LevelXP=" + player.getLevelXP() + ", " +
-                        "InitialLevelXP=" + player.getInitialLevelXP() + " " +
+                        "InitialLevelXP=" + player.getInitialLevelXP() + ", " +
+                        "CurrentLevelNo=" + player.getCurrentLevelNo() + ", " +
+                        "timePlayed=" + player.getTimePlayed() + ", " +
+                        "points=" + player.getPoints() + " " +
                         "WHERE Username=\"" + player.getUsername() + "\" " +
                         "AND Name=\"" + player.getName() + "\";";
 
@@ -545,6 +570,28 @@ public class dbConnection {
 
             } catch (SQLException e) {
                 throw new IllegalStateException("Could not delete item", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+    public static void logout(String username)
+    {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+                String query = "UPDATE Users SET loggedIn = FALSE WHERE username = '" + username + "';";
+
+                statement.execute(query);
+                System.out.println("loggedIn status changed successfully.");
+
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not update player data", e);
             }
 
 

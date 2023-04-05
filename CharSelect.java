@@ -1,15 +1,18 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
 public class CharSelect {
-    JFrame window;
+    static JFrame window;
     Container con;
     JPanel menu;
     JPanel titlePanel;
     JPanel editPanel;
+    BackgroundMusic bm;
 
     public static String username;//Get current users username
 
@@ -48,11 +51,20 @@ public class CharSelect {
             char3Name = players[2].getName();
         }
 
-        BackgroundMusic bm = new BackgroundMusic("lobby");
+        bm = new BackgroundMusic("lobby");
+        bm.play();
 
         window = new JFrame();
         window.setSize(800,600);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        window.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent event) {
+                bm.pause();
+                exitProcedure();
+            }
+        });
         window.getContentPane().setBackground(Color.black);
         window.setLayout(null);
         window.setVisible(true);
@@ -83,6 +95,22 @@ public class CharSelect {
             con.add(createCharButton);
         }
 
+        JButton char1UpgradeButton = new JButton();
+        char1UpgradeButton.setBounds(160, 300, 100, 60);
+        char1UpgradeButton.setBackground(Color.white);
+        char1UpgradeButton.setText("Upgrade");
+        char1UpgradeButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                currentPlayer = char1;
+                window.dispose();
+                bm.pause();
+                new CharUpgrade(profile, currentPlayer);
+            }
+            
+        });
+
         JButton char1Button = new JButton();
         char1Button.setBounds(270, 300, 200, 60);
         char1Button.setBackground(Color.white);
@@ -93,6 +121,8 @@ public class CharSelect {
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char1;
                 window.dispose();
+                bm.pause();
+                new CharacterFrame(currentPlayer.getPlayerClass());
                // try {
                 //    Game.StartGame(profile, currentPlayer);
                // } catch (InterruptedException ex) {
@@ -129,10 +159,27 @@ public class CharSelect {
         });
 
         if(char1Name != null){
+            con.add(char1UpgradeButton);
             con.add(char1Button);
             con.add(char1EditButton);
             con.add(char1DeleteButton);
         }
+
+        JButton char2UpgradeButton = new JButton();
+        char2UpgradeButton.setBounds(160, 380, 100, 60);
+        char2UpgradeButton.setBackground(Color.white);
+        char2UpgradeButton.setText("Upgrade");
+        char2UpgradeButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                currentPlayer = char2;
+                window.dispose();
+                bm.pause();
+                new CharUpgrade(profile, currentPlayer);
+            }
+            
+        });
 
         JButton char2Button = new JButton();
         char2Button.setBounds(270, 380, 200, 60);
@@ -144,6 +191,8 @@ public class CharSelect {
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char2;
                 window.dispose();
+                bm.pause();
+                new CharacterFrame(currentPlayer.getPlayerClass());
               //  try {
              //       Game.StartGame(profile, currentPlayer);
              //   } catch (InterruptedException ex) {
@@ -180,10 +229,27 @@ public class CharSelect {
         });
 
         if(char2Name != null){
+            con.add(char2UpgradeButton);
             con.add(char2Button);
             con.add(char2EditButton);
             con.add(char2DeleteButton);
         }
+
+        JButton char3UpgradeButton = new JButton();
+        char3UpgradeButton.setBounds(160, 460, 100, 60);
+        char3UpgradeButton.setBackground(Color.white);
+        char3UpgradeButton.setText("Upgrade");
+        char3UpgradeButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                currentPlayer = char3;
+                window.dispose();
+                bm.pause();
+                new CharUpgrade(profile, currentPlayer);
+            }
+            
+        });
 
         JButton char3Button = new JButton();
         char3Button.setBounds(270, 460, 200, 60);
@@ -195,6 +261,8 @@ public class CharSelect {
             public void actionPerformed(ActionEvent e) {
                 currentPlayer = char3;
                 window.dispose();
+                bm.pause();
+                new CharacterFrame(currentPlayer.getPlayerClass());
             }
             
         });
@@ -226,6 +294,7 @@ public class CharSelect {
         });
 
         if(char3Name != null){
+            con.add(char3UpgradeButton);
             con.add(char3Button);
             con.add(char3EditButton);
             con.add(char3DeleteButton);
@@ -332,7 +401,7 @@ public class CharSelect {
         createCon.add(createTitlePanel);
 
         JPanel form = new JPanel();
-        form.setSize(600,150);
+        form.setSize(600,300);
         form.setLocation(100, 200);
         form.setBackground(Color.blue);
 
@@ -357,12 +426,24 @@ public class CharSelect {
 
         ButtonGroup classGroup = new ButtonGroup();
         JRadioButton class1 = new JRadioButton();
+        ImageIcon imageIcon1 = new ImageIcon("char1-right.png"); 
+        Image image1 = imageIcon1.getImage(); 
+        Image newimg1 = image1.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
+        class1.setIcon(new ImageIcon(newimg1));
         class1.setText("Software Engineering - creative player focused on designing new and useful systems");
         class1.setLocation(150, 300);
         JRadioButton class2 = new JRadioButton();
+        ImageIcon imageIcon2 = new ImageIcon("char2-right.png"); 
+        Image image2 = imageIcon2.getImage(); 
+        Image newimg2 = image2.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
+        class2.setIcon(new ImageIcon(newimg2));
         class2.setText("Machine Learning - analytical player focused on data and its applications in systems");
         class2.setLocation(150, 300);
         JRadioButton class3 = new JRadioButton();
+        ImageIcon imageIcon3 = new ImageIcon("char3-right.png"); 
+        Image image3 = imageIcon3.getImage(); 
+        Image newimg3 = image3.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH);
+        class3.setIcon(new ImageIcon(newimg3));
         class3.setText("Security - determined player focused on building thoroughly-secure systems");
         class3.setLocation(150, 300);
         classGroup.add(class1);
@@ -376,7 +457,7 @@ public class CharSelect {
         createCon.add(form);
 
         JButton createCharButton = new JButton();
-        createCharButton.setBounds(270, 400, 100, 50);
+        createCharButton.setBounds(270, 430, 100, 50);
         createCharButton.setBackground(Color.white);
         createCharButton.setText("Create");
         createCharButton.addActionListener(new ActionListener(){
@@ -417,7 +498,7 @@ public class CharSelect {
         createCon.add(createCharButton);
 
         JButton cancelButton = new JButton();
-        cancelButton.setBounds(390, 400, 100, 50);
+        cancelButton.setBounds(390, 430, 100, 50);
         cancelButton.setBackground(Color.white);
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new ActionListener(){
@@ -460,5 +541,17 @@ public class CharSelect {
                 //Invalid password, prompt for password again
             }
         }
+    }
+
+    public void exitProcedure()
+    {
+        dbConnection.logout(username);
+        bm.pause();
+        window.dispose();
+    }
+
+    public static void main(String[] args) {
+        Profile profiletemp = dbConnection.login("test", "Password123");
+        new CharSelect(profiletemp);
     }
 }

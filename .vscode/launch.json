@@ -6,6 +6,41 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CharUpgrade",
+            "request": "launch",
+            "mainClass": "CharUpgrade",
+            "projectName": "software-chasing_9c492f81"
+        },
+        {
+            "type": "java",
+            "name": "CharSelect",
+            "request": "launch",
+            "mainClass": "CharSelect",
+            "projectName": "software-chasing_9c492f81"
+        },
+        {
+            "type": "java",
+            "name": "LoginForm",
+            "request": "launch",
+            "mainClass": "LoginForm",
+            "projectName": "software-chasing_9c492f81"
+        },
+        {
+            "type": "java",
+            "name": "CharacterPanel",
+            "request": "launch",
+            "mainClass": "CharacterPanel",
+            "projectName": "software-chasing_9c492f81"
+        },
+        {
+            "type": "java",
+            "name": "dbConnection",
+            "request": "launch",
+            "mainClass": "dbConnection",
+            "projectName": "software-chasing_9c492f81"
+        },
+        {
+            "type": "java",
             "name": "Game",
             "request": "launch",
             "mainClass": "Game",
