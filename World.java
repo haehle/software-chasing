@@ -192,7 +192,7 @@ public class World{
 
 
 
-        // Adding a base set of abilities
+         //Adding a base set of abilities
 
         ArrayList<String> test= new ArrayList<String>();
 
@@ -203,12 +203,12 @@ public class World{
         System.out.println("Abilities: " + player.getAbilities());
 
 
-        // Testing to see if adding a new ability shows up in the world
+        System.out.println("Testing to see if adding a new ability shows up in the world");
         player.addAbilities("MULTISHOT");
 
         System.out.println("Abilities: " + player.getAbilities());
 
-        // Test to see if adding the same ability does not show up in the world
+        System.out.println("Test to see if adding the same ability does not show up in the world");
          player.addAbilities("MULTISHOT");
 
         System.out.println("Abilities: " + player.getAbilities());
