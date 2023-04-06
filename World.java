@@ -83,6 +83,29 @@ public class World{
         pause = false; //is game paused
     }//constructor of world
 
+    public World(int height, int length, Tile[][] tileMap, Player player){ /*TODO: ADD PLAYER FIELD*/
+        //super(player.getName());
+
+        bm = new BackgroundMusic("game");
+        bm.play();//plays music
+
+        this.worldMap = new Tile[height][length];
+        this.height = height; //y
+        this.length = length; // x
+        this.player = player;
+        this.spawnPoint = player.getLocation(); //pick up where last left    //new int[]{0, 0};//spawn point in reference to world map
+        this.currLoc = spawnPoint;//location in tiles (reference to current map
+        this.endPoint = new int[] {27,43};
+        checkPoint = new int[] {0,48};
+        backPoint = new int[] {48,0};
+        this.tileSize = 10;
+        worldMap = tileMap;
+        exit = false; //exit the graphics loop
+        complete = false; //level was completed
+        goBack = false; //go back a level
+        pause = false; //is game paused
+    }//constructor of world
+
     public int[] getAdjTiles(int x, int y){// will teturn the tile type to the player -1 if it doesnt exist up down left right
         int[] adjTiles = new int[4];
         adjTiles[0] = getUp(x, y);//up
@@ -865,8 +888,10 @@ public class World{
         //1 go to the next level
         //0 stay the same level
         //-1 go back a level
+
+        System.out.println("COMPLETE: " + complete + "GO BACK: " + goBack);
         if (goBack){return -1;}
-        if (complete){return 1;} else {return 0;}
+        if (complete || (player.getCurrentLevelNo() < player.getMaxLevelNO())){return 1;} else {return 0;}
     }//END DISPLAY WORLD
 
     public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
@@ -1037,7 +1062,7 @@ public class World{
     }
 
     public void checkLevelChange(int[] currLoc1) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        if ((currLoc1[0] == endPoint[0] && currLoc1[1] == endPoint[1] && complete) || (player.getCurrentLevelNo() < player.getMaxLevelNO()) ){//player got to the end point
+        if ((currLoc1[0] == endPoint[0] && currLoc1[1] == endPoint[1]) && (complete || (player.getCurrentLevelNo() < player.getMaxLevelNO())) ){//player got to the end point
             playSound("Music/level.wav");
             System.out.println("Next Level!");
             exit = true;
@@ -1057,7 +1082,7 @@ public class World{
         }
     }
 
-
-
-
+    public Tile[][] getWorldMap() {
+        return worldMap;
+    }
 }// END CLASS
