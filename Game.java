@@ -54,9 +54,13 @@ public class Game {//used to load in the game to start levels from the main menu
                     if (levelNo == this.numLevels){
                         endGame = true;
                         break;
-                    }// the max level was completed
+                    }// the max level was completed & exited
+
                     player.setCurrentLevelNo(levelNo);
-                    player.setMaxLevelNO(levelNo);
+                    if (levelNo > player.getMaxLevelNO()) { //made it to the next level
+                        player.setMaxLevelNO(levelNo);
+                    }
+
                     //new world was completed and there is another, reset the player to the spawn location of the next level
                     levels[levelNo].resetPlayer();
                     break;
@@ -76,18 +80,34 @@ public class Game {//used to load in the game to start levels from the main menu
 
             if (endGame){break;}
 
-//            levelNo++;//move to the next level since the last was completed
-//            player.setCurrentLevelNo(levelNo);
-//            player.setMaxLevelNO(levelNo);
-//            //new world was completed and there is another, reset the player to the spawn location of the next level
-//            levels[levelNo].resetPlayer();
-//            player.setLocation(levels[levelNo].getSpawnPoint());
+
         }//while loop (game loop)
 
         //TODO if endgame display victory screen
-
+        JFrame endScreen = null;
 //        this.level.displayWorld();
-        if (endGame){}
+        if (endGame){
+            endScreen = new JFrame("YOU WIN!");
+            endScreen.setSize(1920, 1080);
+            endScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            JLabel banner = new JLabel("Congratulations! You Graduated!", SwingConstants.CENTER);
+            banner.setBackground(Color.decode("#cfb991"));
+            endScreen.add(banner);
+            banner.setVisible(true);
+            banner.setOpaque(true);
+            endScreen.setVisible(true);
+
+
+
+        }
+
+        if (endGame && endScreen != null){
+            while (endScreen.isVisible()){
+                System.out.println("hi");
+            }
+        }
+
 
         /*TODO UPON EXIT WRITE THE DATA OF PLAYER TO DB*/
 
@@ -100,27 +120,30 @@ public class Game {//used to load in the game to start levels from the main menu
         /*TODO FILL THIS OUT*/
 
         //TODO GET PLAYER
-//        Profile currentProfile = dbConnection.login("RILEY6215", "password");
-//        Player currentPlayer = dbConnection.getPlayers("RILEY6215")[0];
-//
-//        if (currentProfile == null)
-//        {
-//            Util.createProfile("riley@test.com", "RILEY6215", "password");
-//
-//        }
-//
-//        if (currentPlayer == null)
-//        {
-//            Util.createPlayer("RILEY6215", "Riley", 1);
-//        }
-        Player currentPlayer = new Player("Riley6215","Riley",1);
+        Profile currentProfile = dbConnection.login("RILEY6215", "password");
+        Player currentPlayer = dbConnection.getPlayers("RILEY6215")[0];
+
+        if (currentProfile == null)
+        {
+            Util.createProfile("riley@test.com", "RILEY6215", "password");
+
+        }
+
+        if (currentPlayer == null)
+        {
+            Util.createPlayer("RILEY6215", "Riley", 1);
+        }
+
+//        Player currentPlayer = new Player("Riley6215","Riley",1);
 
         World[] levels = generateWorlds(currentPlayer);
 
         //make game object and run it
         Game game = new Game(levels,currentPlayer);
+
         game.run();
         System.out.println("HOPE YOU ENJOYED!");
+
         /**IF CODE GETS HERE .run has completed/window was closed*/
         System.exit(0);
 

@@ -1074,7 +1074,7 @@ public class World{
             exit = true;
         }//player is at back point
 
-    }
+    }//end level change
 
     public void checkLevelComplete(int[] currLoc1){
         if (currLoc1[0] == checkPoint[0] && currLoc1[1] == checkPoint[1]) {
