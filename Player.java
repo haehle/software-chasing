@@ -8,6 +8,7 @@ import java.util.List;
 public class Player {
 
     private static JFrame frame;
+
     private JPanel panel;
 
     private JButton backButton;
@@ -35,6 +36,7 @@ public class Player {
     private String[] skills;
     private ArrayList<String> abilities;
     private int currentLevelNo;
+    private int maxLevelNO;
     private Inventory inventory;
     int playerClass;
     private long timePlayed;
@@ -51,6 +53,7 @@ public class Player {
         this.initialLevelXP = 100;
         this.gold = 400;
         this.currentLevelNo = 0;
+        this.maxLevelNO = 0;
         this.timePlayed = 0;
         this.points = 0;
         //if (type == 1) {
@@ -87,7 +90,7 @@ public class Player {
     //Constructor used to initialize Player object from database information
     public Player(String username, String name, int playerClass, int locationX, int locationY, int hp, int maxHP,
                   int speed, int stamina, int maxStamina, int level, int levelXP, int initialLevelXP, Inventory inventory,
-                  long timePlayed, long points) {
+                  long timePlayed, long points, int currentLevelNo, int maxLevelNO) {
         this.timePlayed = 0;
         this.username = username;
         this.name = name;
@@ -102,9 +105,11 @@ public class Player {
         this.stamina = stamina;
         this.maxStamina = maxStamina;
         this.inventory = inventory;
-        this.currentLevelNo = 0;
+        this.currentLevelNo = currentLevelNo;
+        this.maxLevelNO = maxLevelNO;
         this.timePlayed = timePlayed;
         this.points = points;
+
 
         //Need to get these from alternate table
         this.skills = new String[]{};
@@ -125,6 +130,14 @@ public class Player {
     public void setCurrentLevelNo(int currentLevelNo) {
         this.currentLevelNo = currentLevelNo;
         }
+
+    public int getMaxLevelNO() {
+        return maxLevelNO;
+    }
+
+    public void setMaxLevelNO(int maxLevelNO) {
+        this.maxLevelNO = maxLevelNO;
+    }
 
     public int getGold() {
             return this.gold;

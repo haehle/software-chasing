@@ -28,10 +28,13 @@ public class World{
     private final int length; // x coord
     private int[] spawnPoint;
     private int[] endPoint;
+    private int[] backPoint;//where you go to go back a level
     private int[] currLoc;
     public int tileSize;
     boolean pause;
     boolean complete;
+    boolean goBack;
+    private int[] checkPoint;
     public static int invOpen;
     BackgroundMusic bm;
 
@@ -66,6 +69,8 @@ public class World{
         this.spawnPoint = player.getLocation(); //pick up where last left    //new int[]{0, 0};//spawn point in reference to world map
         this.currLoc = spawnPoint;//location in tiles (reference to current map
         this.endPoint = new int[] {27,43};
+        checkPoint = new int[] {0,48};
+        backPoint = new int[] {48,0};
         this.tileSize = 10;
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.length; x++) {
@@ -74,6 +79,7 @@ public class World{
         }
         exit = false; //exit the graphics loop
         complete = false; //level was completed
+        goBack = false; //go back a level
         pause = false; //is game paused
     }//constructor of world
 
@@ -141,6 +147,8 @@ public class World{
     }
 
     public int displayWorld() throws UnsupportedAudioFileException, LineUnavailableException, IOException { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
+
+        goBack = false; //go back a level
 
         long start = System.currentTimeMillis();//sets start time to calculate time played
 
@@ -236,16 +244,6 @@ public class World{
         frame.setResizable(true);
         frame.setVisible(true);
 
-
-//KEY LISTEN
-//        frame.addKeyListener(new KeyAdapter() {
-//            @Override
-//            public void keyPressed(KeyEvent e) {
-//                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-//                    frame.changeVisibility();
-//                }
-//            }
-//        });
 
         //creating "player" label
         playerLabel = new JLabel();
@@ -566,9 +564,10 @@ public class World{
         gold.setOpaque(false);
         gold.setVisible(true);
 
-        JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
-        playerClass.setOpaque(false);
-        playerClass.setVisible(true);
+        //THIS LABEL CAUSES ISSUES LOOK INTO AT END IF THERES TIME- Riley
+//        JLabel playerClass = new JLabel("Class: " + player.getPlayerClassName());
+//        playerClass.setOpaque(false);
+//        playerClass.setVisible(true);
 
         //Implement current time clock
         JLabel clockLabel = new JLabel();
@@ -665,7 +664,7 @@ public class World{
         statPanel.add(level);
         statPanel.add(xp);
         statPanel.add(gold);
-        statPanel.add(playerClass);
+//        statPanel.add(playerClass); Label didnt work see above coment out for more -Riley
         statPanel.add(clockLabel);
 
         frame.add(statPanel);
@@ -834,9 +833,11 @@ public class World{
                     if (pause == true){
                         graphics.setColor(Color.BLACK);
                         bm.pause();
-                    }//game is paused
+                    }//game is paused #5faae2
                     else if (currLoc[0] == x && currLoc[1] == y){graphics.setColor(Color.YELLOW);} //player is here
                     else if (x == endPoint[0] && y == endPoint[1]){graphics.setColor(Color.GREEN);}//end point color
+                    else if (x == checkPoint[0] && y == checkPoint[1]){graphics.setColor(Color.decode("#5faae2"));}//end point color
+                    else if (x == backPoint[0] && y == backPoint[1]){graphics.setColor(Color.decode("#d15793"));}//back point color
                     else if ((x == 3 && y == 3) | (x == 6 && y == 6) | (x == 15 && y == 25)) {graphics.setColor(Color.BLUE);}
                     else if ((x == 10 && y == 6) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
                     else if (x == 40 && y == 30) {graphics.setColor(Color.RED);}
@@ -859,6 +860,12 @@ public class World{
             if (exit){break;}
         }//DISPLAY LOOP
         frame.dispose();
+
+        //return values for game.java
+        //1 go to the next level
+        //0 stay the same level
+        //-1 go back a level
+        if (goBack){return -1;}
         if (complete){return 1;} else {return 0;}
     }//END DISPLAY WORLD
 
@@ -873,9 +880,9 @@ public class World{
 //                count++;
             }
         }
-//        Player player = new Player("RILEY6215","Riley",1);
+        Player player = new Player("RILEY6215","Riley",1);
         
-        Player player = dbConnection.getPlayers("RILEY6215")[0];
+//        Player player = dbConnection.getPlayers("RILEY6215")[0];
         System.out.println("timeplayed before: " + (player.getTimePlayed() / 1000) % 60);
         World test = new World(50,50,tiles,player);
         //test.setPlayer(player);
@@ -886,17 +893,19 @@ public class World{
         @Override
         public void actionPerformed(ActionEvent e) {
             if (pause == true){return;}
-            System.out.println(" UP LOCATION" + currLoc[0] +"  Y: "+ currLoc[1]);
             if (getUp(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() - tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] - 1 );
             player.setLocation(currLoc);
+            System.out.println(" UP LOCATION" + currLoc[0] +"  Y: "+ currLoc[1]);
+
+            checkLevelComplete(currLoc);
             try {
-                checkLevelFinish(currLoc);
+                checkLevelChange(currLoc);
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("UP");
+
             try {
                 playSound("Music/footstep.wav");
             } catch (LineUnavailableException | UnsupportedAudioFileException | IOException ex) {
@@ -908,43 +917,46 @@ public class World{
         @Override
         public void actionPerformed(ActionEvent e) {
             if (pause == true){return;}
-            System.out.println(" DOWN LOCATION" + " X: "+ currLoc[0] +"  Y: "+ currLoc[1]);
             if (getDown(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() + tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] + 1 );
             player.setLocation(currLoc);
+
+            System.out.println(" DOWN LOCATION" + " X: "+ currLoc[0] +"  Y: "+ currLoc[1]);
+
+            checkLevelComplete(currLoc);
             try {
-                checkLevelFinish(currLoc);
+                checkLevelChange(currLoc);
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("down");
+
             try {
                 playSound("Music/footstep.wav");
             } catch (LineUnavailableException | IOException | UnsupportedAudioFileException ex) {
                 throw new RuntimeException(ex);
             }
-            //player.gainXP(1);
-            //System.out.println("XP = " + player.getLevelXP());
+
         }
     }//down action
     public class leftAction extends AbstractAction{
         @Override
         public void actionPerformed(ActionEvent e) {
             if (pause == true){return;}
-            System.out.println("LOCATION X: " + currLoc[0] +"  Y: "+ currLoc[1]);
+
             if (getLeft(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX() - tileSize,playerLabel.getY());//x then y
             setCurrLoc(currLoc[0] - 1, currLoc[1] );
             player.setLocation(currLoc);
-            //player.setHp((player.getHp() - 1));
-            //player.setStamina((player.getStamina() + 1));
+            System.out.println("LEFT LOCATION X: " + currLoc[0] +"  Y: "+ currLoc[1]);
+
+            checkLevelComplete(currLoc);
             try {
-                checkLevelFinish(currLoc);
+                checkLevelChange(currLoc);
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("left");
+
             try {
                 playSound("Music/footstep.wav");
             } catch (LineUnavailableException | UnsupportedAudioFileException | IOException ex) {
@@ -956,19 +968,19 @@ public class World{
         @Override
         public void actionPerformed(ActionEvent e) {
             if (pause == true){return;}
-            System.out.println("LOCATION X: " + currLoc[0] +"  Y: "+ currLoc[1]);
             if (getRight(currLoc[0],currLoc[1])!= 1) {return;} //illegal movement cant move because it isn't a walkable tile
             playerLabel.setLocation(playerLabel.getX() + tileSize,playerLabel.getY());//x then y
             setCurrLoc(currLoc[0] + 1, currLoc[1] );
             player.setLocation(currLoc);
-            //player.setStamina((player.getStamina() - 1));
-            //player.setHp((player.getHp() + 1));
+            System.out.println("Right LOCATION X: " + currLoc[0] +"  Y: "+ currLoc[1]);
+
+            checkLevelComplete(currLoc);
             try {
-                checkLevelFinish(currLoc);
+                checkLevelChange(currLoc);
             } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("right");
+
             try {
                 playSound("Music/footstep.wav");
             } catch (LineUnavailableException | IOException | UnsupportedAudioFileException ex) {
@@ -1024,15 +1036,28 @@ public class World{
         this.currLoc = new int[]{0,0};
     }
 
-    public void checkLevelFinish(int[] currLoc1) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
-        if (currLoc1[0] == endPoint[0] && currLoc1[1] == endPoint[1]){//player got to the end point
+    public void checkLevelChange(int[] currLoc1) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
+        if ((currLoc1[0] == endPoint[0] && currLoc1[1] == endPoint[1] && complete) || (player.getCurrentLevelNo() < player.getMaxLevelNO()) ){//player got to the end point
             playSound("Music/level.wav");
-            System.out.println("ENDPOINT!");
-            complete = true;
+            System.out.println("Next Level!");
             exit = true;
         } //player got to the end point
 
+        if (currLoc1[0] == backPoint[0] && currLoc1[1] == backPoint[1] ){//player got to the end point
+            System.out.println("Previous Level!");
+            goBack = true;
+            exit = true;
+        }//player is at back point
+
     }
+
+    public void checkLevelComplete(int[] currLoc1){
+        if (currLoc1[0] == checkPoint[0] && currLoc1[1] == checkPoint[1]) {
+            complete = true;
+        }
+    }
+
+
 
 
 }// END CLASS

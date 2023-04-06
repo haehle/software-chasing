@@ -260,11 +260,13 @@ public class dbConnection {
                         Inventory inventory = new Inventory();
                         inventory = getInventory(username, name);
 
+
+                        //NOTE: Hunter I need to insert an int currentLevelNO and then int maxLevelNO at the end of this constructor (see the constructor in player.java)
                         Player player = new Player(username, name, rs.getInt("playerClass"),
                                 rs.getInt("locationX"), rs.getInt("locationY"), rs.getInt("hp"),
                                 rs.getInt("maxHP"), rs.getInt("speed"), rs.getInt("stamina"),
                                 rs.getInt("maxStamina"), rs.getInt("level"), rs.getInt("levelXP"),
-                                rs.getInt("initialLevelXP"), inventory, rs.getLong("timePlayed"), rs.getLong("points"));
+                                rs.getInt("initialLevelXP"), inventory, rs.getLong("timePlayed"), rs.getLong("points"), rs.getInt("currentLevel"), rs.getInt("maxLevel"));
 
                         players[i] = player;
 

@@ -36,18 +36,48 @@ public class Game {//used to load in the game to start levels from the main menu
         //this.level.setTileSize(tileSize);//resize per game specification
         int levelNo = player.getCurrentLevelNo(); //make this saved in the player class as current level
         int complete;
+        boolean endGame = false;
         //System.out.println("RETURN" + this.level.displayWorld());
         while (true){
             if (this.numLevels == levelNo){break;}
             complete = this.levels[levelNo].displayWorld();
-            if (complete != 1  || levelNo == (this.numLevels-1)){break;} //map was not completed or it finished last level
+            //return values for game.java
+            //1 go to the next level
+            //0 stay the same level
+            //-1 go back a level
+            //if (complete != 1  || levelNo == (this.numLevels-1)){break;} //map was not completed or it finished last level
 
-            levelNo++;//move to the next level since the last was completed
-            player.setCurrentLevelNo(levelNo);
-            //new world was completed and there is another, reset the player to the spawn location of the next level
-            levels[levelNo].resetPlayer();
+            switch (complete){
+                case 1:
+                    levelNo++;//move to the next level since the last was completed
+                    if (levelNo == this.numLevels){
+                        endGame = true;
+                        break;
+                    }// the max level was completed
+                    player.setCurrentLevelNo(levelNo);
+                    player.setMaxLevelNO(levelNo);
+                    //new world was completed and there is another, reset the player to the spawn location of the next level
+                    levels[levelNo].resetPlayer();
+                    break;
+                case 0:
+                    break;
+                case -1:
+                    if (levelNo > 0){ //go back a level if you can if not stay as is
+                        levelNo--;
+                        player.setCurrentLevelNo(levelNo);
+                        levels[levelNo].resetPlayer();
+                    }//go to previous level
+            }
+
+//            levelNo++;//move to the next level since the last was completed
+//            player.setCurrentLevelNo(levelNo);
+//            player.setMaxLevelNO(levelNo);
+//            //new world was completed and there is another, reset the player to the spawn location of the next level
+//            levels[levelNo].resetPlayer();
 //            player.setLocation(levels[levelNo].getSpawnPoint());
-        }
+        }//while loop (game loop)
+
+        //TODO if endgame display victory screen
 
 //        this.level.displayWorld();
 
@@ -62,20 +92,20 @@ public class Game {//used to load in the game to start levels from the main menu
         /*TODO FILL THIS OUT*/
 
         //TODO GET PLAYER
-        Profile currentProfile = dbConnection.login("RILEY6215", "password");
-        Player currentPlayer = dbConnection.getPlayers("RILEY6215")[0];
-
-        if (currentProfile == null)
-        {
-            Util.createProfile("riley@test.com", "RILEY6215", "password");
-
-        }
-
-        if (currentPlayer == null)
-        {
-            Util.createPlayer("RILEY6215", "Riley", 1);
-        }
-        //Player currentPlayer = new Player("Riley6215","Riley",1);
+//        Profile currentProfile = dbConnection.login("RILEY6215", "password");
+//        Player currentPlayer = dbConnection.getPlayers("RILEY6215")[0];
+//
+//        if (currentProfile == null)
+//        {
+//            Util.createProfile("riley@test.com", "RILEY6215", "password");
+//
+//        }
+//
+//        if (currentPlayer == null)
+//        {
+//            Util.createPlayer("RILEY6215", "Riley", 1);
+//        }
+        Player currentPlayer = new Player("Riley6215","Riley",1);
         //make tile type map for the world
         int[][] tiles = new int[50][50];
         int count = 1;
