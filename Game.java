@@ -9,7 +9,6 @@ public class Game {//used to load in the game to start levels from the main menu
 
     //FUTURE TODO: when we have multiple levels we ccan store an array of Worlds and then just load based off of last one
     //maybe preload a level?
-    private World level;
     private World[] levels;//user levels can move to the next one when it is complete
     private Player player;//character used by player with its stats
 
@@ -40,7 +39,7 @@ public class Game {//used to load in the game to start levels from the main menu
         //System.out.println("RETURN" + this.level.displayWorld());
         while (true){
             if (this.numLevels == levelNo){break;}
-            complete = new World(50,50,levels[levelNo].getWorldMap(),player).displayWorld();
+            complete = new World(50,50,levels[levelNo].getWorldMap(),player,levels.length).displayWorld();
             //complete = this.levels[levelNo].displayWorld();
             //return values for game.java
             //1 go to the next level
@@ -185,9 +184,9 @@ public class Game {//used to load in the game to start levels from the main menu
 
         World[]levels = new World[3];
 //        Player currentPlayer = new Player("Riley6215","Riley",1);
-        levels[0] = new World(50,50,tiles,currentPlayer);
-        levels[1] = new World(50,50,tiles2,currentPlayer);
-        levels[2] = new World(50,50,tiles3,currentPlayer);
+        levels[0] = new World(50,50,tiles,currentPlayer, levels.length);
+        levels[1] = new World(50,50,tiles2,currentPlayer, levels.length);
+        levels[2] = new World(50,50,tiles3,currentPlayer, levels.length);
 
         return levels;
     }
@@ -207,7 +206,7 @@ public class Game {//used to load in the game to start levels from the main menu
 
 
         //make the world
-        World test = new World(50,50,tiles,player);
+        World test = new World(50,50,tiles,player,tiles.length);
 
         //make game object and run it
         //Game game = new Game(test);

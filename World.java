@@ -31,6 +31,7 @@ public class World{
     private int[] backPoint;//where you go to go back a level
     private int[] currLoc;
     public int tileSize;
+    public float numLevels;
     boolean pause;
     boolean complete;
     boolean goBack;
@@ -38,13 +39,13 @@ public class World{
     public static int invOpen;
     BackgroundMusic bm;
 
-    private JButton shop, shop2, battle, battle2, battle3, battle4, home, menubuttons,pauseButton;
+    private JButton shop, shop2, battle, battle2, battle3, battle4, home, menubuttons;
 
     private boolean checker, checker2, checker3, checker4, checker5, checker6, checker7;
 
     private Player player;
     JFrame frame;
-    JLabel playerLabel, NPC1label, NPC2label, NPC3label, NPC4label, NPC5label, NPC6label, NPC7label;
+    JLabel playerLabel, gameProgress,NPC1label, NPC2label, NPC3label, NPC4label, NPC5label, NPC6label, NPC7label;
     Action moveUp = new upAction();
     Action moveDown = new downAction();
     Action moveLeft = new leftAction();
@@ -56,7 +57,7 @@ public class World{
 
 
 
-    public World(int height, int length, int[][] tileType, Player player){ /*TODO: ADD PLAYER FIELD*/
+    public World(int height, int length, int[][] tileType, Player player, float numLevels){ /*TODO: ADD PLAYER FIELD*/
         //super(player.getName());
 
         bm = new BackgroundMusic("game");
@@ -81,9 +82,10 @@ public class World{
         complete = false; //level was completed
         goBack = false; //go back a level
         pause = false; //is game paused
+        this.numLevels = numLevels;
     }//constructor of world
 
-    public World(int height, int length, Tile[][] tileMap, Player player){ /*TODO: ADD PLAYER FIELD*/
+    public World(int height, int length, Tile[][] tileMap, Player player, float numLevels){ /*TODO: ADD PLAYER FIELD*/
         //super(player.getName());
 
         bm = new BackgroundMusic("game");
@@ -104,6 +106,7 @@ public class World{
         complete = false; //level was completed
         goBack = false; //go back a level
         pause = false; //is game paused
+        this.numLevels = numLevels;
     }//constructor of world
 
     public int[] getAdjTiles(int x, int y){// will teturn the tile type to the player -1 if it doesnt exist up down left right
@@ -244,7 +247,9 @@ public class World{
 
 
         // Testing to see if adding a new ability shows up in the world
-        player.addAbilities("MULTISHOT");
+        if (!player.getAbilities().contains("MULTISHOT")) {
+            player.addAbilities("MULTISHOT");
+        }
 
         // Test to see if adding the same ability does not show up in the world
         // player.addAbilities("MULTISHOT");
@@ -261,7 +266,7 @@ public class World{
         //Creating the frame.
         frame = new JFrame(title);
 
-        frame.setSize(frameWidth, frameHeight );
+        frame.setSize(frameWidth+16, frameHeight + 39);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setResizable(true);
@@ -297,9 +302,22 @@ public class World{
         //add player label to the frame
         frame.add(playerLabel);
 
+        //create level display
+        float currentLevel = player.getCurrentLevelNo();
+
+
+        gameProgress = new JLabel("Level: " + (int) (currentLevel + 1),SwingConstants.CENTER);
+        gameProgress.setBounds(0,frameHeight-50,100,50);
+        if (((currentLevel + 1)/numLevels) < .4){gameProgress.setBackground(Color.red);} //first portion of levels
+        else if (((currentLevel + 1)/numLevels) < .7){gameProgress.setBackground(Color.yellow);}//second portion of levels
+        else {gameProgress.setBackground(Color.green);}//last portion of levels
+        gameProgress.setOpaque(true);
+
+
+
         //create the logout button
         JButton logoutButton = new JButton("Logout");
-        logoutButton.setBounds(0,frameHeight-100,100,100);
+        logoutButton.setBounds(0,frameHeight-100,100,50);
         logoutButton.setBackground(Color.decode("#daaa00"));
 
         //add logout action
@@ -328,6 +346,9 @@ public class World{
 
         //add the logout button to the frame
         frame.add(logoutButton);
+
+        //add the level display to the frame
+        frame.add(gameProgress);
 
         // Create pop up and shop button for interacting with NPCs
 
@@ -909,7 +930,7 @@ public class World{
         
 //        Player player = dbConnection.getPlayers("RILEY6215")[0];
         System.out.println("timeplayed before: " + (player.getTimePlayed() / 1000) % 60);
-        World test = new World(50,50,tiles,player);
+        World test = new World(50,50,tiles,player,1);
         //test.setPlayer(player);
         test.displayWorld();
     }
