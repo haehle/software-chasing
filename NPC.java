@@ -186,7 +186,7 @@ public class NPC {
         panel.setLayout(null);
 
         // Set the size of the panel
-        panel.setPreferredSize(new Dimension(1020, 780));
+        panel.setPreferredSize(new Dimension(1220, 880));
         panel.setBackground(Color.decode("#cfb991"));
 
         frame.getContentPane().add(panel);
@@ -199,16 +199,19 @@ public class NPC {
         start.setForeground(Color.BLACK);
         start.setFont(font1);
         panel.add(start);
+        start.setVisible(true);
 
         startButton = new JButton("Start");
         startButton.setBounds(250, 500, 100, 50);
         startButton.setBackground(Color.decode("#9d9795"));
         panel.add(startButton);
+        startButton.setVisible(true);
 
         fleeButton = new JButton("Flee");
         fleeButton.setBounds(800, 500, 100, 50);
         fleeButton.setBackground(Color.decode("#9d9795"));
         panel.add(fleeButton);
+        fleeButton.setVisible(true);
 
         backButton = new JButton("Back");
         backButton.setBounds(250, 500, 100, 50);
@@ -227,6 +230,7 @@ public class NPC {
         q2.setForeground(Color.decode("#555960"));
         q2.setFont(font1);
         panel.add(q2);
+        q2.setVisible(false);
 
         q2.setVisible(false);
         q2checker = false;
@@ -293,6 +297,7 @@ public class NPC {
                         battleButton2.setVisible(false);
                         battleButton3.setVisible(false);
                         panel.add(congrats);
+                        congrats.setVisible(true);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                     }
@@ -307,14 +312,156 @@ public class NPC {
             battleButton2.setText("Spiral");
             battleButton3.setText("Agile");
 
+
+
+            battleButton1.setBounds(250,600,250,50);
+            battleButton2.setBounds(250,400,250,50);
+            battleButton3.setBounds(250,200,250,50);
+
             battleButton3.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(e.getSource() == battleButton3) {
+                    if (e.getSource() == battleButton3 && !q2checker && !q3checker) {
+                        q1.setVisible(false);
+                        q2.setText("Ideally we want to...");
+                        q2.setVisible(true);
+                        q2checker = true;
+                        battleButton1.setBounds(250,200,250,50);
+                        battleButton2.setBounds(250,600,250,50);
+                        battleButton3.setBounds(250,400,250,50);
+                        battleButton1.setText("Increase cohesion and Increase coupling");
+                        battleButton2.setText("Decrease cohesion and Increase coupling");
+                        battleButton3.setText("Increase cohesion and Decrease coupling");
+                    } else if (e.getSource() == battleButton3 && q2checker) {
+                        q2.setVisible(false);
+                        q3.setText("Which of the following is not a type of testing?");
+                        q3.setVisible(true);
+                        q2checker = false;
+                        q3checker = true;
+                        battleButton2.setBounds(250,400,250,50);
+                        battleButton3.setBounds(250,600,250,50);
+                        battleButton1.setText("Unit");
+                        battleButton2.setText("Sandwich");
+                        battleButton3.setText("Potato Chip");
+                    } else if(e.getSource() == battleButton3) {
+                        q3.setVisible(false);
+                        q3checker = false;
+                        battleButton1.setVisible(false);
+                        battleButton2.setVisible(false);
+                        battleButton3.setVisible(false);
                         panel.add(congrats);
+                        congrats.setVisible(true);
+                        fleeButton.setVisible(false);
+                        panel.add(backButton);
+                        backButton.setVisible(true);
                     }
             }
         });
+        }
+
+        if (getName().equals("loopy")) {
+            q1.setText("What is synonymous with scrum?");
+            battleButton1.setText("While");
+            battleButton2.setText("Do While");
+            battleButton3.setText("For");
+
+
+
+            battleButton1.setBounds(250,200,250,50);
+            battleButton2.setBounds(250,400,250,50);
+            battleButton3.setBounds(250,600,250,50);
+
+            battleButton3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getSource() == battleButton3 && !q2checker && !q3checker) {
+                        q1.setVisible(false);
+                        q2.setText("Which of the following is a valid for-loop in Python?");
+                        q2.setVisible(true);
+                        q2checker = true;
+                        battleButton1.setBounds(250,200,250,150);
+                        battleButton2.setBounds(250,600,250,150);
+                        battleButton3.setBounds(250,400,250,150);
+                        battleButton1.setText("<html> cars = ['Honda', 'Toyota', 'Ford']  <br/> for x in cars { <br/> print(x) <br/> } </html>");
+                        battleButton2.setText("<html> cars = ['Honda', 'Toyota', 'Ford'];  <br/> for x in cars { <br/> print(x); <br/> } </html>");
+                        battleButton3.setText("<html> cars = ['Honda', 'Toyota', 'Ford']  <br/> for x in cars: <br/> print(x) </html>");
+                    } else if (e.getSource() == battleButton3 && q2checker) {
+                        q2.setVisible(false);
+                        q3.setText("Which of the following is a valid for-loop in Java?");
+                        q3.setVisible(true);
+                        q2checker = false;
+                        q3checker = true;
+                        battleButton1.setText("<html> for (int i = 0, i < 5) { <br/> System.out.println(i); <br/> }");
+                        battleButton2.setText("<html> for (int i = 0, i < 5, i++) { <br/> System.out.println(i); <br/> }");
+                        battleButton3.setText("<html> for (int i = 0; i < 5; i++) { <br/> System.out.println(i); <br/> }");
+                    } else if(e.getSource() == battleButton3) {
+                        q3.setVisible(false);
+                        q3checker = false;
+                        battleButton1.setVisible(false);
+                        battleButton2.setVisible(false);
+                        battleButton3.setVisible(false);
+                        panel.add(congrats);
+                        congrats.setVisible(true);
+                        fleeButton.setVisible(false);
+                        panel.add(backButton);
+                        backButton.setVisible(true);
+                    }
+                }
+            });
+        }
+
+        if (getName().equals("ray")) {
+            q1.setText("Which of the following is an array in Python?");
+            battleButton1.setText("cars = { car1: Honda, car2: 'Toyota', car3: 'Ford' }");
+            battleButton2.setText("cars = ('Honda', 'Toyota', 'Ford')");
+            battleButton3.setText("cars = ['Honda', 'Toyota', 'Ford']");
+
+
+
+            battleButton1.setBounds(250,200,250,50);
+            battleButton2.setBounds(250,600,250,50);
+            battleButton3.setBounds(250,400,250,50);
+
+            battleButton3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getSource() == battleButton3 && !q2checker && !q3checker) {
+                        q1.setVisible(false);
+                        q2.setText("Which of the following is an array in Java?");
+                        q2.setVisible(true);
+                        q2checker = true;
+                        battleButton1.setBounds(250,600,250,150);
+                        battleButton2.setBounds(250,400,250,150);
+                        battleButton3.setBounds(250,200,250,150);
+                        battleButton1.setText("cars = {'Honda', 'Toyota', 'Ford'};");
+                        battleButton2.setText("String cars = {'Honda', 'Toyota', 'Ford'};");
+                        battleButton3.setText("String[] cars = {'Honda', 'Toyota', 'Ford'};");
+                    } else if (e.getSource() == battleButton3 && q2checker) {
+                        q2.setVisible(false);
+                        q3.setText("Which of the following is a 2d array in Java?");
+                        q3.setVisible(true);
+                        q2checker = false;
+                        q3checker = true;
+                        battleButton1.setBounds(250,200,250,50);
+                        battleButton2.setBounds(250,600,250,50);
+                        battleButton3.setBounds(250,400,250,50);
+                        battleButton1.setText("int[] 2darray = {1, 2, 3, 4}, {5, 6, 7, 8};");
+                        battleButton2.setText("int[][] 1darray = {1, 2, 3, 4}, {5, 6, 7, 8};");
+                        battleButton3.setText("int[][] 2darray = { {1, 2, 3, 4}, {5, 6, 7, 8} };");
+                    } else if(e.getSource() == battleButton3) {
+                        q3.setVisible(false);
+                        q3checker = false;
+                        battleButton1.setVisible(false);
+                        battleButton2.setVisible(false);
+                        battleButton3.setVisible(false);
+                        panel.add(congrats);
+                        congrats.setVisible(true);
+                        fleeButton.setVisible(false);
+                        panel.add(backButton);
+                        backButton.setVisible(true);
+                    }
+                }
+            });
         }
 
 
@@ -327,8 +474,11 @@ public class NPC {
                     start.setVisible(false);
                     q1.setVisible(true);
                     panel.add(battleButton1);
+                    battleButton1.setVisible(true);
                     panel.add(battleButton2);
+                    battleButton2.setVisible(true);
                     panel.add(battleButton3);
+                    battleButton3.setVisible(true);
                 }
             }
         });
