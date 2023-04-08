@@ -922,6 +922,17 @@ public class World{
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() - tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] - 1 );
             player.setLocation(currLoc);
+            player.setTilesWalked(player.getTilesWalked() + 1);
+            if(player.getTilesWalked() == 10) {
+                player.addAchievement("10 Tiles Walked");
+            }
+            else if(player.getTilesWalked() == 100) {
+                player.addAchievement("100 Tiles Walked");
+            }
+            else if(player.getTilesWalked() == 1000) {
+                player.addAchievement("1000 Tiles Walked");
+            }
+            System.out.println("Tiles walked " + player.getTilesWalked());
             System.out.println(" UP LOCATION" + currLoc[0] +"  Y: "+ currLoc[1]);
 
             checkLevelComplete(currLoc);
@@ -946,7 +957,17 @@ public class World{
             playerLabel.setLocation(playerLabel.getX(),playerLabel.getY() + tileSize);//x then y
             setCurrLoc(currLoc[0], currLoc[1] + 1 );
             player.setLocation(currLoc);
-
+            player.setTilesWalked(player.getTilesWalked() + 1);
+            System.out.println("Tiles walked " + player.getTilesWalked());
+            if(player.getTilesWalked() == 10) {
+                player.addAchievement("10 Tiles Walked");
+            }
+            else if(player.getTilesWalked() == 100) {
+                player.addAchievement("100 Tiles Walked");
+            }
+            else if(player.getTilesWalked() == 1000) {
+                player.addAchievement("1000 Tiles Walked");
+            }
             System.out.println(" DOWN LOCATION" + " X: "+ currLoc[0] +"  Y: "+ currLoc[1]);
 
             checkLevelComplete(currLoc);
@@ -973,6 +994,17 @@ public class World{
             playerLabel.setLocation(playerLabel.getX() - tileSize,playerLabel.getY());//x then y
             setCurrLoc(currLoc[0] - 1, currLoc[1] );
             player.setLocation(currLoc);
+            player.setTilesWalked(player.getTilesWalked() + 1);
+            if(player.getTilesWalked() == 10) {
+                player.addAchievement("10 Tiles Walked");
+            }
+            else if(player.getTilesWalked() == 100) {
+                player.addAchievement("100 Tiles Walked");
+            }
+            else if(player.getTilesWalked() == 1000) {
+                player.addAchievement("1000 Tiles Walked");
+            }
+            System.out.println("Tiles walked " + player.getTilesWalked());
             System.out.println("LEFT LOCATION X: " + currLoc[0] +"  Y: "+ currLoc[1]);
 
             checkLevelComplete(currLoc);
@@ -997,6 +1029,17 @@ public class World{
             playerLabel.setLocation(playerLabel.getX() + tileSize,playerLabel.getY());//x then y
             setCurrLoc(currLoc[0] + 1, currLoc[1] );
             player.setLocation(currLoc);
+            player.setTilesWalked(player.getTilesWalked() + 1);
+            if(player.getTilesWalked() == 10) {
+                player.addAchievement("10 Tiles Walked");
+            }
+            else if(player.getTilesWalked() == 100) {
+                player.addAchievement("100 Tiles Walked");
+            }
+            else if(player.getTilesWalked() == 1000) {
+                player.addAchievement("1000 Tiles Walked");
+            }
+            System.out.println("Tiles walked " + player.getTilesWalked());
             System.out.println("Right LOCATION X: " + currLoc[0] +"  Y: "+ currLoc[1]);
 
             checkLevelComplete(currLoc);

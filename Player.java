@@ -11,11 +11,15 @@ public class Player {
 
     private JPanel panel;
 
+    private int tilesWalked;
+
     private JButton backButton;
 
     private JLabel prompt, prompt2, prompt3, image;
 
     private ActionListener listener;
+
+    private ArrayList<String> achievements;
 
     //private ActionEvent e;
 
@@ -44,6 +48,8 @@ public class Player {
 
     public Player(String username, String name, int playerClass) {
         this.timePlayed = 0;
+        this.achievements = new ArrayList<>();
+        this.tilesWalked = 0;
         this.username = username;
         this.name = name;
         this.playerClass = playerClass;
@@ -92,6 +98,7 @@ public class Player {
                   int speed, int stamina, int maxStamina, int level, int levelXP, int initialLevelXP, Inventory inventory,
                   long timePlayed, long points, int currentLevelNo, int maxLevelNO) {
         this.timePlayed = 0;
+        this.tilesWalked = 0;
         this.username = username;
         this.name = name;
         this.playerClass = playerClass;
@@ -125,6 +132,14 @@ public class Player {
 
     public int getCurrentLevelNo() {
         return currentLevelNo;
+    }
+
+    public int getTilesWalked() {
+        return this.tilesWalked;
+    }
+
+    public void setTilesWalked(int tiles) {
+        this.tilesWalked = tiles;
     }
 
     public void setCurrentLevelNo(int currentLevelNo) {
@@ -297,6 +312,7 @@ public class Player {
 
                 frame.getContentPane().add(panel);
                 frame.pack();
+                frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
 
                 prompt = new JLabel("New ability unlocked: " + ability + "!");
@@ -377,4 +393,84 @@ public class Player {
 
             //Later on, will also have to check for new skills/abilities unlocked at each level
         }
+
+    public void addAchievement(String achievement) {
+
+        if(this.achievements.isEmpty()) {
+            this.achievements.add("Holder");
+        }
+
+        if (!this.achievements.contains(achievement)) {
+            achievements.add(achievement);
+
+            frame = new JFrame("New Achievement");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+            panel = new JPanel();
+            panel.setLayout(null);
+
+            // Set the size of the panel
+            panel.setPreferredSize(new Dimension(1080, 720));
+            panel.setBackground(Color.decode("#cfb991"));
+
+            frame.getContentPane().add(panel);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+
+            Font font = new Font("Arial", Font.BOLD, 18);
+
+            prompt = new JLabel("Achievement unlocked: " + achievement + "!");
+            prompt.setFont(font);
+            prompt.setBounds(350, 25, 500, 30);
+            panel.add(prompt);
+
+            String description = "holder";
+            String description2 = "holder";
+
+            // Get a specific description based on the ability achieved
+
+            if (achievement.equals("10 Tiles Walked")) {
+                description = "Get your bearings on this new world";
+                image = new JLabel(new ImageIcon("Images/grass.jpg"));
+                image.setBounds(125, 125, 800, 400);
+            }
+
+            else if (achievement.equals("100 Tiles Walked")) {
+                description = "Starting to figure out your way";
+                image = new JLabel(new ImageIcon("Images/rocks.jpg"));
+                image.setBounds(125, 125, 800, 400);
+            }
+
+            else if (achievement.equals("1000 Tiles Walked")) {
+                description = "You have traveled far and wide";
+                image = new JLabel(new ImageIcon("Images/road.jpg"));
+                image.setBounds(125, 125, 800, 400);
+            }
+
+            prompt2 = new JLabel(description);
+            prompt2.setBounds(350, 550, 500, 30);
+            prompt2.setFont(font);
+            panel.add(prompt2);
+
+            // prompt3 = new JLabel(description2);
+            // prompt3.setBounds(100, 100, 400, 30);
+            // panel.add(prompt3);
+
+            panel.add(image);
+
+            backButton = new JButton("Back");
+            backButton.setBounds(400, 625, 200, 75);
+            backButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(e.getSource() == backButton) {
+                        frame.dispose();
+                    }
+                }
+            });
+            backButton.setBackground(Color.decode("#9d9795"));
+            panel.add(backButton);
+        }
+    }
     }
