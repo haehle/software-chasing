@@ -28,6 +28,8 @@ public class Player {
     private int gold;
     private String name;
     private int type;
+
+    private int enemiesDefeated;
     private int[] location;
     private int hp;
     private int maxHP;
@@ -48,6 +50,7 @@ public class Player {
 
     public Player(String username, String name, int playerClass) {
         this.timePlayed = 0;
+        this.enemiesDefeated = 0;
         this.achievements = new ArrayList<>();
         this.tilesWalked = 0;
         this.username = username;
@@ -98,6 +101,7 @@ public class Player {
                   int speed, int stamina, int maxStamina, int level, int levelXP, int initialLevelXP, Inventory inventory,
                   long timePlayed, long points, int currentLevelNo, int maxLevelNO) {
         this.timePlayed = 0;
+        this.enemiesDefeated = 0;
         this.tilesWalked = 0;
         this.username = username;
         this.name = name;
@@ -136,6 +140,12 @@ public class Player {
 
     public int getTilesWalked() {
         return this.tilesWalked;
+    }
+
+    public int getEnemiesDefeated() { return this.enemiesDefeated;}
+
+    public void setEnemiesDefeated(int enemiesDefeated) {
+        this.enemiesDefeated = enemiesDefeated;
     }
 
     public void setTilesWalked(int tiles) {
@@ -445,6 +455,17 @@ public class Player {
             else if (achievement.equals("1000 Tiles Walked")) {
                 description = "You have traveled far and wide";
                 image = new JLabel(new ImageIcon("Images/road.jpg"));
+                image.setBounds(125, 125, 800, 400);
+            }
+            else if (achievement.equals("1 Enemy Defeated")) {
+                description = "You have defeated your first enemy!";
+                image = new JLabel(new ImageIcon("Images/enemydefeat.jpg"));
+                image.setBounds(125, 125, 800, 400);
+            }
+
+            else if (achievement.equals("10 Enemy Defeated")) {
+                description = "You are unstoppable!";
+                image = new JLabel(new ImageIcon("Images/Rampage.jpg"));
                 image.setBounds(125, 125, 800, 400);
             }
 

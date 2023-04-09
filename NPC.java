@@ -297,6 +297,13 @@ public class NPC {
                         battleButton2.setVisible(false);
                         battleButton3.setVisible(false);
                         panel.add(congrats);
+                        player.setEnemiesDefeated(player.getEnemiesDefeated() + 1);
+                        if(player.getEnemiesDefeated() == 1) {
+                            player.addAchievement("1 Enemy Defeated");
+                        }
+                        else if(player.getEnemiesDefeated() == 10) {
+                            player.addAchievement("10 Enemy Defeated");
+                        }
                         congrats.setVisible(true);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
@@ -351,6 +358,13 @@ public class NPC {
                         battleButton3.setVisible(false);
                         panel.add(congrats);
                         congrats.setVisible(true);
+                        player.setEnemiesDefeated(player.getEnemiesDefeated() + 1);
+                        if(player.getEnemiesDefeated() == 1) {
+                            player.addAchievement("1 Enemy Defeated");
+                        }
+                        else if(player.getEnemiesDefeated() == 10) {
+                            player.addAchievement("10 Enemy Defeated");
+                        }
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -402,6 +416,13 @@ public class NPC {
                         battleButton3.setVisible(false);
                         panel.add(congrats);
                         congrats.setVisible(true);
+                        player.setEnemiesDefeated(player.getEnemiesDefeated() + 1);
+                        if(player.getEnemiesDefeated() == 1) {
+                            player.addAchievement("1 Enemy Defeated");
+                        }
+                        else if(player.getEnemiesDefeated() == 10) {
+                            player.addAchievement("10 Enemy Defeated");
+                        }
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -456,6 +477,13 @@ public class NPC {
                         battleButton3.setVisible(false);
                         panel.add(congrats);
                         congrats.setVisible(true);
+                        player.setEnemiesDefeated(player.getEnemiesDefeated() + 1);
+                        if(player.getEnemiesDefeated() == 1) {
+                            player.addAchievement("1 Enemy Defeated");
+                        }
+                        else if(player.getEnemiesDefeated() == 10) {
+                            player.addAchievement("10 Enemy Defeated");
+                        }
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
