@@ -47,6 +47,7 @@ public class Player {
     int playerClass;
     private long timePlayed;
     private long points;
+    private Gear[] availableGear;
 
     public Player(String username, String name, int playerClass) {
         this.timePlayed = 0;
