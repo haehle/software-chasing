@@ -167,13 +167,13 @@ public class Home extends JFrame {
                     if(player.getGold() >= 100 && !blue_bought) {
                         blue_bought = true;
                         player.setGold(player.getGold() - 100);
-                        setColor(Color.BLUE);
+                        imageLabel.setIcon((new ImageIcon("Images/houseb.png")));
                         total_gold.setText("Gold: " + player.getGold());
                         blue.setBounds(100, 450, 150, 75);
                         blue_cost.setVisible(false);
                     }
                     else if(blue_bought) {
-                        setColor(Color.blue);
+                        imageLabel.setIcon((new ImageIcon("Images/houseb.png")));
                     }
                     else {
                         blue_cost.setText("Not enough gold!");
@@ -193,13 +193,13 @@ public class Home extends JFrame {
                     if(player.getGold() >= 100 && !green_bought) {
                         green_bought = true;
                         player.setGold(player.getGold() - 100);
-                        setColor(Color.GREEN);
+                        imageLabel.setIcon((new ImageIcon("Images/houseg.png")));
                         total_gold.setText("Gold: " + player.getGold());
                         green.setBounds(300, 450, 150, 75);
                         green_cost.setVisible(false);
                     }
                     else if(green_bought) {
-                        setColor(Color.green);
+                        imageLabel.setIcon((new ImageIcon("Images/houseg.png")));
                     }
                     else {
                         green_cost.setText("Not enough gold!");
@@ -219,13 +219,14 @@ public class Home extends JFrame {
                     if(player.getGold() >= 100 && !red_bought) {
                         red_bought = true;
                         player.setGold(player.getGold() - 100);
-                        setColor(Color.red);
+                        imageLabel.setIcon((new ImageIcon("Images/houser.png")));
                         total_gold.setText("Gold: " + player.getGold());
                         red.setBounds(500, 450, 150, 75);
                         red_cost.setVisible(false);
                     }
                     else if(red_bought) {
-                        setColor(Color.red);
+                        imageLabel.setIcon((new ImageIcon("Images/houser.png")));
+
                     }
                     else {
                         red_cost.setText("Not enough gold!");
@@ -243,15 +244,17 @@ public class Home extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == orange) {
                     if(player.getGold() >= 100 && !orange_bought) {
+                        imageLabel.setIcon((new ImageIcon("Images/houseo.png")));
                         orange_bought = true;
                         player.setGold(player.getGold() - 100);
-                        setColor(Color.orange);
+                        //setColor(Color.orange);
                         total_gold.setText("Gold: " + player.getGold());
                         orange.setBounds(700, 450, 150, 75);
                         orange_cost.setVisible(false);
                     }
                     else if(orange_bought) {
-                        setColor(Color.orange);
+                        //setColor(Color.orange);
+                        imageLabel.setIcon((new ImageIcon("Images/houseo.png")));
                     }
                     else {
                         orange_cost.setText("Not enough gold!");
@@ -270,43 +273,7 @@ public class Home extends JFrame {
     }
 
     public void setImage(String filename) {
-        try {
-            originalImage = ImageIO.read(new File(filename));
-            modifiedImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g = modifiedImage.createGraphics();
-            g.drawImage(originalImage, 0, 0, null);
-            g.dispose();
-            imageLabel.setIcon(new ImageIcon(modifiedImage));
-        } catch (IOException ex) {
-            System.out.println("Failed to load image: " + ex.getMessage());
-        }
-    }
-
-    public void setColor(Color color) {
-        // create a new buffered image with the same dimensions as the original image
-        modifiedImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-        // create a color conversion filter that converts the image to grayscale
-        ColorConvertOp grayscaleOp = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-
-        // apply the grayscale filter to the original image, and store the result in the modified image
-        grayscaleOp.filter(originalImage, modifiedImage);
-
-        // create a rescale filter that multiplies each grayscale value of the modified image by the corresponding color component of the specified color
-        float[] scales = {
-                (float) color.getRed() / 255f,
-                (float) color.getGreen() / 255f,
-                (float) color.getBlue() / 255f,
-                (float) color.getAlpha() / 255f
-        };
-        float[] offsets = new float[4];
-        RescaleOp colorizeOp = new RescaleOp(scales, offsets, null);
-
-        // apply the colorize filter to the modified image, and store the result back in the modified image
-        colorizeOp.filter(modifiedImage, modifiedImage);
-
-        // update the image label with the modified image
-        imageLabel.setIcon(new ImageIcon(modifiedImage));
+        imageLabel.setIcon(new ImageIcon(filename));
     }
 
     public void changeVisibility(boolean check) {
