@@ -255,7 +255,7 @@ public class NPC {
         fleeButton.setVisible(true);
 
         backButton = new JButton("Back");
-        backButton.setBounds(250, 600, 100, 50);
+        backButton.setBounds(800, 600, 100, 50);
         backButton.setBackground(Color.decode("#9d9795"));
 
 
@@ -364,10 +364,10 @@ public class NPC {
                             if(player.getQuestionsAnswered() == 1) {
                                 player.addAchievement("1 Question Answered");
                             }
-                            else if(player.getQuestionsAnswered() == 2) {
+                            else if(player.getQuestionsAnswered() == 10) {
                                 player.addAchievement("10 Questions Answered");
                             }
-                            else if(player.getQuestionsAnswered() == 3) {
+                            else if(player.getQuestionsAnswered() == 25) {
                                 player.addAchievement("25 Questions Answered");
                             }
                             hello3 = true;
@@ -413,6 +413,7 @@ public class NPC {
                         congrats.setVisible(true);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
+                        backButton.setVisible(true);
                     }
                 }
             });
@@ -542,8 +543,8 @@ public class NPC {
         });
         }
 
-        if (getName().equals("loopy")) {
-            q1.setText("What is synonymous with scrum?");
+        if (getName().equals("Loopy")) {
+            q1.setText("Which loop is used most often?");
             battleButton1.setText("While");
             battleButton2.setText("Do While");
             battleButton3.setText("For");
@@ -551,8 +552,8 @@ public class NPC {
 
 
             battleButton1.setBounds(250,200,250,50);
-            battleButton2.setBounds(250,400,250,50);
-            battleButton3.setBounds(250,600,250,50);
+            battleButton2.setBounds(250,300,250,50);
+            battleButton3.setBounds(250,400,250,50);
 
             battleButton3.addActionListener(new ActionListener() {
                 @Override
@@ -663,7 +664,7 @@ public class NPC {
             });
         }
 
-        if (getName().equals("ray")) {
+        if (getName().equals("Ray")) {
             q1.setText("Which of the following is an array in Python?");
             battleButton1.setText("cars = { car1: Honda, car2: 'Toyota', car3: 'Ford' }");
             battleButton2.setText("cars = ('Honda', 'Toyota', 'Ford')");
@@ -671,9 +672,9 @@ public class NPC {
 
 
 
-            battleButton1.setBounds(250,200,250,50);
-            battleButton2.setBounds(250,600,250,50);
-            battleButton3.setBounds(250,400,250,50);
+            battleButton1.setBounds(250,200,350,50);
+            battleButton2.setBounds(250,600,350,50);
+            battleButton3.setBounds(250,400,350,50);
 
             battleButton3.addActionListener(new ActionListener() {
                 @Override
@@ -696,9 +697,9 @@ public class NPC {
                         q2.setText("Which of the following is an array in Java?");
                         q2.setVisible(true);
                         q2checker = true;
-                        battleButton1.setBounds(250,600,250,150);
-                        battleButton2.setBounds(250,400,250,150);
-                        battleButton3.setBounds(250,200,250,150);
+                        battleButton1.setBounds(250,600,350,150);
+                        battleButton2.setBounds(250,400,350,150);
+                        battleButton3.setBounds(250,200,350,150);
                         battleButton1.setText("cars = {'Honda', 'Toyota', 'Ford'};");
                         battleButton2.setText("String cars = {'Honda', 'Toyota', 'Ford'};");
                         battleButton3.setText("String[] cars = {'Honda', 'Toyota', 'Ford'};");
@@ -721,9 +722,9 @@ public class NPC {
                         q3.setVisible(true);
                         q2checker = false;
                         q3checker = true;
-                        battleButton1.setBounds(250,200,250,50);
-                        battleButton2.setBounds(250,600,250,50);
-                        battleButton3.setBounds(250,400,250,50);
+                        battleButton1.setBounds(250,200,350,50);
+                        battleButton2.setBounds(250,600,350,50);
+                        battleButton3.setBounds(250,400,350,50);
                         battleButton1.setText("int[] 2darray = {1, 2, 3, 4}, {5, 6, 7, 8};");
                         battleButton2.setText("int[][] 1darray = {1, 2, 3, 4}, {5, 6, 7, 8};");
                         battleButton3.setText("int[][] 2darray = { {1, 2, 3, 4}, {5, 6, 7, 8} };");
@@ -871,6 +872,15 @@ public class NPC {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == backButton) {
+                    frame.dispose();
+                }
+            }
+        });
+
+        fleeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == fleeButton) {
                     frame.dispose();
                 }
             }
