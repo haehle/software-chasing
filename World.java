@@ -342,7 +342,6 @@ public class World{
 
                 bm.pause();
 
-                /*TODO HUNTER: WRITE OUT PLAYER INFO HERE*/
                 dbConnection.updatePlayer(player);
                 System.out.println("timeplayed after: " + + (player.getTimePlayed() / 1000) % 60 + "seconds");
                 dbConnection.logout(player.getUsername());
@@ -922,7 +921,6 @@ public class World{
             level.setText("Level: " + player.getLevel());
             xp.setText("XP Needed: " + player.getLevelXP());
             gold.setText("Gold: " + player.getGold());
-
 
             bufferStrategy.show();
             graphics.dispose();

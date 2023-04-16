@@ -27,9 +27,9 @@ public class NPC {
     private int stamina;
     private int maxStamina;
 
-    private String item1;
-    private String item2;
-    private String item3;
+    private Item item1;
+    private Item item2;
+    private Item item3;
     private int cost1;
     private int cost2;
     private int cost3;
@@ -954,10 +954,6 @@ public class NPC {
         panel.add(prompt);
 
         // Setting items, costs, and images for each individual NPC that we will have
-
-        item1 = "";
-        item2 = "";
-        item3 = "";
         cost1 = 0;
         cost2 = 0;
         cost3 = 0;
@@ -966,9 +962,9 @@ public class NPC {
         image3 = "";
 
         if(getName().equals("Ron")) {
-            item1 = "Gaming Laptop";
-            item2 = "Algorithms Book";
-            item3 = "Coffee";
+            item1 = new Item(dbConnection.getItemId("Gaming Laptop"), "Gaming Laptop");
+            item2 = new Item(dbConnection.getItemId("Algorithms Book"), "Algorithms Book");
+            item3 = new Item(dbConnection.getItemId("Coffee"), "Coffee");
             cost1 = 100;
             cost2 = 75;
             cost3 = 50;
@@ -978,9 +974,9 @@ public class NPC {
         }
 
         else if(getName().equals("Natalie")) {
-            item1 = "Breadboard";
-            item2 = "Deodorant";
-            item3 = "Energy Drink";
+            item1 = new Item(dbConnection.getItemId("Breadboard"), "Breadboard");
+            item2 = new Item(dbConnection.getItemId("Deodorant"), "Deodorant");
+            item3 = new Item(dbConnection.getItemId("Energy Drink"), "Energy Drink");
             cost1 = 125;
             cost2 = 100;
             cost3 = 75;
@@ -991,7 +987,7 @@ public class NPC {
 
         // Adding the items, costs, and images to the frame
 
-        item1_prompt = new JLabel(item1);
+        item1_prompt = new JLabel(item1.getName());
         item1_prompt.setBounds(275, 250, 500, 100);
         panel.add(item1_prompt);
 
@@ -1000,7 +996,7 @@ public class NPC {
         item1_cost.setBounds(250, 650, 500, 100);
         panel.add(item1_cost);
 
-        item2_prompt = new JLabel(item2);
+        item2_prompt = new JLabel(item2.getName());
         item2_prompt.setBounds(875, 250, 500, 100);
         panel.add(item2_prompt);
 
@@ -1008,7 +1004,7 @@ public class NPC {
         item2_cost.setBounds(850, 650, 500, 100);
         panel.add(item2_cost);
 
-        item3_prompt = new JLabel(item3);
+        item3_prompt = new JLabel(item3.getName());
         item3_prompt.setBounds(1500, 250, 500, 100);
         panel.add(item3_prompt);
 
@@ -1061,7 +1057,8 @@ public class NPC {
                         player.setGold(player.getGold() - cost1);
                         setStock1(getStock1() - 1);
                         total_gold.setText("Gold: " + player.getGold());
-                        player.getInventory().addItem(item1);
+                        //NEED TO CHECK TO SEE IF PLAYER HAS ITEM FIRST; NO DUPLICATES? OR ADD STOCK?
+                        player.getInventory().addItem(player.getUsername(), player.getName(), item1);
                         if(getStock1() == 0) {
                             item1_cost.setText("OUT OF STOCK!");
                             item1_cost.setForeground(Color.RED);
@@ -1098,7 +1095,7 @@ public class NPC {
                         player.setGold(player.getGold() - cost2);
                         setStock2(getStock2() - 1);
                         total_gold.setText("Gold: " + player.getGold());
-                        player.getInventory().addItem(item2);
+                        player.getInventory().addItem(player.getUsername(), player.getName(), item2);
                         if(getStock2() == 0) {
                             item2_cost.setText("OUT OF STOCK!");
                             item2_cost.setForeground(Color.RED);
@@ -1134,7 +1131,7 @@ public class NPC {
                     if(player.getGold() >= cost3) {
                         player.setGold(player.getGold() - cost3);
                         total_gold.setText("Gold: " + player.getGold());
-                        player.getInventory().addItem(item3);
+                        player.getInventory().addItem(player.getUsername(), player.getName(), item3);
                         setStock3(getStock3() - 1);
                         if(getStock3() == 0) {
                             item3_cost.setText("OUT OF STOCK!");

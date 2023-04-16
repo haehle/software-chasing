@@ -1,15 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 public class InventoryDisplay extends JFrame implements KeyListener {
 
-    JLabel closeLabel = new JLabel();
-    JList<String> list;
+    JLabel itemLabel = new JLabel();
+    List<Item> items;
 
     public InventoryDisplay(Player player) {
         super(player.getName() + "'s Inventory");
@@ -35,26 +33,45 @@ public class InventoryDisplay extends JFrame implements KeyListener {
         player.setInventory(inv);
          */
 
+        //STILL NEED TO TEST ALL OF THIS W/ACTUAL DB; MUST HAVE SECURE INTERNET CONNECTION
+
         String item1 = "";
         if (player.getInventory().getItems().size() > 0)
         {
-            item1 = player.getInventory().getItems().get(0);
-        }
+            //Inventory is not empty
+            itemLabel.setText("Inventory items:");
+            items = player.getInventory().getItems();
 
-        closeLabel.setText(item1);
-
-        if (item1 == "")
-        {
-            closeLabel.setText("Your inventory is empty.");
+            for (Item item : items)
+            {
+                JLabel newItemLabel = new JLabel();
+                newItemLabel.setText(item.getName());
+                add(newItemLabel);
+            }
         }
         else
         {
-            closeLabel.setText(item1);
+            //Inventory is empty
+            itemLabel.setText("Your inventory is empty.");
         }
 
-        closeLabel.addKeyListener(this);
-        closeLabel.setFocusable(true);
-        add(closeLabel);
+
+        itemLabel.setText(item1);
+
+        /*
+        if (item1 == "")
+        {
+            itemLabel.setText("Your inventory is empty.");
+        }
+        else
+        {
+            itemLabel.setText(item1);
+        }
+         */
+
+        itemLabel.addKeyListener(this);
+        itemLabel.setFocusable(true);
+        add(itemLabel);
         pack();
         setVisible(true);
     }

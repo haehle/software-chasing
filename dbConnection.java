@@ -323,7 +323,8 @@ public class dbConnection {
                         }
                         else
                         {
-                            inventory.addItem(itemName);
+                            Item newItem = new Item(id, itemName);
+                            inventory.simpleAddItem(newItem);
                         }
 
                         System.out.println("Existing player data " + (i + 1) + " fetched");
@@ -352,7 +353,7 @@ public class dbConnection {
 
             try (Statement statement = connection.createStatement()) {
 
-                String query = "SELECT * FROM InventoryItems WHERE id=\"" + id + "\"";
+                String query = "SELECT * FROM Items WHERE id=\"" + id + "\"";
                 String itemName = null;
 
                 ResultSet rs = statement.executeQuery(query);
@@ -373,6 +374,45 @@ public class dbConnection {
 
                     return itemName;
                 } catch (SQLException e) {
+                throw new IllegalStateException("Could not get inventory items from database", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
+    public static int getItemId(String name) {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "SELECT * FROM Items WHERE name=\"" + name + "\"";
+
+                ResultSet rs = statement.executeQuery(query);
+                if (!rs.isBeforeFirst()) {
+                    //Item not found
+                    System.out.println("Item not found.");
+                    Item newItem = new Item(Util.getNextId(), name);
+                    addNewItem(newItem);
+                    return newItem.getId();
+                } else {
+                    //Item found
+                    System.out.println("Item found.");
+                    int itemId = 0;
+
+                    //Parse data
+                    while (rs.next()) {
+                        itemId = rs.getInt("id");
+                        System.out.println("ITEM ID: " + itemId);
+                    }
+                    return itemId;
+                }
+            } catch (SQLException e) {
                 throw new IllegalStateException("Could not get inventory items from database", e);
             }
 
@@ -483,6 +523,7 @@ public class dbConnection {
                         "CurrentLevelNo=" + player.getCurrentLevelNo() + ", " +
                         "timePlayed=" + player.getTimePlayed() + ", " +
                         "points=" + player.getPoints() + " " +
+                        "maxLevel=" + player.getMaxLevelNO() + " " +
                         "WHERE Username=\"" + player.getUsername() + "\" " +
                         "AND Name=\"" + player.getName() + "\";";
 
@@ -532,7 +573,7 @@ public class dbConnection {
         }
     }
 
-    public static void addItem(Item item) {
+    public static void addNewItem(Item item) {
         try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
 
             //Connected to database
@@ -548,7 +589,7 @@ public class dbConnection {
                 System.out.println("Item added successfully.");
 
             } catch (SQLException e) {
-                throw new IllegalStateException("Could not add item", e);
+                return;
             }
 
 
@@ -594,6 +635,32 @@ public class dbConnection {
 
             } catch (SQLException e) {
                 throw new IllegalStateException("Could not update player data", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
+    public static void addInventoryItem(String username, String name, Item item)
+    {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+                String query = "INSERT INTO InventoryItems VALUES (" +
+                        "\"" + item.getId() + "\", " +
+                        "\"" + name + "\", " +
+                        "\"" + username + "\");";
+
+                statement.execute(query);
+                System.out.println("loggedIn status changed successfully.");
+            } catch (SQLException e) {
+                System.out.println("Item already in database for player");
+                return;
             }
 
 
