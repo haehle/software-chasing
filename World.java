@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.Random;
 
 public class World{
     /*
@@ -44,6 +45,7 @@ public class World{
     private JButton shop, shop2, battle, battle2, battle3, battle4, home, menubuttons;
 
     private boolean checker, checker2, checker3, checker4, checker5, checker6, checker7;
+    private boolean bugCheck = true;
 
     private Player player;
     JFrame frame;
@@ -56,7 +58,6 @@ public class World{
     Action pauseGame = new pauseAction();
     Action inventoryAction = new inventoryAction();
     boolean exit;
-
 
 
     public World(int height, int length, int[][] tileType, Player player, float numLevels){ /*TODO: ADD PLAYER FIELD*/
@@ -205,6 +206,8 @@ public class World{
         NPC ray = new NPC("Ray", "Enemy");
 
         NPC jeff = new NPC("Jeff", "Boss");
+
+        NPC bug = new NPC("Bug", "Enemy");
 
 
         ron.setLocation(3, 3);
@@ -879,6 +882,13 @@ public class World{
                 checker7 = false;
                 NPC7label.setVisible(false);
                 battle4.setVisible(false);
+            }
+
+            // Now add Random Encounter
+
+            if(currLoc[0] == 20 && currLoc[1] == 18 && bugCheck) {
+                bugCheck = false;
+                bug.displayBattle(player);
             }
 
             //graphics.clearRect(0, 0, width, height);

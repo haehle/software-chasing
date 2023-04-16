@@ -11,7 +11,7 @@ public class NPC {
     private JPanel panel;
 
     private JButton fleeButton, backButton, button1, button2, button3;
-    private JButton startButton, battleButton1, battleButton2, battleButton3, trialerror, analysis, security;
+    private JButton startButton, submitButton, battleButton1, battleButton2, battleButton3, trialerror, analysis, security;
 
     private JLabel start, q1, q2, q3, congrats, loser, abilitylist;
     private Boolean q2checker, q3checker;
@@ -420,7 +420,7 @@ public class NPC {
 
         }
 
-        if (getName().equals("jeff")) {
+        if (getName().equals("Jeff")) {
             q1.setText("What is synonymous with scrum?");
             battleButton1.setText("Waterfall");
             battleButton2.setText("Spiral");
@@ -783,6 +783,36 @@ public class NPC {
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
+                    }
+                }
+            });
+        }
+
+        if (getName().equals("Bug")) {
+            fleeButton.setVisible(false);
+
+            startButton.setVisible(false);
+
+            start.setText("<html>You have been ambushed by a bug! <br/> You must debug the following python code:</html>");
+
+            start.setBounds(250, 100, 700, 300);
+
+            q1.setBounds(250, 300, 700, 100);
+
+            q1.setVisible(true);
+            q1.setText("<html>nums = [1, 2, 3, 4, 5] <br/> for x in nums: <br/> &emsp print(x %% 3)</html>");
+
+            submitButton = new JButton("Submit");
+            submitButton.setBounds(250, 600, 100, 50);
+            submitButton.setBackground(Color.decode("#9d9795"));
+            panel.add(submitButton);
+            submitButton.setVisible(true);
+
+            submitButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(e.getSource() == submitButton) {
+                        frame.dispose();
                     }
                 }
             });
