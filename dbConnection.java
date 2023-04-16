@@ -487,7 +487,7 @@ public class dbConnection {
                         i++;
                     }
 
-                    return i;
+                    return i+1;
                 }
             } catch (SQLException e) {
                 throw new IllegalStateException("Could not get items from database", e);
@@ -657,10 +657,41 @@ public class dbConnection {
                         "\"" + username + "\");";
 
                 statement.execute(query);
-                System.out.println("loggedIn status changed successfully.");
+                System.out.println("Added item to player's inventory");
             } catch (SQLException e) {
                 System.out.println("Item already in database for player");
                 return;
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
+    public static boolean playerHasItem(String username, String name, Item item)
+    {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+                String query = "SELECT * FROM InventoryItems WHERE Username = \"" + username + "\" AND Name = \"" +
+                        name + "\" AND id = \"" + item.getId() + "\"";
+
+                ResultSet rs = statement.executeQuery(query);
+                if (!rs.isBeforeFirst()) {
+                    //Item not found
+                    System.out.println("Player does not have item yet");
+                    return false;
+                } else {
+                    //Item found
+                    System.out.println("Player already has item");
+                    return true;
+                }
+            } catch (SQLException e) {
+                throw new IllegalStateException("Error occurred while fetching player items", e);
             }
 
 
