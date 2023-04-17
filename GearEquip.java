@@ -14,6 +14,7 @@ public class GearEquip {
     JPanel titlePanel;
     
     public GearEquip(){
+        //connect to database
         window = new JFrame();
         window.setSize(800,600);
         window.getContentPane().setBackground(Color.black);
