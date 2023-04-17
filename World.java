@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.Random;
 
 public class World{
     /*
@@ -24,6 +25,8 @@ public class World{
      * Java functionality Array[height/#rows][width/#col]
      * */
     private Tile[][] worldMap;
+
+    private boolean checkMusic = false;
     private final int height; //y coord
     private final int length; // x coord
     private int[] spawnPoint;
@@ -42,6 +45,7 @@ public class World{
     private JButton shop, shop2, battle, battle2, battle3, battle4, home, menubuttons;
 
     private boolean checker, checker2, checker3, checker4, checker5, checker6, checker7;
+    private boolean bugCheck = true;
 
     private Player player;
     JFrame frame;
@@ -56,12 +60,11 @@ public class World{
     boolean exit;
 
 
-
     public World(int height, int length, int[][] tileType, Player player, float numLevels){ /*TODO: ADD PLAYER FIELD*/
         //super(player.getName());
 
-        bm = new BackgroundMusic("game");
-        bm.play();//plays music
+       // bm = new BackgroundMusic("game");
+       // bm.play();//plays music
 
         this.worldMap = new Tile[height][length];
         this.height = height; //y
@@ -88,8 +91,8 @@ public class World{
     public World(int height, int length, Tile[][] tileMap, Player player, float numLevels){ /*TODO: ADD PLAYER FIELD*/
         //super(player.getName());
 
-        bm = new BackgroundMusic("game");
-        bm.play();//plays music
+      //  bm = new BackgroundMusic("game");
+      //  bm.play();//plays music
 
         this.worldMap = new Tile[height][length];
         this.height = height; //y
@@ -174,6 +177,9 @@ public class World{
 
     public int displayWorld() throws UnsupportedAudioFileException, LineUnavailableException, IOException { //tiles are tilesize x tilesize pixels generated from (0,0) to (8*length, 8*height) (x,y) respectively
 
+        bm = new BackgroundMusic("game");
+        bm.play();//plays music
+
         goBack = false; //go back a level
 
         long start = System.currentTimeMillis();//sets start time to calculate time played
@@ -182,9 +188,9 @@ public class World{
 
         MenuButtons a = new MenuButtons(player.getName());
 
-        Home tester = new Home(player);
+        Home homer = new Home(player);
 
-        tester.setImage("Images/house.jpg");
+        homer.setImage("Images/house.jpg");
 
 
         NPC ron = new NPC("Ron", "Neutral");
@@ -200,6 +206,8 @@ public class World{
         NPC ray = new NPC("Ray", "Enemy");
 
         NPC jeff = new NPC("Jeff", "Boss");
+
+        NPC bug = new NPC("Bug", "Enemy");
 
 
         ron.setLocation(3, 3);
@@ -239,20 +247,17 @@ public class World{
 
         // Adding a base set of abilities
 
-        ArrayList<String> test= new ArrayList<String>();
-
-        test.add("Swiftness");
-
-        player.setAbilities(test);
-
-
-        // Testing to see if adding a new ability shows up in the world
-        if (!player.getAbilities().contains("MULTISHOT")) {
-            player.addAbilities("MULTISHOT");
+        if(player.getPlayerClass() == 1) {
+            player.addAbilities("Trial and Error");
         }
 
-        // Test to see if adding the same ability does not show up in the world
-        // player.addAbilities("MULTISHOT");
+        if(player.getPlayerClass() == 2) {
+            player.addAbilities("Data Analysis");
+        }
+
+        if(player.getPlayerClass() == 3) {
+            player.addAbilities("Faulty Security");
+        }
 
 
 
@@ -271,6 +276,9 @@ public class World{
         frame.setLocationRelativeTo(null);
         frame.setResizable(true);
         frame.setVisible(true);
+
+        // Test to see if adding the same ability does not show up in the world
+        // player.addAbilities("MULTISHOT");
 
 
         //creating "player" label
@@ -334,7 +342,6 @@ public class World{
 
                 bm.pause();
 
-                /*TODO HUNTER: WRITE OUT PLAYER INFO HERE*/
                 dbConnection.updatePlayer(player);
                 System.out.println("timeplayed after: " + + (player.getTimePlayed() / 1000) % 60 + "seconds");
                 dbConnection.logout(player.getUsername());
@@ -455,6 +462,8 @@ public class World{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == battle) {
+                    bm.resume();
+                    checkMusic = false;
                     jeff.displayBattle(player);
                     battle.setVisible(false);
                 }
@@ -481,7 +490,7 @@ public class World{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == home) {
-                    tester.changeVisibility(true);
+                    homer.changeVisibility(true);
                     home.setVisible(false);
                 }
             }
@@ -794,6 +803,7 @@ public class World{
                 if(!checker3) {
                     NPC3label.setVisible(true);
                     checker3 = true;
+
                     playSound("Music/doorbell.wav");
                 }
             }
@@ -817,6 +827,7 @@ public class World{
                 NPC4label.setVisible(false);
                 battle.setVisible(false);
             }
+
 
             // Now add NPC5
 
@@ -854,6 +865,8 @@ public class World{
 
             if(currLoc[0] == jeff.getLocation()[0] && currLoc[1] == jeff.getLocation()[1]) {
                 if(!checker7) {
+                    bm.pause();
+                    checkMusic = true;
                     playSound("Music/boss.wav");
                     NPC7label.setVisible(true);
                     battle4.setVisible(true);
@@ -861,9 +874,20 @@ public class World{
                 }
             }
             else {
+                if(checkMusic) {
+                    bm.resume();
+                    checkMusic = false;
+                }
                 checker7 = false;
                 NPC7label.setVisible(false);
                 battle4.setVisible(false);
+            }
+
+            // Now add Random Encounter
+
+            if(currLoc[0] == 20 && currLoc[1] == 18 && bugCheck) {
+                bugCheck = false;
+                bug.displayBattle(player);
             }
 
             //graphics.clearRect(0, 0, width, height);
@@ -897,7 +921,6 @@ public class World{
             level.setText("Level: " + player.getLevel());
             xp.setText("XP Needed: " + player.getLevelXP());
             gold.setText("Gold: " + player.getGold());
-
 
             bufferStrategy.show();
             graphics.dispose();

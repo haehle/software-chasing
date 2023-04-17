@@ -30,6 +30,8 @@ public class Player {
     private int type;
 
     private int enemiesDefeated;
+
+    private int questionsAnswered;
     private int[] location;
     private int hp;
     private int maxHP;
@@ -51,6 +53,7 @@ public class Player {
 
     public Player(String username, String name, int playerClass) {
         this.timePlayed = 0;
+        this.questionsAnswered = 0;
         this.enemiesDefeated = 0;
         this.achievements = new ArrayList<>();
         this.tilesWalked = 0;
@@ -103,6 +106,7 @@ public class Player {
                   long timePlayed, long points, int currentLevelNo, int maxLevelNO) {
         this.timePlayed = 0;
         this.enemiesDefeated = 0;
+        this.questionsAnswered = 0;
         this.tilesWalked = 0;
         this.username = username;
         this.name = name;
@@ -156,9 +160,16 @@ public class Player {
     public void setCurrentLevelNo(int currentLevelNo) {
         this.currentLevelNo = currentLevelNo;
         }
-
     public int getMaxLevelNO() {
         return maxLevelNO;
+    }
+
+    public int getQuestionsAnswered() {
+        return this.questionsAnswered;
+    }
+
+    public void setQuestionsAnswered(int questionsAnswered) {
+        this.questionsAnswered = questionsAnswered;
     }
 
     public void setMaxLevelNO(int maxLevelNO) {
@@ -307,6 +318,9 @@ public class Player {
         // This function will add a new ability and display it for the user
         public void addAbilities(String ability) {
 
+            if(this.abilities.isEmpty()) {
+                this.abilities.add("Holder");
+            }
 
             if (!this.abilities.contains(ability)) {
                 this.abilities.add(ability);
@@ -318,7 +332,7 @@ public class Player {
                 panel.setLayout(null);
 
                 // Set the size of the panel
-                panel.setPreferredSize(new Dimension(500, 400));
+                panel.setPreferredSize(new Dimension(600, 500));
                 panel.setBackground(Color.decode("#cfb991"));
 
                 frame.getContentPane().add(panel);
@@ -327,33 +341,37 @@ public class Player {
                 frame.setVisible(true);
 
                 prompt = new JLabel("New ability unlocked: " + ability + "!");
-                prompt.setBounds(150, 25, 200, 30);
+                prompt.setBounds(175, 25, 300, 30);
                 panel.add(prompt);
 
                 String description = "holder";
-                String description2 = "holder";
 
                 // Get a specific description based on the ability achieved
 
-                if (ability.equals("MULTISHOT")) {
-                    description = "When firing your bow you can now shoot multiple arrows at once!";
-                    description2 = "Your damage by your bow is now multiplied by 3!";
+                if (ability.equals("Data Analysis")) {
+                    description = "When answering questions you can use your data analysis to remove one incorrect answer!";
+                    image = new JLabel(new ImageIcon("Images/brain (2).jpg"));
                 }
 
-                prompt2 = new JLabel("Description: " + description);
-                prompt2.setBounds(25, 75, 500, 30);
+                if (ability.equals("Trial and Error")) {
+                    description = "You can use trial and error to allow one incorrect answer on a question (Guess twice)!";
+                    image = new JLabel(new ImageIcon("Images/wrench (1).jpg"));
+                }
+                if (ability.equals("Faulty Security")) {
+                    description = "You can use faulty security to have a 25 % chance of skipping all remaining questions!";
+                    image = new JLabel(new ImageIcon("Images/hacker (1).jpg"));
+                }
+
+                prompt2 = new JLabel(description);
+                prompt2.setBounds(50, 350, 600, 30);
                 panel.add(prompt2);
 
-                prompt3 = new JLabel(description2);
-                prompt3.setBounds(100, 100, 400, 30);
-                panel.add(prompt3);
 
-                image = new JLabel(new ImageIcon("Images/multi.png"));
-                image.setBounds(125, 125, 200, 200);
+                image.setBounds(160, 85, 250, 250);
                 panel.add(image);
 
                 backButton = new JButton("Back");
-                backButton.setBounds(175, 325, 100, 50);
+                backButton.setBounds(225, 400, 100, 50);
                 backButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -464,9 +482,24 @@ public class Player {
                 image.setBounds(125, 125, 800, 400);
             }
 
-            else if (achievement.equals("10 Enemy Defeated")) {
+            else if (achievement.equals("10 Enemies Defeated")) {
                 description = "You are unstoppable!";
                 image = new JLabel(new ImageIcon("Images/Rampage.jpg"));
+                image.setBounds(125, 125, 800, 400);
+            }
+            else if (achievement.equals("1 Question Answered")) {
+                description = "On the road to success!";
+                image = new JLabel(new ImageIcon("Images/star.jpg"));
+                image.setBounds(125, 125, 800, 400);
+            }
+            else if (achievement.equals("10 Questions Answered")) {
+                description = "You are quickly adapting!";
+                image = new JLabel(new ImageIcon("Images/3star.jpg"));
+                image.setBounds(125, 125, 800, 400);
+            }
+            else if (achievement.equals("25 Questions Answered")) {
+                description = "CS questions are just too easy for you!";
+                image = new JLabel(new ImageIcon("Images/5star.png"));
                 image.setBounds(125, 125, 800, 400);
             }
 

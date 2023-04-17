@@ -11,9 +11,9 @@ public class NPC {
     private JPanel panel;
 
     private JButton fleeButton, backButton, button1, button2, button3;
-    private JButton startButton, battleButton1, battleButton2, battleButton3;
+    private JButton startButton, submitButton, battleButton1, battleButton2, battleButton3, trialerror, analysis, security;
 
-    private JLabel start, q1, q2, q3, congrats, loser;
+    private JLabel start, q1, q2, q3, congrats, loser, abilitylist;
     private Boolean q2checker, q3checker;
     private JLabel prompt, item1_prompt, item1_cost, item2_prompt, item2_cost, item3_prompt, item3_cost, total_gold;
     private String name;
@@ -27,9 +27,9 @@ public class NPC {
     private int stamina;
     private int maxStamina;
 
-    private String item1;
-    private String item2;
-    private String item3;
+    private Item item1;
+    private Item item2;
+    private Item item3;
     private int cost1;
     private int cost2;
     private int cost3;
@@ -39,6 +39,19 @@ public class NPC {
     private int stock1;
     private int stock2;
     private int stock3;
+
+    private boolean hello1 = false;
+    private boolean hello2 = false;
+    private boolean hello3 = false;
+    private boolean loopy1 = false;
+    private boolean loopy2 = false;
+    private boolean loopy3 = false;
+    private boolean jeff1 = false;
+    private boolean jeff2 = false;
+    private boolean jeff3 = false;
+    private boolean ray1 = false;
+    private boolean ray2 = false;
+    private boolean ray3 = false;
 
 
     private String[] skills;
@@ -202,19 +215,47 @@ public class NPC {
         start.setVisible(true);
 
         startButton = new JButton("Start");
-        startButton.setBounds(250, 500, 100, 50);
+        startButton.setBounds(250, 600, 100, 50);
         startButton.setBackground(Color.decode("#9d9795"));
         panel.add(startButton);
         startButton.setVisible(true);
 
+        // Creating ability buttons
+
+        trialerror = new JButton("Trial and Error");
+        trialerror.setBounds(150, 600, 200, 50);
+        trialerror.setBackground(Color.decode("#9d9795"));
+        panel.add(trialerror);
+        trialerror.setVisible(false);
+
+        analysis = new JButton("Data Analysis");
+        analysis.setBounds(400, 600, 200, 50);
+        analysis.setBackground(Color.decode("#9d9795"));
+        panel.add(analysis);
+        analysis.setVisible(false);
+
+        security = new JButton("Faulty Security");
+        security.setBounds(275, 675, 200, 50);
+        security.setBackground(Color.decode("#9d9795"));
+        panel.add(security);
+        security.setVisible(false);
+
+        Font font2 = new Font("Arial", Font.BOLD, 20);
+
+        abilitylist = new JLabel("Abilities:");
+        abilitylist.setFont(font2);
+        abilitylist.setBounds(325, 550, 200, 50);
+        panel.add(abilitylist);
+        abilitylist.setVisible(false);
+
         fleeButton = new JButton("Flee");
-        fleeButton.setBounds(800, 500, 100, 50);
+        fleeButton.setBounds(800, 600, 100, 50);
         fleeButton.setBackground(Color.decode("#9d9795"));
         panel.add(fleeButton);
         fleeButton.setVisible(true);
 
         backButton = new JButton("Back");
-        backButton.setBounds(250, 500, 100, 50);
+        backButton.setBounds(800, 600, 100, 50);
         backButton.setBackground(Color.decode("#9d9795"));
 
 
@@ -258,6 +299,7 @@ public class NPC {
         battleButton3.setBounds(250,400,250,50);
         battleButton3.setBackground(Color.decode("#555960"));
 
+
         if (getName().equals("Hello")) {
 
             q1.setText("How would you print 'Hello World' in Python?");
@@ -272,6 +314,19 @@ public class NPC {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if(e.getSource() == battleButton3 && !q2checker && !q3checker) {
+                        if(!hello1) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 2) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 3) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            hello1 = true;
+                        }
                         q1.setVisible(false);
                         q2.setVisible(true);
                         q2checker = true;
@@ -280,6 +335,19 @@ public class NPC {
                         battleButton2.setText("System.out.println('Hello World')");
                         battleButton3.setText("<html> class Hello { <br/> public static void main(String[] args) {<br/> System.out.println('Hello World'); <br>  } <br> }</html>");
                     } else if (e.getSource() == battleButton3 && q2checker) {
+                        if(!hello2) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 2) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 3) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            hello2 = true;
+                        }
                         q2.setVisible(false);
                         q3.setVisible(true);
                         q2checker = false;
@@ -291,6 +359,19 @@ public class NPC {
                         battleButton2.setText("<html>int main() <br/> {  <br/>   printf('Hello World'); <br/> return 'hello world'; <br/> } </html>");
                         battleButton1.setText("<html>int main() <br/> { <br/>  printf('Hello World'); <br/> }</html>");
                     } else if (e.getSource() == battleButton3 && q3checker) {
+                        if(!hello3) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 10) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 25) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            hello3 = true;
+                        }
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -301,19 +382,45 @@ public class NPC {
                         if(player.getEnemiesDefeated() == 1) {
                             player.addAchievement("1 Enemy Defeated");
                         }
+                        else if(player.getEnemiesDefeated() == 5) {
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Data Analysis");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Trial and Error");
+                            }
+                        }
                         else if(player.getEnemiesDefeated() == 10) {
                             player.addAchievement("10 Enemy Defeated");
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Trial and Error");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Data Analysis");
+                            }
                         }
+
                         congrats.setVisible(true);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
+                        backButton.setVisible(true);
                     }
                 }
             });
 
         }
 
-        if (getName().equals("jeff")) {
+        if (getName().equals("Jeff")) {
             q1.setText("What is synonymous with scrum?");
             battleButton1.setText("Waterfall");
             battleButton2.setText("Spiral");
@@ -329,6 +436,19 @@ public class NPC {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource() == battleButton3 && !q2checker && !q3checker) {
+                        if(!jeff1) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 2) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 3) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            jeff1 = true;
+                        }
                         q1.setVisible(false);
                         q2.setText("Ideally we want to...");
                         q2.setVisible(true);
@@ -340,6 +460,19 @@ public class NPC {
                         battleButton2.setText("Decrease cohesion and Increase coupling");
                         battleButton3.setText("Increase cohesion and Decrease coupling");
                     } else if (e.getSource() == battleButton3 && q2checker) {
+                        if(!jeff2) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 10) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 25) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            jeff2 = true;
+                        }
                         q2.setVisible(false);
                         q3.setText("Which of the following is not a type of testing?");
                         q3.setVisible(true);
@@ -351,6 +484,19 @@ public class NPC {
                         battleButton2.setText("Sandwich");
                         battleButton3.setText("Potato Chip");
                     } else if(e.getSource() == battleButton3) {
+                        if(!jeff3) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 10) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 25) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            jeff3 = true;
+                        }
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -362,8 +508,32 @@ public class NPC {
                         if(player.getEnemiesDefeated() == 1) {
                             player.addAchievement("1 Enemy Defeated");
                         }
+                        else if(player.getEnemiesDefeated() == 5) {
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Data Analysis");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Trial and Error");
+                            }
+                        }
                         else if(player.getEnemiesDefeated() == 10) {
                             player.addAchievement("10 Enemy Defeated");
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Trial and Error");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Data Analysis");
+                            }
                         }
                         fleeButton.setVisible(false);
                         panel.add(backButton);
@@ -373,8 +543,8 @@ public class NPC {
         });
         }
 
-        if (getName().equals("loopy")) {
-            q1.setText("What is synonymous with scrum?");
+        if (getName().equals("Loopy")) {
+            q1.setText("Which loop is used most often?");
             battleButton1.setText("While");
             battleButton2.setText("Do While");
             battleButton3.setText("For");
@@ -382,13 +552,26 @@ public class NPC {
 
 
             battleButton1.setBounds(250,200,250,50);
-            battleButton2.setBounds(250,400,250,50);
-            battleButton3.setBounds(250,600,250,50);
+            battleButton2.setBounds(250,300,250,50);
+            battleButton3.setBounds(250,400,250,50);
 
             battleButton3.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource() == battleButton3 && !q2checker && !q3checker) {
+                        if(!loopy1) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 10) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 25) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            loopy1 = true;
+                        }
                         q1.setVisible(false);
                         q2.setText("Which of the following is a valid for-loop in Python?");
                         q2.setVisible(true);
@@ -400,6 +583,19 @@ public class NPC {
                         battleButton2.setText("<html> cars = ['Honda', 'Toyota', 'Ford'];  <br/> for x in cars { <br/> print(x); <br/> } </html>");
                         battleButton3.setText("<html> cars = ['Honda', 'Toyota', 'Ford']  <br/> for x in cars: <br/> print(x) </html>");
                     } else if (e.getSource() == battleButton3 && q2checker) {
+                        if(!loopy2) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 10) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 25) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            loopy2 = true;
+                        }
                         q2.setVisible(false);
                         q3.setText("Which of the following is a valid for-loop in Java?");
                         q3.setVisible(true);
@@ -409,6 +605,19 @@ public class NPC {
                         battleButton2.setText("<html> for (int i = 0, i < 5, i++) { <br/> System.out.println(i); <br/> }");
                         battleButton3.setText("<html> for (int i = 0; i < 5; i++) { <br/> System.out.println(i); <br/> }");
                     } else if(e.getSource() == battleButton3) {
+                        if(!loopy3) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 10) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 25) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            loopy3 = true;
+                        }
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -420,8 +629,32 @@ public class NPC {
                         if(player.getEnemiesDefeated() == 1) {
                             player.addAchievement("1 Enemy Defeated");
                         }
+                        else if(player.getEnemiesDefeated() == 5) {
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Data Analysis");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Trial and Error");
+                            }
+                        }
                         else if(player.getEnemiesDefeated() == 10) {
                             player.addAchievement("10 Enemy Defeated");
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Trial and Error");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Data Analysis");
+                            }
                         }
                         fleeButton.setVisible(false);
                         panel.add(backButton);
@@ -431,7 +664,7 @@ public class NPC {
             });
         }
 
-        if (getName().equals("ray")) {
+        if (getName().equals("Ray")) {
             q1.setText("Which of the following is an array in Python?");
             battleButton1.setText("cars = { car1: Honda, car2: 'Toyota', car3: 'Ford' }");
             battleButton2.setText("cars = ('Honda', 'Toyota', 'Ford')");
@@ -439,37 +672,76 @@ public class NPC {
 
 
 
-            battleButton1.setBounds(250,200,250,50);
-            battleButton2.setBounds(250,600,250,50);
-            battleButton3.setBounds(250,400,250,50);
+            battleButton1.setBounds(250,200,350,50);
+            battleButton2.setBounds(250,600,350,50);
+            battleButton3.setBounds(250,400,350,50);
 
             battleButton3.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (e.getSource() == battleButton3 && !q2checker && !q3checker) {
+                        if(!ray1) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 10) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 25) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            ray1 = true;
+                        }
                         q1.setVisible(false);
                         q2.setText("Which of the following is an array in Java?");
                         q2.setVisible(true);
                         q2checker = true;
-                        battleButton1.setBounds(250,600,250,150);
-                        battleButton2.setBounds(250,400,250,150);
-                        battleButton3.setBounds(250,200,250,150);
+                        battleButton1.setBounds(250,600,350,150);
+                        battleButton2.setBounds(250,400,350,150);
+                        battleButton3.setBounds(250,200,350,150);
                         battleButton1.setText("cars = {'Honda', 'Toyota', 'Ford'};");
                         battleButton2.setText("String cars = {'Honda', 'Toyota', 'Ford'};");
                         battleButton3.setText("String[] cars = {'Honda', 'Toyota', 'Ford'};");
                     } else if (e.getSource() == battleButton3 && q2checker) {
+                        if(!ray2) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 10) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 25) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            ray2 = true;
+                        }
                         q2.setVisible(false);
                         q3.setText("Which of the following is a 2d array in Java?");
                         q3.setVisible(true);
                         q2checker = false;
                         q3checker = true;
-                        battleButton1.setBounds(250,200,250,50);
-                        battleButton2.setBounds(250,600,250,50);
-                        battleButton3.setBounds(250,400,250,50);
+                        battleButton1.setBounds(250,200,350,50);
+                        battleButton2.setBounds(250,600,350,50);
+                        battleButton3.setBounds(250,400,350,50);
                         battleButton1.setText("int[] 2darray = {1, 2, 3, 4}, {5, 6, 7, 8};");
                         battleButton2.setText("int[][] 1darray = {1, 2, 3, 4}, {5, 6, 7, 8};");
                         battleButton3.setText("int[][] 2darray = { {1, 2, 3, 4}, {5, 6, 7, 8} };");
                     } else if(e.getSource() == battleButton3) {
+                        if(!ray3) {
+                            player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
+                            if(player.getQuestionsAnswered() == 1) {
+                                player.addAchievement("1 Question Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 10) {
+                                player.addAchievement("10 Questions Answered");
+                            }
+                            else if(player.getQuestionsAnswered() == 25) {
+                                player.addAchievement("25 Questions Answered");
+                            }
+                            ray3 = true;
+                        }
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -481,12 +753,66 @@ public class NPC {
                         if(player.getEnemiesDefeated() == 1) {
                             player.addAchievement("1 Enemy Defeated");
                         }
+                        else if(player.getEnemiesDefeated() == 5) {
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Data Analysis");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Trial and Error");
+                            }
+                        }
                         else if(player.getEnemiesDefeated() == 10) {
                             player.addAchievement("10 Enemy Defeated");
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Trial and Error");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Data Analysis");
+                            }
                         }
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
+                    }
+                }
+            });
+        }
+
+        if (getName().equals("Bug")) {
+            fleeButton.setVisible(false);
+
+            startButton.setVisible(false);
+
+            start.setText("<html>You have been ambushed by a bug! <br/> You must debug the following python code:</html>");
+
+            start.setBounds(250, 100, 700, 300);
+
+            q1.setBounds(250, 300, 700, 100);
+
+            q1.setVisible(true);
+            q1.setText("<html>nums = [1, 2, 3, 4, 5] <br/> for x in nums: <br/> &emsp print(x %% 3)</html>");
+
+            submitButton = new JButton("Submit");
+            submitButton.setBounds(250, 600, 100, 50);
+            submitButton.setBackground(Color.decode("#9d9795"));
+            panel.add(submitButton);
+            submitButton.setVisible(true);
+
+            submitButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(e.getSource() == submitButton) {
+                        frame.dispose();
                     }
                 }
             });
@@ -507,6 +833,17 @@ public class NPC {
                     battleButton2.setVisible(true);
                     panel.add(battleButton3);
                     battleButton3.setVisible(true);
+                    abilitylist.setVisible(true);
+                    if(player.getAbilities().contains("Trial and Error")) {
+                        trialerror.setVisible(true);
+                    }
+                    if(player.getAbilities().contains("Data Analysis")) {
+                        analysis.setVisible(true);
+                    }
+                    if(player.getAbilities().contains("Faulty Security")) {
+                        security.setVisible(true);
+                    }
+
                 }
             }
         });
@@ -570,6 +907,15 @@ public class NPC {
             }
         });
 
+        fleeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == fleeButton) {
+                    frame.dispose();
+                }
+            }
+        });
+
     }
 
     // Method to display the shop for an individual NPC if they have one
@@ -608,10 +954,6 @@ public class NPC {
         panel.add(prompt);
 
         // Setting items, costs, and images for each individual NPC that we will have
-
-        item1 = "";
-        item2 = "";
-        item3 = "";
         cost1 = 0;
         cost2 = 0;
         cost3 = 0;
@@ -620,54 +962,75 @@ public class NPC {
         image3 = "";
 
         if(getName().equals("Ron")) {
-            item1 = "Iron Shield";
-            item2 = "Wooden Sword";
-            item3 = "Healing Potion";
+            item1 = new Item(dbConnection.getItemId("Gaming Laptop"), "Gaming Laptop");
+            item2 = new Item(dbConnection.getItemId("Algorithms Book"), "Algorithms Book");
+            item3 = new Item(dbConnection.getItemId("Coffee"), "Coffee");
             cost1 = 100;
             cost2 = 75;
             cost3 = 50;
-            image1 = "Images/shield.png";
-            image2 = "Images/Wooden_sword.png";
-            image3 = "Images/healing.png";
+            image1 = "Images/laptop.jpg";
+            image2 = "Images/algo.png";
+            image3 = "Images/coffee.jpg";
         }
 
         else if(getName().equals("Natalie")) {
-            item1 = "Chain Helmet";
-            item2 = "Wooden Bow";
-            item3 = "Mana Potion";
+            item1 = new Item(dbConnection.getItemId("Breadboard"), "Breadboard");
+            item2 = new Item(dbConnection.getItemId("Deodorant"), "Deodorant");
+            item3 = new Item(dbConnection.getItemId("Energy Drink"), "Energy Drink");
             cost1 = 125;
             cost2 = 100;
             cost3 = 75;
-            image1 = "Images/chain.png";
-            image2 = "Images/bow.png";
-            image3 = "Images/mana.png";
+            image1 = "Images/breadboard.jpg";
+            image2 = "Images/deo.jpg";
+            image3 = "Images/monster.jpg";
         }
 
         // Adding the items, costs, and images to the frame
 
-        item1_prompt = new JLabel(item1);
+        item1_prompt = new JLabel(item1.getName());
         item1_prompt.setBounds(275, 250, 500, 100);
         panel.add(item1_prompt);
 
 
         item1_cost = new JLabel(cost1 + " Gold             " + "Stock: " + getStock1());
         item1_cost.setBounds(250, 650, 500, 100);
+        //Check if player already owns item
+        if (dbConnection.playerHasItem(player.getUsername(), player.getName(), item1))
+        {
+            item1_cost.setText("Already own item");
+            item1_cost.setForeground(Color.RED);
+            item1_cost.setFont(font);
+        }
         panel.add(item1_cost);
 
-        item2_prompt = new JLabel(item2);
+        item2_prompt = new JLabel(item2.getName());
         item2_prompt.setBounds(875, 250, 500, 100);
         panel.add(item2_prompt);
 
         item2_cost = new JLabel(cost2 + " Gold             " + "Stock: " + getStock2());
         item2_cost.setBounds(850, 650, 500, 100);
+        //Check if player already owns item
+        if (dbConnection.playerHasItem(player.getUsername(), player.getName(), item2))
+        {
+            item2_cost.setText("Already own item");
+            item2_cost.setForeground(Color.RED);
+            item2_cost.setFont(font);
+        }
         panel.add(item2_cost);
 
-        item3_prompt = new JLabel(item3);
+        item3_prompt = new JLabel(item3.getName());
         item3_prompt.setBounds(1500, 250, 500, 100);
         panel.add(item3_prompt);
 
         item3_cost = new JLabel(cost3 + " Gold             " + "Stock: " + getStock3());
         item3_cost.setBounds(1475, 650, 500, 100);
+        //Check if player already owns item
+        if (dbConnection.playerHasItem(player.getUsername(), player.getName(), item3))
+        {
+            item3_cost.setText("Already own item");
+            item3_cost.setForeground(Color.RED);
+            item3_cost.setFont(font);
+        }
         panel.add(item3_cost);
 
         backButton = new JButton("Back");
@@ -715,15 +1078,18 @@ public class NPC {
                         player.setGold(player.getGold() - cost1);
                         setStock1(getStock1() - 1);
                         total_gold.setText("Gold: " + player.getGold());
-                        player.getInventory().addItem(item1);
-                        if(getStock1() == 0) {
-                            item1_cost.setText("OUT OF STOCK!");
-                            item1_cost.setForeground(Color.RED);
-                            item1_cost.setFont(font);
-                        }
-                        else {
-                            item1_cost.setText(cost1 + " Gold             " + "Stock: " + getStock1());
-                        }
+
+                            player.getInventory().addItem(player.getUsername(), player.getName(), item1);
+                            if (getStock1() == 0) {
+                                item1_cost.setText("OUT OF STOCK!");
+                                item1_cost.setForeground(Color.RED);
+                                item1_cost.setFont(font);
+                            } else {
+                                //item1_cost.setText(cost1 + " Gold             " + "Stock: " + getStock1());
+                                item1_cost.setText("Already own item");
+                                item1_cost.setForeground(Color.RED);
+                                item1_cost.setFont(font);
+                            }
 
                     }
                     else {
@@ -752,15 +1118,19 @@ public class NPC {
                         player.setGold(player.getGold() - cost2);
                         setStock2(getStock2() - 1);
                         total_gold.setText("Gold: " + player.getGold());
-                        player.getInventory().addItem(item2);
-                        if(getStock2() == 0) {
-                            item2_cost.setText("OUT OF STOCK!");
-                            item2_cost.setForeground(Color.RED);
-                            item2_cost.setFont(font);
-                        }
-                        else {
-                            item2_cost.setText(cost2 + " Gold             " + " Stock: " + getStock2());
-                        }
+
+                            player.getInventory().addItem(player.getUsername(), player.getName(), item2);
+
+                            if (getStock2() == 0) {
+                                item2_cost.setText("OUT OF STOCK!");
+                                item2_cost.setForeground(Color.RED);
+                                item2_cost.setFont(font);
+                            } else {
+                                //item2_cost.setText(cost2 + " Gold             " + " Stock: " + getStock2());
+                                item2_cost.setText("Already own item");
+                                item2_cost.setForeground(Color.RED);
+                                item2_cost.setFont(font);
+                            }
 
                     }
 
@@ -788,16 +1158,19 @@ public class NPC {
                     if(player.getGold() >= cost3) {
                         player.setGold(player.getGold() - cost3);
                         total_gold.setText("Gold: " + player.getGold());
-                        player.getInventory().addItem(item3);
-                        setStock3(getStock3() - 1);
-                        if(getStock3() == 0) {
-                            item3_cost.setText("OUT OF STOCK!");
-                            item3_cost.setForeground(Color.RED);
-                            item3_cost.setFont(font);
-                        }
-                        else {
-                            item3_cost.setText(cost3 + " Gold            " + " Stock: " + getStock3());
-                        }
+
+                            player.getInventory().addItem(player.getUsername(), player.getName(), item3);
+                            setStock3(getStock3() - 1);
+                            if (getStock3() == 0) {
+                                item3_cost.setText("OUT OF STOCK!");
+                                item3_cost.setForeground(Color.RED);
+                                item3_cost.setFont(font);
+                            } else {
+                                //item3_cost.setText(cost3 + " Gold            " + " Stock: " + getStock3());
+                                item3_cost.setText("Already own item");
+                                item3_cost.setForeground(Color.RED);
+                                item3_cost.setFont(font);
+                            }
 
                     }
                     else {
