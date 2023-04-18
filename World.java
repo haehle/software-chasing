@@ -885,7 +885,7 @@ public class World{
 
             // Now add Random Encounter
 
-            if(currLoc[0] == 20 && currLoc[1] == 18 && bugCheck) {
+            if(player.getTilesWalked() == 54 && bugCheck) {
                 bugCheck = false;
                 bug.displayBattle(player);
             }

@@ -13,6 +13,9 @@ public class NPC {
     private JButton fleeButton, backButton, button1, button2, button3;
     private JButton startButton, submitButton, battleButton1, battleButton2, battleButton3, trialerror, analysis, security;
 
+    private JComboBox dropdown;
+    private JTextField bugfix;
+
     private JLabel start, q1, q2, q3, congrats, loser, abilitylist;
     private Boolean q2checker, q3checker;
     private JLabel prompt, item1_prompt, item1_cost, item2_prompt, item2_cost, item3_prompt, item3_cost, total_gold;
@@ -298,6 +301,17 @@ public class NPC {
         battleButton3 = new JButton("");
         battleButton3.setBounds(250,400,250,50);
         battleButton3.setBackground(Color.decode("#555960"));
+
+        submitButton = new JButton("Submit");
+        submitButton.setBounds(250, 600, 100, 50);
+        panel.add(submitButton);
+        submitButton.setVisible(false);
+
+        String[] numbers = {"1", "2", "3"};
+        dropdown = new JComboBox(numbers);
+        dropdown.setBounds(250, 425, 100, 50);
+        panel.add(dropdown);
+        dropdown.setVisible(false);
 
 
         if (getName().equals("Hello")) {
@@ -793,20 +807,34 @@ public class NPC {
 
             startButton.setVisible(false);
 
+            bugfix = new JTextField();
+            bugfix.setFont(new Font("Acumin Pro", Font.PLAIN, 12));
+            bugfix.setSize(250, 25);
+            bugfix.setLocation(600, 435);
+            panel.add(bugfix);
+
             start.setText("<html>You have been ambushed by a bug! <br/> You must debug the following python code:</html>");
 
             start.setBounds(250, 100, 700, 300);
 
             q1.setBounds(250, 300, 700, 100);
 
-            q1.setVisible(true);
             q1.setText("<html>nums = [1, 2, 3, 4, 5] <br/> for x in nums: <br/> &emsp print(x %% 3)</html>");
+            q1.setVisible(true);
 
-            submitButton = new JButton("Submit");
-            submitButton.setBounds(250, 600, 100, 50);
-            submitButton.setBackground(Color.decode("#9d9795"));
-            panel.add(submitButton);
+            q2.setBounds(150,370,700,100);
+            q2.setText("On which line does the error occur?");
+            q2.setForeground(Color.BLACK);
+            q2.setVisible(true);
+
+            q3.setBounds(600, 370, 700, 100);
+            q3.setText("Rewrite the line of code to fix the error");
+            q3.setForeground(Color.BLACK);
+            q3.setVisible(true);
+
             submitButton.setVisible(true);
+
+            dropdown.setVisible(true);
 
             submitButton.addActionListener(new ActionListener() {
                 @Override
