@@ -13,7 +13,10 @@ public class NPC {
     private JButton fleeButton, backButton, button1, button2, button3;
     private JButton startButton, submitButton, battleButton1, battleButton2, battleButton3, trialerror, analysis, security;
 
-    private JLabel start, q1, q2, q3, congrats, loser, abilitylist;
+    private JComboBox dropdown;
+    private JTextField bugfix;
+
+    private JLabel start, q1, q2, q3, congrats, loser, abilitylist, tryAgain;
     private Boolean q2checker, q3checker;
     private JLabel prompt, item1_prompt, item1_cost, item2_prompt, item2_cost, item3_prompt, item3_cost, total_gold;
     private String name;
@@ -72,8 +75,8 @@ public class NPC {
             case "Boss" -> {
                 this.encounter = "You are about to encounter the boss, " + name;
                 this.color = Color.RED;
-                this.hp = 500;
-                this.maxHP = 500;
+                this.hp = 3;
+                this.maxHP = 3;
                 this.speed = 5;
                 this.stamina = 20;
                 this.maxStamina = 20;
@@ -83,8 +86,8 @@ public class NPC {
             case "Enemy" -> {
                 this.encounter = "You are about to encounter the enemy, " + name;
                 this.color = Color.ORANGE;
-                this.hp = 60;
-                this.maxHP = 100;
+                this.hp = 3;
+                this.maxHP = 3;
                 this.speed = 5;
                 this.stamina = 20;
                 this.maxStamina = 20;
@@ -212,6 +215,21 @@ public class NPC {
         frame.pack();
         frame.setVisible(true);
 
+        JLabel health = new JLabel("My Health: " + player.getHp() + "/" + player.getMaxHP());
+        health.setBackground(Color.white);
+        health.setBounds(650,70,250,50);
+        health.setOpaque(false);
+        health.setVisible(true);
+        panel.add(health);
+
+        JLabel NPChealth = new JLabel(getName() + " Health: " + getHp() + "/" + getMaxHP());
+        NPChealth.setBackground(Color.white);
+        NPChealth.setBounds(650,100,250,50);
+        NPChealth.setOpaque(false);
+        NPChealth.setVisible(true);
+        panel.add(NPChealth);
+
+
         start = new JLabel("<html>You are about to engage in a battle with " + getName() + ". <br/> To defeat him, answer the following CS related questions</html>");
         start.setBounds(250, 100, 700, 300);
         Font font1 = new Font("Arial", Font.BOLD, 20);
@@ -304,6 +322,25 @@ public class NPC {
         battleButton3 = new JButton("");
         battleButton3.setBounds(250,400,250,50);
         battleButton3.setBackground(Color.decode("#555960"));
+
+        submitButton = new JButton("Submit");
+        submitButton.setBounds(250, 600, 100, 50);
+        panel.add(submitButton);
+        submitButton.setVisible(false);
+
+        String[] numbers = {"1", "2", "3"};
+        dropdown = new JComboBox(numbers);
+        dropdown.setBounds(250, 425, 100, 50);
+        panel.add(dropdown);
+        dropdown.setVisible(false);
+
+        tryAgain = new JLabel("That's incorrect, try again!");
+        tryAgain.setFont(new Font("Acumin Pro", Font.BOLD, 30));
+        tryAgain.setForeground(Color.red);
+        tryAgain.setSize(550, 50);
+        tryAgain.setLocation(50, 50);
+        panel.add(tryAgain);
+        tryAgain.setVisible(false);
 
         trialerror.addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e)
@@ -435,6 +472,8 @@ public class NPC {
                             }
                             hello1 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q1.setVisible(false);
                         q2.setVisible(true);
                         q2checker = true;
@@ -456,6 +495,8 @@ public class NPC {
                             }
                             hello2 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q2.setVisible(false);
                         q3.setVisible(true);
                         q2checker = false;
@@ -480,6 +521,8 @@ public class NPC {
                             }
                             hello3 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -569,13 +612,15 @@ public class NPC {
                             }
                             jeff1 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q1.setVisible(false);
                         q2.setText("Ideally we want to...");
                         q2.setVisible(true);
                         q2checker = true;
-                        battleButton1.setBounds(250,200,250,50);
-                        battleButton2.setBounds(250,600,250,50);
-                        battleButton3.setBounds(250,400,250,50);
+                        battleButton1.setBounds(250,200,350,50);
+                        battleButton2.setBounds(250,600,350,50);
+                        battleButton3.setBounds(250,400,350,50);
                         battleButton1.setText("Increase cohesion and Increase coupling");
                         battleButton2.setText("Decrease cohesion and Increase coupling");
                         battleButton3.setText("Increase cohesion and Decrease coupling");
@@ -593,11 +638,14 @@ public class NPC {
                             }
                             jeff2 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q2.setVisible(false);
                         q3.setText("Which of the following is not a type of testing?");
                         q3.setVisible(true);
                         q2checker = false;
                         q3checker = true;
+                        battleButton1.setBounds(250, 200, 250, 50);
                         battleButton2.setBounds(250,400,250,50);
                         battleButton3.setBounds(250,600,250,50);
                         battleButton1.setText("Unit");
@@ -617,6 +665,8 @@ public class NPC {
                             }
                             jeff3 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -700,6 +750,8 @@ public class NPC {
                             }
                             loopy1 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q1.setVisible(false);
                         q2.setText("Which of the following is a valid for-loop in Python?");
                         q2.setVisible(true);
@@ -724,6 +776,8 @@ public class NPC {
                             }
                             loopy2 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q2.setVisible(false);
                         q3.setText("Which of the following is a valid for-loop in Java?");
                         q3.setVisible(true);
@@ -746,6 +800,8 @@ public class NPC {
                             }
                             loopy3 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -829,6 +885,8 @@ public class NPC {
                             }
                             ray1 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q1.setVisible(false);
                         q2.setText("Which of the following is an array in Java?");
                         q2.setVisible(true);
@@ -853,6 +911,8 @@ public class NPC {
                             }
                             ray2 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q2.setVisible(false);
                         q3.setText("Which of the following is a 2d array in Java?");
                         q3.setVisible(true);
@@ -878,6 +938,8 @@ public class NPC {
                             }
                             ray3 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -928,9 +990,20 @@ public class NPC {
         }
 
         if (getName().equals("Bug")) {
+            setHp(1);
+            setMaxHP(1);
+
+            NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
+
             fleeButton.setVisible(false);
 
             startButton.setVisible(false);
+
+            bugfix = new JTextField();
+            bugfix.setFont(new Font("Acumin Pro", Font.PLAIN, 12));
+            bugfix.setSize(250, 25);
+            bugfix.setLocation(600, 435);
+            panel.add(bugfix);
 
             start.setText("<html>You have been ambushed by a bug! <br/> You must debug the following python code:</html>");
 
@@ -938,19 +1011,55 @@ public class NPC {
 
             q1.setBounds(250, 300, 700, 100);
 
-            q1.setVisible(true);
             q1.setText("<html>nums = [1, 2, 3, 4, 5] <br/> for x in nums: <br/> &emsp print(x %% 3)</html>");
+            q1.setVisible(true);
 
-            submitButton = new JButton("Submit");
-            submitButton.setBounds(250, 600, 100, 50);
-            submitButton.setBackground(Color.decode("#9d9795"));
-            panel.add(submitButton);
+            q2.setBounds(150,370,700,100);
+            q2.setText("On which line does the error occur?");
+            q2.setForeground(Color.BLACK);
+            q2.setVisible(true);
+
+            q3.setBounds(600, 370, 700, 100);
+            q3.setText("Rewrite the line of code to fix the error");
+            q3.setForeground(Color.BLACK);
+            q3.setVisible(true);
+
             submitButton.setVisible(true);
+
+            dropdown.setVisible(true);
 
             submitButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(e.getSource() == submitButton) {
+                    if(e.getSource() == submitButton && dropdown.getSelectedItem() == "3" && (bugfix.getText().equals("print(x % 3)") || bugfix.getText().equals("print(x%3)"))) {
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
+                        tryAgain.setVisible(false);
+                        submitButton.setVisible(false);
+                        dropdown.setVisible(false);
+                        q1.setVisible(false);
+                        q2.setVisible(false);
+                        q3.setVisible(false);
+                        start.setVisible(false);
+                        bugfix.setVisible(false);
+                        panel.add(backButton);
+                        panel.add(congrats);
+                        backButton.setVisible(true);
+                        congrats.setVisible(true);
+                    } else {
+                        player.setHp(player.getHp() - 5);
+                        health.setText("My Health: " + player.getHp() + "/" + player.getMaxHP());
+                        panel.add(tryAgain);
+                        tryAgain.setVisible(true);
+                        bugfix.setText("");
+                    }
+                }
+            });
+
+            backButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(e.getSource() == backButton) {
                         frame.dispose();
                     }
                 }
@@ -992,18 +1101,25 @@ public class NPC {
             public void actionPerformed(ActionEvent e) {
                 trial -= 1;
                 System.out.println(trial);
-                if(e.getSource() == battleButton1 && trial <= 0) {
-                    q1.setVisible(false);
-                    q2.setVisible(false);
-                    q3.setVisible(false);
-                    battleButton1.setVisible(false);
-                    battleButton2.setVisible(false);
-                    battleButton3.setVisible(false);
-                    panel.add(loser);
-                    fleeButton.setVisible(false);
-                    panel.add(backButton);
+                if (e.getSource() == battleButton1 && trial <= 0) {
+                    player.setHp(player.getHp() - 5);
+                    if (getNPCType().equals("Boss")) {
+                        player.setHp(player.getHp() - 5);
+                    }
+                    health.setText("My Health: " + player.getHp() + "/" + player.getMaxHP());
+                    if (player.getHp() <= 0) {
+                        q1.setVisible(false);
+                        q2.setVisible(false);
+                        q3.setVisible(false);
+                        battleButton1.setVisible(false);
+                        battleButton2.setVisible(false);
+                        battleButton3.setVisible(false);
+                        loser.setVisible(true);
+                        fleeButton.setVisible(false);
+                        backButton.setVisible(true);
+                    }
                 }
-                else if(trial > 0) {
+                else if (trial > 0) {
                     battleButton1.setVisible(false);
                     check = 1;
                 }
@@ -1016,15 +1132,22 @@ public class NPC {
                 trial -= 1;
                 System.out.println(trial);
                 if(e.getSource() == battleButton2 && trial <= 0) {
-                    q1.setVisible(false);
-                    q2.setVisible(false);
-                    q3.setVisible(false);
-                    battleButton1.setVisible(false);
-                    battleButton2.setVisible(false);
-                    battleButton3.setVisible(false);
-                    panel.add(loser);
-                    fleeButton.setVisible(false);
-                    panel.add(backButton);
+                    player.setHp(player.getHp() - 5);
+                    if (getNPCType().equals("Boss")) {
+                        player.setHp(player.getHp() - 5);
+                    }
+                    health.setText("My Health: " + player.getHp() + "/" + player.getMaxHP());
+                    if (player.getHp() <= 0) {
+                        q1.setVisible(false);
+                        q2.setVisible(false);
+                        q3.setVisible(false);
+                        battleButton1.setVisible(false);
+                        battleButton2.setVisible(false);
+                        battleButton3.setVisible(false);
+                        loser.setVisible(true);
+                        fleeButton.setVisible(false);
+                        backButton.setVisible(true);
+                    }
                 }
                 else if(trial > 0) {
                     battleButton2.setVisible(false);
@@ -1039,6 +1162,7 @@ public class NPC {
         loser.setBounds(250, 100, 700, 300);
         loser.setForeground(Color.BLACK);
         loser.setFont(font1);
+        panel.add(loser);
 
         congrats = new JLabel("<html>You have defeated " + getName() + " in a battle, <br/> Congratulations! </html>");
         congrats.setBounds(250, 100, 700, 300);

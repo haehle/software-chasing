@@ -462,7 +462,7 @@ public class World{
         battle4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == battle) {
+                if(e.getSource() == battle4) {
                     bm.resume();
                     checkMusic = false;
                     jeff.displayBattle(player);
@@ -886,7 +886,7 @@ public class World{
 
             // Now add Random Encounter
 
-            if(currLoc[0] == 20 && currLoc[1] == 18 && bugCheck) {
+            if(player.getTilesWalked() == 54 && bugCheck) {
                 bugCheck = false;
                 bug.displayBattle(player);
             }
@@ -908,8 +908,10 @@ public class World{
                     else if (x == checkPoint[0] && y == checkPoint[1]){graphics.setColor(Color.decode("#5faae2"));}//end point color
                     else if (x == backPoint[0] && y == backPoint[1]){graphics.setColor(Color.decode("#d15793"));}//back point color
                     else if ((x == 3 && y == 3) | (x == 6 && y == 6) | (x == 15 && y == 25)) {graphics.setColor(Color.BLUE);}
-                    else if ((x == 10 && y == 6) | (x == 35 && y == 5) | (x == 28 && y == 45)) {graphics.setColor(Color.ORANGE);}
-                    else if (x == 40 && y == 30) {graphics.setColor(Color.RED);}
+                    else if (hello.getHp() > 0 && x == 10 && y == 6) {graphics.setColor(Color.ORANGE);}
+                    else if (loopy.getHp() > 0 && x == 35 && y == 5) {graphics.setColor(Color.ORANGE);}
+                    else if (ray.getHp() > 0 && x == 28 && y == 45) {graphics.setColor(Color.ORANGE);}
+                    else if (jeff.getHp() > 0 && x == 40 && y == 30) {graphics.setColor(Color.RED);}
                     else if (type == 0) {graphics.setColor(Color.black);}else {graphics.setColor(Color.white);}
                     /*TODO load a tile image*/
                     graphics.fillRect(x*tileSize,y*tileSize,tileSize,tileSize); //TILE IMAGE WILL GO HERE LATER
