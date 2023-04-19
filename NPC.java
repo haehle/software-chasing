@@ -16,7 +16,7 @@ public class NPC {
     private JComboBox dropdown;
     private JTextField bugfix;
 
-    private JLabel start, q1, q2, q3, congrats, loser, abilitylist;
+    private JLabel start, q1, q2, q3, congrats, loser, abilitylist, tryAgain;
     private Boolean q2checker, q3checker;
     private JLabel prompt, item1_prompt, item1_cost, item2_prompt, item2_cost, item3_prompt, item3_cost, total_gold;
     private String name;
@@ -209,6 +209,14 @@ public class NPC {
         frame.pack();
         frame.setVisible(true);
 
+        JLabel health = new JLabel("HP: " + player.getHp() + "/" + player.getMaxHP());
+        health.setBackground(Color.white);
+        health.setBounds(650,70,250,50);
+        health.setOpaque(false);
+        health.setVisible(true);
+        panel.add(health);
+
+
         start = new JLabel("<html>You are about to engage in a battle with " + getName() + ". <br/> To defeat him, answer the following CS related questions</html>");
         start.setBounds(250, 100, 700, 300);
         Font font1 = new Font("Arial", Font.BOLD, 20);
@@ -312,6 +320,14 @@ public class NPC {
         dropdown.setBounds(250, 425, 100, 50);
         panel.add(dropdown);
         dropdown.setVisible(false);
+
+        tryAgain = new JLabel("That's incorrect, try again!");
+        tryAgain.setFont(new Font("Acumin Pro", Font.BOLD, 30));
+        tryAgain.setForeground(Color.red);
+        tryAgain.setSize(550, 50);
+        tryAgain.setLocation(50, 50);
+        panel.add(tryAgain);
+        tryAgain.setVisible(false);
 
 
         if (getName().equals("Hello")) {
@@ -467,9 +483,9 @@ public class NPC {
                         q2.setText("Ideally we want to...");
                         q2.setVisible(true);
                         q2checker = true;
-                        battleButton1.setBounds(250,200,250,50);
-                        battleButton2.setBounds(250,600,250,50);
-                        battleButton3.setBounds(250,400,250,50);
+                        battleButton1.setBounds(250,200,350,50);
+                        battleButton2.setBounds(250,600,350,50);
+                        battleButton3.setBounds(250,400,350,50);
                         battleButton1.setText("Increase cohesion and Increase coupling");
                         battleButton2.setText("Decrease cohesion and Increase coupling");
                         battleButton3.setText("Increase cohesion and Decrease coupling");
@@ -492,6 +508,7 @@ public class NPC {
                         q3.setVisible(true);
                         q2checker = false;
                         q3checker = true;
+                        battleButton1.setBounds(250, 200, 250, 50);
                         battleButton2.setBounds(250,400,250,50);
                         battleButton3.setBounds(250,600,250,50);
                         battleButton1.setText("Unit");
@@ -813,6 +830,8 @@ public class NPC {
             bugfix.setLocation(600, 435);
             panel.add(bugfix);
 
+
+
             start.setText("<html>You have been ambushed by a bug! <br/> You must debug the following python code:</html>");
 
             start.setBounds(250, 100, 700, 300);
@@ -839,7 +858,33 @@ public class NPC {
             submitButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(e.getSource() == submitButton) {
+                    if(e.getSource() == submitButton && dropdown.getSelectedItem() == "3" && (bugfix.getText().equals("print(x % 3)") || bugfix.getText().equals("print(x%3)"))) {
+                        tryAgain.setVisible(false);
+                        submitButton.setVisible(false);
+                        dropdown.setVisible(false);
+                        q1.setVisible(false);
+                        q2.setVisible(false);
+                        q3.setVisible(false);
+                        start.setVisible(false);
+                        bugfix.setVisible(false);
+                        panel.add(backButton);
+                        panel.add(congrats);
+                        backButton.setVisible(true);
+                        congrats.setVisible(true);
+                    } else {
+                        player.setHp(player.getHp() - 5);
+                        health.setText("HP: " + player.getHp() + "/" + player.getMaxHP());
+                        panel.add(tryAgain);
+                        tryAgain.setVisible(true);
+                        bugfix.setText("");
+                    }
+                }
+            });
+
+            backButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(e.getSource() == backButton) {
                         frame.dispose();
                     }
                 }
@@ -880,15 +925,22 @@ public class NPC {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == battleButton1) {
-                    q1.setVisible(false);
-                    q2.setVisible(false);
-                    q3.setVisible(false);
-                    battleButton1.setVisible(false);
-                    battleButton2.setVisible(false);
-                    battleButton3.setVisible(false);
-                    panel.add(loser);
-                    fleeButton.setVisible(false);
-                    panel.add(backButton);
+                    player.setHp(player.getHp() - 5);
+                    if (getNPCType().equals("Boss")) {
+                        player.setHp(player.getHp() - 5);
+                    }
+                    health.setText("HP: " + player.getHp() + "/" + player.getMaxHP());
+                    if (player.getHp() <= 0) {
+                        q1.setVisible(false);
+                        q2.setVisible(false);
+                        q3.setVisible(false);
+                        battleButton1.setVisible(false);
+                        battleButton2.setVisible(false);
+                        battleButton3.setVisible(false);
+                        loser.setVisible(true);
+                        fleeButton.setVisible(false);
+                        backButton.setVisible(true);
+                    }
                 }
             }
         });
@@ -897,15 +949,22 @@ public class NPC {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == battleButton2) {
-                    q1.setVisible(false);
-                    q2.setVisible(false);
-                    q3.setVisible(false);
-                    battleButton1.setVisible(false);
-                    battleButton2.setVisible(false);
-                    battleButton3.setVisible(false);
-                    panel.add(loser);
-                    fleeButton.setVisible(false);
-                    panel.add(backButton);
+                    player.setHp(player.getHp() - 5);
+                    if (getNPCType().equals("Boss")) {
+                        player.setHp(player.getHp() - 5);
+                    }
+                    health.setText("HP: " + player.getHp() + "/" + player.getMaxHP());
+                    if (player.getHp() <= 0) {
+                        q1.setVisible(false);
+                        q2.setVisible(false);
+                        q3.setVisible(false);
+                        battleButton1.setVisible(false);
+                        battleButton2.setVisible(false);
+                        battleButton3.setVisible(false);
+                        loser.setVisible(true);
+                        fleeButton.setVisible(false);
+                        backButton.setVisible(true);
+                    }
                 }
             }
         });
@@ -916,6 +975,7 @@ public class NPC {
         loser.setBounds(250, 100, 700, 300);
         loser.setForeground(Color.BLACK);
         loser.setFont(font1);
+        panel.add(loser);
 
         congrats = new JLabel("<html>You have defeated " + getName() + " in a battle, <br/> Congratulations! </html>");
         congrats.setBounds(250, 100, 700, 300);

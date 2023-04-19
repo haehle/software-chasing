@@ -461,7 +461,7 @@ public class World{
         battle4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == battle) {
+                if(e.getSource() == battle4) {
                     bm.resume();
                     checkMusic = false;
                     jeff.displayBattle(player);
