@@ -9,7 +9,7 @@ import java.util.*;
 public class MenuButtons implements ActionListener {
     private static JFrame frame;
     private JPanel panel;
-    private JButton reportButton, feedbackButton, creditsButton, backButton, submitButton;
+    private JButton reportButton, feedbackButton, creditsButton, backButton, submitButton, realBackButton;
     private JTextArea textArea;
     private JLabel prompt, prompt2, prompt3, prompt4, prompt5, prompt6, prompt7, prompt8, prompt9;
     private String userName;
@@ -48,6 +48,12 @@ public class MenuButtons implements ActionListener {
         creditsButton.addActionListener(this);
         creditsButton.setBackground(Color.decode("#ddb945"));
         panel.add(creditsButton);
+
+        realBackButton = new JButton("Back");
+        realBackButton.setBounds(650, 700, 300, 100);
+        realBackButton.addActionListener(this);
+        realBackButton.setBackground(Color.decode("#9d9795"));
+        panel.add(realBackButton);
 
 
 
@@ -261,6 +267,8 @@ public class MenuButtons implements ActionListener {
             }
 
             identifier = 0;
+        } else if (e.getSource() == realBackButton) {
+            frame.setVisible(false);
         }
     }
 

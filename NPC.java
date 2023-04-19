@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.concurrent.*;
 
 
@@ -52,6 +52,12 @@ public class NPC {
     private boolean ray1 = false;
     private boolean ray2 = false;
     private boolean ray3 = false;
+
+    private int trial = 0;
+
+    private int check = 0;
+
+    private int count = 0;
 
 
     private String[] skills;
@@ -299,6 +305,103 @@ public class NPC {
         battleButton3.setBounds(250,400,250,50);
         battleButton3.setBackground(Color.decode("#555960"));
 
+        trialerror.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e)
+            {
+                if(e.getSource() == trialerror) {
+                    trial = 2;
+                    trialerror.setVisible(false);
+                }
+            }
+        });
+
+        analysis.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e)
+            {
+                if(e.getSource() == analysis) {
+                    if(check == 1) {
+                        battleButton2.setVisible(false);
+                    }
+                    else if(check == 2) {
+                        battleButton1.setVisible(false);
+                    }
+                    else {
+                        battleButton1.setVisible(false);
+                    }
+                    analysis.setVisible(false);
+                    check = 4;
+                }
+            }
+        });
+
+        security.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e)
+            {
+                if(e.getSource() == security) {
+                    Random rand = new Random();
+                    int randomNum = rand.nextInt((4 - 1) + 1) + 1;
+                    System.out.println("Random num: " + randomNum);
+
+                    if(randomNum == 4) {
+                        q1.setVisible(false);
+                        q2.setVisible(false);
+                        q3.setVisible(false);
+                        q3checker = false;
+                        battleButton1.setVisible(false);
+                        battleButton2.setVisible(false);
+                        battleButton3.setVisible(false);
+                        panel.add(congrats);
+                        congrats.setVisible(true);
+                        fleeButton.setVisible(false);
+                        panel.add(backButton);
+                        backButton.setVisible(true);
+                        abilitylist.setVisible(false);
+                        security.setVisible(false);
+                        trialerror.setVisible(false);
+                        analysis.setVisible(false);
+                        player.setEnemiesDefeated(player.getEnemiesDefeated() + 1);
+                        if(player.getEnemiesDefeated() == 1) {
+                            player.addAchievement("1 Enemy Defeated");
+
+                        }
+                        else if(player.getEnemiesDefeated() == 2) {
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Data Analysis");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Trial and Error");
+                            }
+                        }
+                        else if(player.getEnemiesDefeated() == 4) {
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Data Analysis");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Trial and Error");
+                            }
+                        }
+                        else if(player.getEnemiesDefeated() == 10) {
+                            player.addAchievement("10 Enemy Defeated");
+                        }
+                    }
+                    security.setVisible(false);
+
+                }
+
+
+            }
+        });
+
 
         if (getName().equals("Hello")) {
 
@@ -310,19 +413,24 @@ public class NPC {
             battleButton2.setText("('Hello World').print();");
             battleButton3.setText("print('Hello World')");
 
+
             battleButton3.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    if(trial > 0 || check == 4) {
+                        battleButton1.setVisible(true);
+                        battleButton2.setVisible(true);
+                    }
                     if(e.getSource() == battleButton3 && !q2checker && !q3checker) {
                         if(!hello1) {
                             player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
                             if(player.getQuestionsAnswered() == 1) {
                                 player.addAchievement("1 Question Answered");
                             }
-                            else if(player.getQuestionsAnswered() == 2) {
+                            else if(player.getQuestionsAnswered() == 10) {
                                 player.addAchievement("10 Questions Answered");
                             }
-                            else if(player.getQuestionsAnswered() == 3) {
+                            else if(player.getQuestionsAnswered() == 25) {
                                 player.addAchievement("25 Questions Answered");
                             }
                             hello1 = true;
@@ -340,10 +448,10 @@ public class NPC {
                             if(player.getQuestionsAnswered() == 1) {
                                 player.addAchievement("1 Question Answered");
                             }
-                            else if(player.getQuestionsAnswered() == 2) {
+                            else if(player.getQuestionsAnswered() == 10) {
                                 player.addAchievement("10 Questions Answered");
                             }
-                            else if(player.getQuestionsAnswered() == 3) {
+                            else if(player.getQuestionsAnswered() == 25) {
                                 player.addAchievement("25 Questions Answered");
                             }
                             hello2 = true;
@@ -352,9 +460,9 @@ public class NPC {
                         q3.setVisible(true);
                         q2checker = false;
                         q3checker = true;
-                        battleButton1.setBounds(250,600,250,150);
+                        battleButton1.setBounds(250,200,250,150);
                         battleButton2.setBounds(250,400,250,150);
-                        battleButton3.setBounds(250,200,250,150);
+                        battleButton3.setBounds(600,200,250,150);
                         battleButton3.setText("<html>int main() <br/> {  <br/>   printf('Hello World'); <br/> return 0; <br/> } </html>");
                         battleButton2.setText("<html>int main() <br/> {  <br/>   printf('Hello World'); <br/> return 'hello world'; <br/> } </html>");
                         battleButton1.setText("<html>int main() <br/> { <br/>  printf('Hello World'); <br/> }</html>");
@@ -381,8 +489,22 @@ public class NPC {
                         player.setEnemiesDefeated(player.getEnemiesDefeated() + 1);
                         if(player.getEnemiesDefeated() == 1) {
                             player.addAchievement("1 Enemy Defeated");
+
                         }
-                        else if(player.getEnemiesDefeated() == 5) {
+                        else if(player.getEnemiesDefeated() == 2) {
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Data Analysis");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Trial and Error");
+                            }
+                        }
+                        else if(player.getEnemiesDefeated() == 4) {
                             if(player.getPlayerClass() == 1) {
                                 player.addAbilities("Data Analysis");
                             }
@@ -397,23 +519,16 @@ public class NPC {
                         }
                         else if(player.getEnemiesDefeated() == 10) {
                             player.addAchievement("10 Enemy Defeated");
-                            if(player.getPlayerClass() == 1) {
-                                player.addAbilities("Faulty Security");
-                            }
-
-                            if(player.getPlayerClass() == 2) {
-                                player.addAbilities("Trial and Error");
-                            }
-
-                            if(player.getPlayerClass() == 3) {
-                                player.addAbilities("Data Analysis");
-                            }
                         }
 
                         congrats.setVisible(true);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
+                        abilitylist.setVisible(false);
+                        security.setVisible(false);
+                        trialerror.setVisible(false);
+                        analysis.setVisible(false);
                     }
                 }
             });
@@ -433,18 +548,23 @@ public class NPC {
             battleButton3.setBounds(250,200,250,50);
 
             battleButton3.addActionListener(new ActionListener() {
+
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    if(trial > 0 || check == 4) {
+                        battleButton1.setVisible(true);
+                        battleButton2.setVisible(true);
+                    }
                     if (e.getSource() == battleButton3 && !q2checker && !q3checker) {
                         if(!jeff1) {
                             player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
                             if(player.getQuestionsAnswered() == 1) {
                                 player.addAchievement("1 Question Answered");
                             }
-                            else if(player.getQuestionsAnswered() == 2) {
+                            else if(player.getQuestionsAnswered() == 10) {
                                 player.addAchievement("10 Questions Answered");
                             }
-                            else if(player.getQuestionsAnswered() == 3) {
+                            else if(player.getQuestionsAnswered() == 25) {
                                 player.addAchievement("25 Questions Answered");
                             }
                             jeff1 = true;
@@ -507,8 +627,22 @@ public class NPC {
                         player.setEnemiesDefeated(player.getEnemiesDefeated() + 1);
                         if(player.getEnemiesDefeated() == 1) {
                             player.addAchievement("1 Enemy Defeated");
+
                         }
-                        else if(player.getEnemiesDefeated() == 5) {
+                        else if(player.getEnemiesDefeated() == 2) {
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Data Analysis");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Trial and Error");
+                            }
+                        }
+                        else if(player.getEnemiesDefeated() == 4) {
                             if(player.getPlayerClass() == 1) {
                                 player.addAbilities("Data Analysis");
                             }
@@ -523,17 +657,6 @@ public class NPC {
                         }
                         else if(player.getEnemiesDefeated() == 10) {
                             player.addAchievement("10 Enemy Defeated");
-                            if(player.getPlayerClass() == 1) {
-                                player.addAbilities("Faulty Security");
-                            }
-
-                            if(player.getPlayerClass() == 2) {
-                                player.addAbilities("Trial and Error");
-                            }
-
-                            if(player.getPlayerClass() == 3) {
-                                player.addAbilities("Data Analysis");
-                            }
                         }
                         fleeButton.setVisible(false);
                         panel.add(backButton);
@@ -555,9 +678,14 @@ public class NPC {
             battleButton2.setBounds(250,300,250,50);
             battleButton3.setBounds(250,400,250,50);
 
+
             battleButton3.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    if(trial > 0 || check == 4) {
+                        battleButton1.setVisible(true);
+                        battleButton2.setVisible(true);
+                    }
                     if (e.getSource() == battleButton3 && !q2checker && !q3checker) {
                         if(!loopy1) {
                             player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
@@ -577,7 +705,7 @@ public class NPC {
                         q2.setVisible(true);
                         q2checker = true;
                         battleButton1.setBounds(250,200,250,150);
-                        battleButton2.setBounds(250,600,250,150);
+                        battleButton2.setBounds(550,300,250,150);
                         battleButton3.setBounds(250,400,250,150);
                         battleButton1.setText("<html> cars = ['Honda', 'Toyota', 'Ford']  <br/> for x in cars { <br/> print(x) <br/> } </html>");
                         battleButton2.setText("<html> cars = ['Honda', 'Toyota', 'Ford'];  <br/> for x in cars { <br/> print(x); <br/> } </html>");
@@ -628,8 +756,22 @@ public class NPC {
                         player.setEnemiesDefeated(player.getEnemiesDefeated() + 1);
                         if(player.getEnemiesDefeated() == 1) {
                             player.addAchievement("1 Enemy Defeated");
+
                         }
-                        else if(player.getEnemiesDefeated() == 5) {
+                        else if(player.getEnemiesDefeated() == 2) {
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Data Analysis");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Trial and Error");
+                            }
+                        }
+                        else if(player.getEnemiesDefeated() == 4) {
                             if(player.getPlayerClass() == 1) {
                                 player.addAbilities("Data Analysis");
                             }
@@ -644,17 +786,6 @@ public class NPC {
                         }
                         else if(player.getEnemiesDefeated() == 10) {
                             player.addAchievement("10 Enemy Defeated");
-                            if(player.getPlayerClass() == 1) {
-                                player.addAbilities("Faulty Security");
-                            }
-
-                            if(player.getPlayerClass() == 2) {
-                                player.addAbilities("Trial and Error");
-                            }
-
-                            if(player.getPlayerClass() == 3) {
-                                player.addAbilities("Data Analysis");
-                            }
                         }
                         fleeButton.setVisible(false);
                         panel.add(backButton);
@@ -673,12 +804,17 @@ public class NPC {
 
 
             battleButton1.setBounds(250,200,350,50);
-            battleButton2.setBounds(250,600,350,50);
-            battleButton3.setBounds(250,400,350,50);
+            battleButton2.setBounds(250,400,350,50);
+            battleButton3.setBounds(250,300,350,50);
+
 
             battleButton3.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    if(trial > 0 || check == 4) {
+                        battleButton1.setVisible(true);
+                        battleButton2.setVisible(true);
+                    }
                     if (e.getSource() == battleButton3 && !q2checker && !q3checker) {
                         if(!ray1) {
                             player.setQuestionsAnswered(player.getQuestionsAnswered() + 1);
@@ -697,7 +833,7 @@ public class NPC {
                         q2.setText("Which of the following is an array in Java?");
                         q2.setVisible(true);
                         q2checker = true;
-                        battleButton1.setBounds(250,600,350,150);
+                        battleButton1.setBounds(650,300,350,150);
                         battleButton2.setBounds(250,400,350,150);
                         battleButton3.setBounds(250,200,350,150);
                         battleButton1.setText("cars = {'Honda', 'Toyota', 'Ford'};");
@@ -723,8 +859,8 @@ public class NPC {
                         q2checker = false;
                         q3checker = true;
                         battleButton1.setBounds(250,200,350,50);
-                        battleButton2.setBounds(250,600,350,50);
-                        battleButton3.setBounds(250,400,350,50);
+                        battleButton2.setBounds(250,400,350,50);
+                        battleButton3.setBounds(250,300,350,50);
                         battleButton1.setText("int[] 2darray = {1, 2, 3, 4}, {5, 6, 7, 8};");
                         battleButton2.setText("int[][] 1darray = {1, 2, 3, 4}, {5, 6, 7, 8};");
                         battleButton3.setText("int[][] 2darray = { {1, 2, 3, 4}, {5, 6, 7, 8} };");
@@ -752,8 +888,22 @@ public class NPC {
                         player.setEnemiesDefeated(player.getEnemiesDefeated() + 1);
                         if(player.getEnemiesDefeated() == 1) {
                             player.addAchievement("1 Enemy Defeated");
+
                         }
-                        else if(player.getEnemiesDefeated() == 5) {
+                        else if(player.getEnemiesDefeated() == 2) {
+                            if(player.getPlayerClass() == 1) {
+                                player.addAbilities("Data Analysis");
+                            }
+
+                            if(player.getPlayerClass() == 2) {
+                                player.addAbilities("Faulty Security");
+                            }
+
+                            if(player.getPlayerClass() == 3) {
+                                player.addAbilities("Trial and Error");
+                            }
+                        }
+                        else if(player.getEnemiesDefeated() == 4) {
                             if(player.getPlayerClass() == 1) {
                                 player.addAbilities("Data Analysis");
                             }
@@ -768,17 +918,6 @@ public class NPC {
                         }
                         else if(player.getEnemiesDefeated() == 10) {
                             player.addAchievement("10 Enemy Defeated");
-                            if(player.getPlayerClass() == 1) {
-                                player.addAbilities("Faulty Security");
-                            }
-
-                            if(player.getPlayerClass() == 2) {
-                                player.addAbilities("Trial and Error");
-                            }
-
-                            if(player.getPlayerClass() == 3) {
-                                player.addAbilities("Data Analysis");
-                            }
                         }
                         fleeButton.setVisible(false);
                         panel.add(backButton);
@@ -851,7 +990,9 @@ public class NPC {
         battleButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == battleButton1) {
+                trial -= 1;
+                System.out.println(trial);
+                if(e.getSource() == battleButton1 && trial <= 0) {
                     q1.setVisible(false);
                     q2.setVisible(false);
                     q3.setVisible(false);
@@ -862,13 +1003,19 @@ public class NPC {
                     fleeButton.setVisible(false);
                     panel.add(backButton);
                 }
+                else if(trial > 0) {
+                    battleButton1.setVisible(false);
+                    check = 1;
+                }
             }
         });
 
         battleButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == battleButton2) {
+                trial -= 1;
+                System.out.println(trial);
+                if(e.getSource() == battleButton2 && trial <= 0) {
                     q1.setVisible(false);
                     q2.setVisible(false);
                     q3.setVisible(false);
@@ -878,6 +1025,10 @@ public class NPC {
                     panel.add(loser);
                     fleeButton.setVisible(false);
                     panel.add(backButton);
+                }
+                else if(trial > 0) {
+                    battleButton2.setVisible(false);
+                    check = 2;
                 }
             }
         });
