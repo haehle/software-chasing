@@ -69,8 +69,8 @@ public class NPC {
             case "Boss" -> {
                 this.encounter = "You are about to encounter the boss, " + name;
                 this.color = Color.RED;
-                this.hp = 500;
-                this.maxHP = 500;
+                this.hp = 3;
+                this.maxHP = 3;
                 this.speed = 5;
                 this.stamina = 20;
                 this.maxStamina = 20;
@@ -80,8 +80,8 @@ public class NPC {
             case "Enemy" -> {
                 this.encounter = "You are about to encounter the enemy, " + name;
                 this.color = Color.ORANGE;
-                this.hp = 60;
-                this.maxHP = 100;
+                this.hp = 3;
+                this.maxHP = 3;
                 this.speed = 5;
                 this.stamina = 20;
                 this.maxStamina = 20;
@@ -209,12 +209,19 @@ public class NPC {
         frame.pack();
         frame.setVisible(true);
 
-        JLabel health = new JLabel("HP: " + player.getHp() + "/" + player.getMaxHP());
+        JLabel health = new JLabel("My Health: " + player.getHp() + "/" + player.getMaxHP());
         health.setBackground(Color.white);
         health.setBounds(650,70,250,50);
         health.setOpaque(false);
         health.setVisible(true);
         panel.add(health);
+
+        JLabel NPChealth = new JLabel(getName() + " Health: " + getHp() + "/" + getMaxHP());
+        NPChealth.setBackground(Color.white);
+        NPChealth.setBounds(650,100,250,50);
+        NPChealth.setOpaque(false);
+        NPChealth.setVisible(true);
+        panel.add(NPChealth);
 
 
         start = new JLabel("<html>You are about to engage in a battle with " + getName() + ". <br/> To defeat him, answer the following CS related questions</html>");
@@ -357,6 +364,8 @@ public class NPC {
                             }
                             hello1 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q1.setVisible(false);
                         q2.setVisible(true);
                         q2checker = true;
@@ -378,6 +387,8 @@ public class NPC {
                             }
                             hello2 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q2.setVisible(false);
                         q3.setVisible(true);
                         q2checker = false;
@@ -402,6 +413,8 @@ public class NPC {
                             }
                             hello3 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -479,6 +492,8 @@ public class NPC {
                             }
                             jeff1 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q1.setVisible(false);
                         q2.setText("Ideally we want to...");
                         q2.setVisible(true);
@@ -503,6 +518,8 @@ public class NPC {
                             }
                             jeff2 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q2.setVisible(false);
                         q3.setText("Which of the following is not a type of testing?");
                         q3.setVisible(true);
@@ -528,6 +545,8 @@ public class NPC {
                             }
                             jeff3 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -603,6 +622,8 @@ public class NPC {
                             }
                             loopy1 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q1.setVisible(false);
                         q2.setText("Which of the following is a valid for-loop in Python?");
                         q2.setVisible(true);
@@ -627,6 +648,8 @@ public class NPC {
                             }
                             loopy2 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q2.setVisible(false);
                         q3.setText("Which of the following is a valid for-loop in Java?");
                         q3.setVisible(true);
@@ -649,6 +672,8 @@ public class NPC {
                             }
                             loopy3 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -724,6 +749,8 @@ public class NPC {
                             }
                             ray1 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q1.setVisible(false);
                         q2.setText("Which of the following is an array in Java?");
                         q2.setVisible(true);
@@ -748,6 +775,8 @@ public class NPC {
                             }
                             ray2 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q2.setVisible(false);
                         q3.setText("Which of the following is a 2d array in Java?");
                         q3.setVisible(true);
@@ -773,6 +802,8 @@ public class NPC {
                             }
                             ray3 = true;
                         }
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         q3.setVisible(false);
                         q3checker = false;
                         battleButton1.setVisible(false);
@@ -820,6 +851,11 @@ public class NPC {
         }
 
         if (getName().equals("Bug")) {
+            setHp(1);
+            setMaxHP(1);
+
+            NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
+
             fleeButton.setVisible(false);
 
             startButton.setVisible(false);
@@ -829,8 +865,6 @@ public class NPC {
             bugfix.setSize(250, 25);
             bugfix.setLocation(600, 435);
             panel.add(bugfix);
-
-
 
             start.setText("<html>You have been ambushed by a bug! <br/> You must debug the following python code:</html>");
 
@@ -859,6 +893,8 @@ public class NPC {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if(e.getSource() == submitButton && dropdown.getSelectedItem() == "3" && (bugfix.getText().equals("print(x % 3)") || bugfix.getText().equals("print(x%3)"))) {
+                        setHp(getHp() - 1);
+                        NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
                         tryAgain.setVisible(false);
                         submitButton.setVisible(false);
                         dropdown.setVisible(false);
@@ -873,7 +909,7 @@ public class NPC {
                         congrats.setVisible(true);
                     } else {
                         player.setHp(player.getHp() - 5);
-                        health.setText("HP: " + player.getHp() + "/" + player.getMaxHP());
+                        health.setText("My Health: " + player.getHp() + "/" + player.getMaxHP());
                         panel.add(tryAgain);
                         tryAgain.setVisible(true);
                         bugfix.setText("");
@@ -929,7 +965,7 @@ public class NPC {
                     if (getNPCType().equals("Boss")) {
                         player.setHp(player.getHp() - 5);
                     }
-                    health.setText("HP: " + player.getHp() + "/" + player.getMaxHP());
+                    health.setText("My Health: " + player.getHp() + "/" + player.getMaxHP());
                     if (player.getHp() <= 0) {
                         q1.setVisible(false);
                         q2.setVisible(false);
@@ -953,7 +989,7 @@ public class NPC {
                     if (getNPCType().equals("Boss")) {
                         player.setHp(player.getHp() - 5);
                     }
-                    health.setText("HP: " + player.getHp() + "/" + player.getMaxHP());
+                    health.setText("My Health: " + player.getHp() + "/" + player.getMaxHP());
                     if (player.getHp() <= 0) {
                         q1.setVisible(false);
                         q2.setVisible(false);
