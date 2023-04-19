@@ -586,8 +586,8 @@ public class NPC {
 
 
 
-            battleButton1.setBounds(250,600,250,50);
-            battleButton2.setBounds(250,400,250,50);
+            battleButton1.setBounds(250,400,250,50);
+            battleButton2.setBounds(250,300,250,50);
             battleButton3.setBounds(250,200,250,50);
 
             battleButton3.addActionListener(new ActionListener() {
@@ -619,8 +619,8 @@ public class NPC {
                         q2.setVisible(true);
                         q2checker = true;
                         battleButton1.setBounds(250,200,350,50);
-                        battleButton2.setBounds(250,600,350,50);
-                        battleButton3.setBounds(250,400,350,50);
+                        battleButton2.setBounds(250,400,350,50);
+                        battleButton3.setBounds(250,300,350,50);
                         battleButton1.setText("Increase cohesion and Increase coupling");
                         battleButton2.setText("Decrease cohesion and Increase coupling");
                         battleButton3.setText("Increase cohesion and Decrease coupling");
@@ -646,8 +646,8 @@ public class NPC {
                         q2checker = false;
                         q3checker = true;
                         battleButton1.setBounds(250, 200, 250, 50);
-                        battleButton2.setBounds(250,400,250,50);
-                        battleButton3.setBounds(250,600,250,50);
+                        battleButton2.setBounds(250,300,250,50);
+                        battleButton3.setBounds(250,400,250,50);
                         battleButton1.setText("Unit");
                         battleButton2.setText("Sandwich");
                         battleButton3.setText("Potato Chip");
@@ -708,9 +708,14 @@ public class NPC {
                         else if(player.getEnemiesDefeated() == 10) {
                             player.addAchievement("10 Enemy Defeated");
                         }
+                        congrats.setVisible(true);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
+                        abilitylist.setVisible(false);
+                        security.setVisible(false);
+                        trialerror.setVisible(false);
+                        analysis.setVisible(false);
                     }
             }
         });
@@ -843,9 +848,14 @@ public class NPC {
                         else if(player.getEnemiesDefeated() == 10) {
                             player.addAchievement("10 Enemy Defeated");
                         }
+                        congrats.setVisible(true);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
+                        abilitylist.setVisible(false);
+                        security.setVisible(false);
+                        trialerror.setVisible(false);
+                        analysis.setVisible(false);
                     }
                 }
             });
@@ -981,9 +991,14 @@ public class NPC {
                         else if(player.getEnemiesDefeated() == 10) {
                             player.addAchievement("10 Enemy Defeated");
                         }
+                        congrats.setVisible(true);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
+                        abilitylist.setVisible(false);
+                        security.setVisible(false);
+                        trialerror.setVisible(false);
+                        analysis.setVisible(false);
                     }
                 }
             });
@@ -1046,6 +1061,7 @@ public class NPC {
                         panel.add(congrats);
                         backButton.setVisible(true);
                         congrats.setVisible(true);
+                        player.addAchievement("Bug Defeated");
                     } else {
                         player.setHp(player.getHp() - 5);
                         health.setText("My Health: " + player.getHp() + "/" + player.getMaxHP());
@@ -1108,6 +1124,10 @@ public class NPC {
                     }
                     health.setText("My Health: " + player.getHp() + "/" + player.getMaxHP());
                     if (player.getHp() <= 0) {
+                        security.setVisible(false);
+                        trialerror.setVisible(false);
+                        abilitylist.setVisible(false);
+                        analysis.setVisible(false);
                         q1.setVisible(false);
                         q2.setVisible(false);
                         q3.setVisible(false);
@@ -1138,6 +1158,10 @@ public class NPC {
                     }
                     health.setText("My Health: " + player.getHp() + "/" + player.getMaxHP());
                     if (player.getHp() <= 0) {
+                        security.setVisible(false);
+                        trialerror.setVisible(false);
+                        abilitylist.setVisible(false);
+                        analysis.setVisible(false);
                         q1.setVisible(false);
                         q2.setVisible(false);
                         q3.setVisible(false);

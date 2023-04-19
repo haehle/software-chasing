@@ -451,7 +451,7 @@ public class Player {
 
             prompt = new JLabel("Achievement unlocked: " + achievement + "!");
             prompt.setFont(font);
-            prompt.setBounds(350, 25, 500, 30);
+            prompt.setBounds(325, 25, 500, 30);
             panel.add(prompt);
 
             String description = "holder";
@@ -502,9 +502,14 @@ public class Player {
                 image = new JLabel(new ImageIcon("Images/5star.png"));
                 image.setBounds(125, 125, 800, 400);
             }
+            else if (achievement.equals("Bug Defeated")) {
+                description = "You just squashed that bug!";
+                image = new JLabel(new ImageIcon("Images/bug.jpg"));
+                image.setBounds(125, 125, 800, 400);
+            }
 
             prompt2 = new JLabel(description);
-            prompt2.setBounds(350, 550, 500, 30);
+            prompt2.setBounds(375, 550, 500, 30);
             prompt2.setFont(font);
             panel.add(prompt2);
 
