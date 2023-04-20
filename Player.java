@@ -231,8 +231,19 @@ public class Player {
             return this.hp;
         }
 
-        public void setHp ( int hp){
-            this.hp = hp;
+        public void setHp ( int hp)
+        {
+            if (hp > getMaxHP())
+            {
+                this.hp = getMaxHP();
+            }
+            else if (hp < 0)
+            {
+                this.hp = 0;
+            }
+            else {
+                this.hp = hp;
+            }
         }
 
         public int getMaxHP () {
@@ -256,7 +267,17 @@ public class Player {
         }
 
         public void setStamina ( int stamina){
-            this.stamina = stamina;
+            if (stamina > getMaxStamina())
+            {
+                this.stamina = getMaxStamina();
+            }
+            else if (stamina < 0)
+            {
+                this.stamina = 0;
+            }
+            else {
+                this.stamina = stamina;
+            }
         }
 
         public int getMaxStamina () {

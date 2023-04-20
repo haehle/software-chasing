@@ -8,7 +8,7 @@ import java.util.List;
 
 public class InventoryDisplay extends JFrame implements KeyListener {
 
-    JLabel itemLabel = new JLabel("Inventory is empty.");
+    JLabel itemLabel = new JLabel(" ");
     List<Item> items;
     List<String> descriptions = new ArrayList<>();
     String selectedValue = "";
@@ -28,21 +28,39 @@ public class InventoryDisplay extends JFrame implements KeyListener {
         setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 
         //Set the size
-        setPreferredSize(new Dimension(300, 300));
+        setPreferredSize(new Dimension(500, 300));
         setBackground(Color.decode("#cfb991"));
 
         //Add buttons
         JButton useButton = new JButton("Use item");
-        //useButton.setSize(200, 30);
         useButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 //useButton pressed
                 System.out.println("Use item pressed.\n");
+
+                /* Use item - values are hardcoded for now, but would ideally have uses fetched from
+                   separate database table later on */
+                if (selectedValue.equals("Coffee"))
+                {
+                    player.setHp(player.getHp() + 5);
+                }
+                else if (selectedValue.equals("Energy Drink"))
+                {
+                    player.setStamina(player.getStamina() + 5);
+                }
+                else if (selectedValue.equals("Gaming Laptop"))
+                {
+                    player.setSpeed(player.getSpeed() + 1);
+                }
+
+                //Remove item from inventory
                 dbConnection.removeInventoryItem(player.getUsername(), player.getName(), selectedValue);
                 List<Item> items = player.getInventory().getItems();
                 items.remove(list.getSelectedIndex());
                 player.setInventory(new Inventory(items));
-                exitProcedure();
+
+                //Close inventory
+                exitProcedure(player);
                 dispose();
             }
         });
@@ -58,7 +76,6 @@ public class InventoryDisplay extends JFrame implements KeyListener {
         {
             //Inventory is not empty
             System.out.println("Inventory is not empty");
-            itemLabel.setText("Inventory items:");
             items = player.getInventory().getItems();
 
             DefaultListModel<String> l1 = new DefaultListModel<>();
@@ -96,6 +113,7 @@ public class InventoryDisplay extends JFrame implements KeyListener {
             list.addListSelectionListener(listListener);
 
             //Add components
+            add(itemLabel);
             add(scrollPane);
             add(description);
             add(useButton);
@@ -104,6 +122,8 @@ public class InventoryDisplay extends JFrame implements KeyListener {
         else
         {
             //Inventory is empty
+            itemLabel.setText("Your inventory is empty.");
+            add(Box.createRigidArea(new Dimension(10, 10)));
             add(itemLabel);
             System.out.println("Inventory is empty");
         }
@@ -112,6 +132,12 @@ public class InventoryDisplay extends JFrame implements KeyListener {
         itemLabel.setFocusable(true);
         pack();
         setVisible(true);
+    }
+
+    public static void exitProcedure(Player player)
+    {
+        World.invOpen = 0;
+        NPC.updateDisplay(player.getHp(), player.getMaxHP());
     }
 
     public static void exitProcedure()

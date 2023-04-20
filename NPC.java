@@ -7,6 +7,8 @@ import java.util.concurrent.*;
 
 public class NPC {
 
+    public static JLabel health = new JLabel();
+
     private static JFrame frame;
     private JPanel panel;
 
@@ -199,6 +201,12 @@ public class NPC {
         this.stock3 = stock3;
     }
 
+    public static void updateDisplay(int current, int max)
+    {
+        //Update health on battle display
+        health.setText("My Health: " + current + "/" + max);
+    }
+
 
     public void displayBattle (Player player) {
         frame = new JFrame("Battle against " + getName());
@@ -215,7 +223,7 @@ public class NPC {
         frame.pack();
         frame.setVisible(true);
 
-        JLabel health = new JLabel("My Health: " + player.getHp() + "/" + player.getMaxHP());
+        health.setText("My Health: " + player.getHp() + "/" + player.getMaxHP());
         health.setBackground(Color.white);
         health.setBounds(650,70,250,50);
         health.setOpaque(false);
@@ -271,6 +279,14 @@ public class NPC {
         abilitylist.setBounds(325, 550, 200, 50);
         panel.add(abilitylist);
         abilitylist.setVisible(false);
+
+        //Use item button
+        JButton itemsButton = new JButton("Use Item");
+        itemsButton.setBounds(800, 525, 100, 50);
+        itemsButton.setBackground(Color.decode("#9d9795"));
+        panel.add(itemsButton);
+        itemsButton.setVisible(false);
+
 
         fleeButton = new JButton("Flee");
         fleeButton.setBounds(800, 600, 100, 50);
@@ -389,6 +405,7 @@ public class NPC {
                         battleButton3.setVisible(false);
                         panel.add(congrats);
                         congrats.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -565,6 +582,7 @@ public class NPC {
                         }
 
                         congrats.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -709,6 +727,7 @@ public class NPC {
                             player.addAchievement("10 Enemy Defeated");
                         }
                         congrats.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -849,6 +868,7 @@ public class NPC {
                             player.addAchievement("10 Enemy Defeated");
                         }
                         congrats.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -992,6 +1012,7 @@ public class NPC {
                             player.addAchievement("10 Enemy Defeated");
                         }
                         congrats.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -1009,6 +1030,8 @@ public class NPC {
             setMaxHP(1);
 
             NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
+
+            itemsButton.setVisible(false);
 
             fleeButton.setVisible(false);
 
@@ -1108,6 +1131,8 @@ public class NPC {
                         security.setVisible(true);
                     }
 
+                    itemsButton.setVisible(true);
+
                 }
             }
         });
@@ -1135,6 +1160,7 @@ public class NPC {
                         battleButton2.setVisible(false);
                         battleButton3.setVisible(false);
                         loser.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         backButton.setVisible(true);
                     }
@@ -1168,6 +1194,7 @@ public class NPC {
                         battleButton2.setVisible(false);
                         battleButton3.setVisible(false);
                         loser.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         backButton.setVisible(true);
                     }
@@ -1209,6 +1236,15 @@ public class NPC {
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == fleeButton) {
                     frame.dispose();
+                }
+            }
+        });
+
+        itemsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == itemsButton) {
+                    InventoryDisplay inventoryDisplay = new InventoryDisplay(player);
                 }
             }
         });
