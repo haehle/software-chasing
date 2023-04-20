@@ -317,13 +317,18 @@ public class dbConnection {
                         //Look up item name by id
                         String itemName = getItemName(id);
 
+                        //Get item description
+                        String itemDesc = getItemDescription(itemName);
+
+                        System.out.println("Item = " + itemName);
+
                         if (itemName == null)
                         {
                             //Do not add to inventory
                         }
                         else
                         {
-                            Item newItem = new Item(id, itemName);
+                            Item newItem = new Item(id, itemName, itemDesc);
                             inventory.simpleAddItem(newItem);
                         }
 
@@ -374,7 +379,7 @@ public class dbConnection {
 
                     return itemName;
                 } catch (SQLException e) {
-                throw new IllegalStateException("Could not get inventory items from database", e);
+                throw new IllegalStateException("Could not get items from database", e);
             }
 
 
@@ -397,7 +402,7 @@ public class dbConnection {
                 if (!rs.isBeforeFirst()) {
                     //Item not found
                     System.out.println("Item not found.");
-                    Item newItem = new Item(Util.getNextId(), name);
+                    Item newItem = new Item(Util.getNextId(), name, "");
                     addNewItem(newItem);
                     return newItem.getId();
                 } else {
@@ -583,7 +588,8 @@ public class dbConnection {
 
                 String query = "INSERT INTO Items VALUES (" +
                         "\"" + item.getId() + "\", " +
-                        "\"" + item.getName() + "\");";
+                        "\"" + item.getName() + "\", " +
+                        "\"" + item.getDescription() + "\");";
 
                 statement.execute(query);
                 System.out.println("Item added successfully.");
@@ -692,6 +698,43 @@ public class dbConnection {
                 }
             } catch (SQLException e) {
                 throw new IllegalStateException("Error occurred while fetching player items", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
+    public static String getItemDescription(String itemName) {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String itemDesc = "";
+                String query = "SELECT * FROM Items WHERE name=\"" + itemName + "\"";
+
+                ResultSet rs = statement.executeQuery(query);
+                if (!rs.isBeforeFirst()) {
+                    //Item not found
+                    System.out.println("Item not found.");
+                    return null;
+                } else {
+                    //Item found
+                    System.out.println("Item found.");
+
+                    //Parse data
+                    while (rs.next()) {
+                        itemDesc = rs.getString("description");
+                    }
+                }
+
+                return itemDesc;
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not get items from database", e);
             }
 
 

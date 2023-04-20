@@ -1259,9 +1259,9 @@ public class NPC {
         image3 = "";
 
         if(getName().equals("Ron")) {
-            item1 = new Item(dbConnection.getItemId("Gaming Laptop"), "Gaming Laptop");
-            item2 = new Item(dbConnection.getItemId("Algorithms Book"), "Algorithms Book");
-            item3 = new Item(dbConnection.getItemId("Coffee"), "Coffee");
+            item1 = new Item(dbConnection.getItemId("Gaming Laptop"), "Gaming Laptop", dbConnection.getItemDescription("Gaming Laptop"));
+            item2 = new Item(dbConnection.getItemId("Algorithms Book"), "Algorithms Book", dbConnection.getItemDescription("Algorithms Book"));
+            item3 = new Item(dbConnection.getItemId("Coffee"), "Coffee", dbConnection.getItemDescription("Coffee"));
             cost1 = 100;
             cost2 = 75;
             cost3 = 50;
@@ -1271,9 +1271,9 @@ public class NPC {
         }
 
         else if(getName().equals("Natalie")) {
-            item1 = new Item(dbConnection.getItemId("Breadboard"), "Breadboard");
-            item2 = new Item(dbConnection.getItemId("Deodorant"), "Deodorant");
-            item3 = new Item(dbConnection.getItemId("Energy Drink"), "Energy Drink");
+            item1 = new Item(dbConnection.getItemId("Breadboard"), "Breadboard", dbConnection.getItemDescription("Breadboard"));
+            item2 = new Item(dbConnection.getItemId("Deodorant"), "Deodorant", dbConnection.getItemDescription("Deodorant"));
+            item3 = new Item(dbConnection.getItemId("Energy Drink"), "Energy Drink", dbConnection.getItemDescription("Energy Drink"));
             cost1 = 125;
             cost2 = 100;
             cost3 = 75;

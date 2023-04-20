@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -6,8 +8,9 @@ import java.util.List;
 
 public class InventoryDisplay extends JFrame implements KeyListener {
 
-    JLabel itemLabel = new JLabel();
+    JLabel itemLabel = new JLabel("Inventory is empty.");
     List<Item> items;
+    List<String> descriptions = new ArrayList<>();
 
     public InventoryDisplay(Player player) {
         super(player.getName() + "'s Inventory");
@@ -20,58 +23,85 @@ public class InventoryDisplay extends JFrame implements KeyListener {
             }
         });
         setResizable(false);
+        setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 
         //Set the size
         setPreferredSize(new Dimension(300, 300));
         setBackground(Color.decode("#cfb991"));
 
-        //Test
-        /*
-        Inventory inv = new Inventory();
-        inv.addItem("sword");
-        inv.addItem("shield");
-        player.setInventory(inv);
-         */
+        //Add buttons
+        JButton useButton = new JButton("Use item");
+        //useButton.setSize(200, 30);
+        useButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                //useButton pressed
+                System.out.println("Use item pressed.\n");
+            }
+        });
+        //useButton.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        useButton.setEnabled(false);
 
-        //STILL NEED TO TEST ALL OF THIS W/ACTUAL DB; MUST HAVE SECURE INTERNET CONNECTION
+        //Add description text
+        JLabel description = new JLabel();
+        description.setLocation(10, 250);
+        description.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
         String item1 = "";
         if (player.getInventory().getItems().size() > 0)
         {
             //Inventory is not empty
+            System.out.println("Inventory is not empty");
             itemLabel.setText("Inventory items:");
             items = player.getInventory().getItems();
 
+            DefaultListModel<String> l1 = new DefaultListModel<>();
             for (Item item : items)
             {
-                JLabel newItemLabel = new JLabel();
-                newItemLabel.setText(item.getName());
-                add(newItemLabel);
+                l1.addElement(item.getName());
+                descriptions.add(item.getDescription());
             }
+            JList<String> list = new JList<>(l1);
+            list.setVisibleRowCount(-1);
+            JScrollPane scrollPane = new JScrollPane(list);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+
+            ListSelectionListener listListener = new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (e.getValueIsAdjusting() == false) {
+
+                        if (list.getSelectedIndex() == -1) {
+                            //No item selected
+                            useButton.setEnabled(false);
+
+                        } else {
+                            //Item selected
+                            System.out.println("SELECTED VALUE: " + list.getSelectedValue());
+                            description.setText(descriptions.get(list.getSelectedIndex()));
+                            useButton.setEnabled(true);
+                        }
+                    }
+                }
+            };
+
+            //Add listener
+            list.addListSelectionListener(listListener);
+
+            //Add components
+            add(scrollPane);
+            add(description);
+            add(useButton);
+            add(Box.createRigidArea(new Dimension(10, 10)));
         }
         else
         {
             //Inventory is empty
-            itemLabel.setText("Your inventory is empty.");
+            add(itemLabel);
+            System.out.println("Inventory is empty");
         }
-
-
-        itemLabel.setText(item1);
-
-        /*
-        if (item1 == "")
-        {
-            itemLabel.setText("Your inventory is empty.");
-        }
-        else
-        {
-            itemLabel.setText(item1);
-        }
-         */
 
         itemLabel.addKeyListener(this);
         itemLabel.setFocusable(true);
-        add(itemLabel);
         pack();
         setVisible(true);
     }
