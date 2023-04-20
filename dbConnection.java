@@ -742,4 +742,28 @@ public class dbConnection {
             throw new IllegalStateException("Error occurred while connecting to database", e);
         }
     }
+
+    public static void removeInventoryItem(String username, String name, String itemName)
+    {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+                String query = "DELETE FROM InventoryItems WHERE username = \"" + username + "\"" +
+                        " AND name = \"" + name + "\" AND id = " + dbConnection.getItemId(itemName) + ";";
+
+                statement.execute(query);
+                System.out.println("Removed " + itemName + " item from player's inventory");
+            } catch (SQLException e) {
+                System.out.println("Item not in database for player's inventory");
+                return;
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
 }

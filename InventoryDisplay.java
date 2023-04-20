@@ -11,6 +11,8 @@ public class InventoryDisplay extends JFrame implements KeyListener {
     JLabel itemLabel = new JLabel("Inventory is empty.");
     List<Item> items;
     List<String> descriptions = new ArrayList<>();
+    String selectedValue = "";
+    JList<String> list;
 
     public InventoryDisplay(Player player) {
         super(player.getName() + "'s Inventory");
@@ -36,9 +38,14 @@ public class InventoryDisplay extends JFrame implements KeyListener {
             public void actionPerformed(ActionEvent e){
                 //useButton pressed
                 System.out.println("Use item pressed.\n");
+                dbConnection.removeInventoryItem(player.getUsername(), player.getName(), selectedValue);
+                List<Item> items = player.getInventory().getItems();
+                items.remove(list.getSelectedIndex());
+                player.setInventory(new Inventory(items));
+                exitProcedure();
+                dispose();
             }
         });
-        //useButton.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         useButton.setEnabled(false);
 
         //Add description text
@@ -60,7 +67,7 @@ public class InventoryDisplay extends JFrame implements KeyListener {
                 l1.addElement(item.getName());
                 descriptions.add(item.getDescription());
             }
-            JList<String> list = new JList<>(l1);
+            list = new JList<>(l1);
             list.setVisibleRowCount(-1);
             JScrollPane scrollPane = new JScrollPane(list);
             scrollPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
@@ -77,6 +84,7 @@ public class InventoryDisplay extends JFrame implements KeyListener {
                         } else {
                             //Item selected
                             System.out.println("SELECTED VALUE: " + list.getSelectedValue());
+                            selectedValue = list.getSelectedValue();
                             description.setText(descriptions.get(list.getSelectedIndex()));
                             useButton.setEnabled(true);
                         }
