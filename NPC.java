@@ -1141,6 +1141,7 @@ public class NPC {
                 }
                 else if (trial > 0) {
                     check = 1;
+                    battleButton1.setVisible(true);
                 }
             }
         });
@@ -1174,6 +1175,7 @@ public class NPC {
                 }
                 else if(trial > 0) {
                     check = 2;
+                    battleButton2.setVisible(true);
                 }
             }
         });
