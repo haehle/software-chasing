@@ -204,22 +204,22 @@ public class dbConnection {
                     Profile profile = new Profile(email, username, password);
 
                     //Changed loggedIn status
-                    if (loggedIn)
-                    {
-                        throw new IllegalStateException("User already logged in");
-                    } else {
-                        try (Statement newStatement = connection.createStatement()) {
-                            String newQuery = "UPDATE Users SET loggedIn = true WHERE username = '" + username + "';";
+                    //if (loggedIn)
+                    //{
+                    //    throw new IllegalStateException("User already logged in");
+                    //} else {
+                        //try (Statement newStatement = connection.createStatement()) {
+                            //String newQuery = "UPDATE Users SET loggedIn = true WHERE username = '" + username + "';";
 
-                            statement.execute(newQuery);
-                            System.out.println("loggedIn status changed successfully.");
+                            //statement.execute(newQuery);
+                       //     System.out.println("loggedIn status changed successfully.");
 
-                        } catch (SQLException e) {
-                            throw new IllegalStateException("Could not change loggedIn status", e);
-                        }
+                        //} catch (SQLException e) {
+                        //    throw new IllegalStateException("Could not change loggedIn status", e);
+                        //}
 
                         return profile;
-                    }
+                    //}
                 }
 
             } catch (SQLException e) {
