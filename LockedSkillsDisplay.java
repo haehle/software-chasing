@@ -6,16 +6,16 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 
-public class InventoryDisplay extends JFrame implements KeyListener {
+public class LockedSkillsDisplay extends JFrame implements KeyListener {
 
-    JLabel itemLabel = new JLabel(" ");
-    List<Item> items;
+    JLabel skillLabel = new JLabel("Locked Skills");
+    List<Skill> lockedSkills;
     List<String> descriptions = new ArrayList<>();
     String selectedValue = "";
     JList<String> list;
 
-    public InventoryDisplay(Player player) {
-        super(player.getName() + "'s Inventory");
+    public LockedSkillsDisplay(Player player) {
+        super("Locked Skills");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -31,40 +31,31 @@ public class InventoryDisplay extends JFrame implements KeyListener {
         setPreferredSize(new Dimension(500, 300));
         setBackground(Color.decode("#cfb991"));
 
-        //Add buttons
-        JButton useButton = new JButton("Use item");
-        useButton.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                //useButton pressed
-                System.out.println("Use item pressed.\n");
+        //Change skillLabel
+        skillLabel.setFont(new Font(skillLabel.getFont().toString(), Font.PLAIN, 25));
 
-                /* Use item - values are hardcoded for now, but would ideally have uses fetched from
-                   separate database table later on */
-                if (selectedValue.equals("Coffee"))
-                {
-                    player.setHp(player.getHp() + 5);
-                }
-                else if (selectedValue.equals("Energy Drink"))
-                {
-                    player.setStamina(player.getStamina() + 5);
-                }
-                else if (selectedValue.equals("Gaming Laptop"))
-                {
-                    player.setSpeed(player.getSpeed() + 1);
-                }
+        //Get locked skills
+        lockedSkills = new ArrayList<>();
 
-                //Remove item from inventory
-                dbConnection.removeInventoryItem(player.getUsername(), player.getName(), selectedValue);
-                List<Item> items = player.getInventory().getItems();
-                items.remove(list.getSelectedIndex());
-                player.setInventory(new Inventory(items));
+        if (!player.getSkills().contains(World.staminup))
+        {
+            lockedSkills.add(World.staminup);
+        }
 
-                //Close inventory
-                exitProcedure(player);
-                dispose();
-            }
-        });
-        useButton.setEnabled(false);
+        if (!player.getSkills().contains(World.feelingLucky))
+        {
+            lockedSkills.add(World.feelingLucky);
+        }
+
+        if (!player.getSkills().contains(World.naturalHealer))
+        {
+            lockedSkills.add(World.naturalHealer);
+        }
+
+        if (!player.getSkills().contains(World.treasureHunter))
+        {
+            lockedSkills.add(World.treasureHunter);
+        }
 
         //Add description text
         JLabel description = new JLabel();
@@ -72,17 +63,16 @@ public class InventoryDisplay extends JFrame implements KeyListener {
         description.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
         String item1 = "";
-        if (player.getInventory().getItems().size() > 0)
+        if (player.getSkills().size() > 0)
         {
-            //Inventory is not empty
-            System.out.println("Inventory is not empty");
-            items = player.getInventory().getItems();
+            //Player has one or more skills
+            System.out.println("Player has one or more locked skills");
 
             DefaultListModel<String> l1 = new DefaultListModel<>();
-            for (Item item : items)
+            for (Skill skill : lockedSkills)
             {
-                l1.addElement(item.getName());
-                descriptions.add(item.getDescription());
+                l1.addElement(skill.getName());
+                descriptions.add(skill.getDescription());
             }
             list = new JList<>(l1);
             list.setVisibleRowCount(-1);
@@ -95,15 +85,13 @@ public class InventoryDisplay extends JFrame implements KeyListener {
                     if (e.getValueIsAdjusting() == false) {
 
                         if (list.getSelectedIndex() == -1) {
-                            //No item selected
-                            useButton.setEnabled(false);
-
+                            //No skill selected
                         } else {
-                            //Item selected
+                            //Skill selected
                             System.out.println("SELECTED VALUE: " + list.getSelectedValue());
                             selectedValue = list.getSelectedValue();
                             description.setText(descriptions.get(list.getSelectedIndex()));
-                            useButton.setEnabled(true);
+                            //useButton.setEnabled(true);
                         }
                     }
                 }
@@ -113,41 +101,34 @@ public class InventoryDisplay extends JFrame implements KeyListener {
             list.addListSelectionListener(listListener);
 
             //Add components
-            add(itemLabel);
+            add(skillLabel);
             add(scrollPane);
             add(description);
-            add(useButton);
             add(Box.createRigidArea(new Dimension(10, 10)));
         }
         else
         {
-            //Inventory is empty
-            itemLabel.setText("Your inventory is empty.");
+            //Player has unlocked all skills... impressive.
+            skillLabel.setText("You have unlocked all skills. Impressive.");
             add(Box.createRigidArea(new Dimension(10, 10)));
-            add(itemLabel);
-            System.out.println("Inventory is empty");
+            add(skillLabel);
+            System.out.println("Player is skilled");
         }
 
-        itemLabel.addKeyListener(this);
-        itemLabel.setFocusable(true);
+        skillLabel.addKeyListener(this);
+        skillLabel.setFocusable(true);
         pack();
         setVisible(true);
     }
 
-    public static void exitProcedure(Player player)
-    {
-        World.invOpen = 0;
-        NPC.updateDisplay(player.getHp(), player.getMaxHP());
-    }
-
     public static void exitProcedure()
     {
-        World.invOpen = 0;
+        World.lockedSkillsOpen = 0;
     }
 
     public void keyTyped(KeyEvent input) {
         char key = input.getKeyChar();
-        if (key == 'i')
+        if (key == 'l')
         {
             exitProcedure();
             dispose();
