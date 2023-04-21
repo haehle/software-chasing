@@ -50,6 +50,7 @@ public class Player {
     private long timePlayed;
     private long points;
     private Gear[] availableGear;
+    private Gear equippedGear;
 
     public Player(String username, String name, int playerClass) {
         this.timePlayed = 0;
@@ -69,6 +70,7 @@ public class Player {
         this.maxLevelNO = 0;
         this.timePlayed = 0;
         this.points = 0;
+        this.availableGear = new Gear[1];
         //if (type == 1) {
             this.inventory = new Inventory();
             if (playerClass == 1) {
@@ -125,6 +127,7 @@ public class Player {
         this.maxLevelNO = maxLevelNO;
         this.timePlayed = timePlayed;
         this.points = points;
+        this.availableGear = new Gear[1];
 
 
         //Need to get these from alternate table
@@ -141,6 +144,46 @@ public class Player {
 
     public int getCurrentLevelNo() {
         return currentLevelNo;
+    }
+
+    public void buyGear(Gear gear){
+        System.out.println(gear);
+        Gear[] tempAvailableGear = new Gear[availableGear.length + 1];
+        int i = 0;
+        for(i = 0; i < availableGear.length; i++){
+            tempAvailableGear[i] = availableGear[i];
+        }
+        i--;
+        tempAvailableGear[i] = gear;
+        this.availableGear = tempAvailableGear;
+    }
+
+    public void unequipGear(){
+        equippedGear = null;
+    }
+
+    public Gear getEquippedGear(){
+        return equippedGear;
+    }
+
+    public Gear[] getAvailableGear(){
+        return availableGear;
+    }
+
+    public void equipGear(Gear gear){
+        int indexToRemove = -1;
+        for (int i = 0; i < availableGear.length; i++) {
+
+            if (availableGear[i].getGearName().equals(gear.getGearName())) {
+                indexToRemove = i;
+                break;
+            }
+        }
+        
+        if (indexToRemove >= 0) {
+            equippedGear = availableGear[indexToRemove];
+            availableGear[indexToRemove] = null;
+        }
     }
 
     public int getTilesWalked() {
