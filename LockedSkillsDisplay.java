@@ -15,7 +15,7 @@ public class LockedSkillsDisplay extends JFrame implements KeyListener {
     JList<String> list;
 
     public LockedSkillsDisplay(Player player) {
-        super(player.getName() + "Locked Skills");
+        super("Locked Skills");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override

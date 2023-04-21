@@ -3,7 +3,7 @@ import java.util.List;
 
 public class Inventory {
     private List<Item> items = new ArrayList<Item>();
-    public static final int MAX_ITEM_NUM = 8;
+    public static final int MAX_ITEM_NUM = 5;
 
     public Inventory() {
         this.items = new ArrayList<Item>();
