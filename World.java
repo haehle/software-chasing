@@ -41,6 +41,7 @@ public class World{
     private int[] checkPoint;
     public static int invOpen;
     public static int skillsOpen;
+    public static int lockedSkillsOpen;
     BackgroundMusic bm;
 
     private JButton shop, shop2, battle, battle2, battle3, battle4, home, menubuttons;
@@ -59,6 +60,7 @@ public class World{
     Action pauseGame = new pauseAction();
     Action inventoryAction = new inventoryAction();
     Action skillsAction = new skillsAction();
+    Action lockedSkillsAction = new lockedSkillsAction();
     boolean exit;
 
     public static Skill staminup = new Skill("Stamin-Up", "User has a chance to randomly regain lost stamina");
@@ -318,6 +320,9 @@ public class World{
 
         playerLabel.getInputMap().put(KeyStroke.getKeyStroke('k'), "skillsAction");
         playerLabel.getActionMap().put("skillsAction", skillsAction);
+
+        playerLabel.getInputMap().put(KeyStroke.getKeyStroke('l'), "lockedSkillsAction");
+        playerLabel.getActionMap().put("lockedSkillsAction", lockedSkillsAction);
 
         //add player label to the frame
         frame.add(playerLabel);
@@ -922,7 +927,14 @@ public class World{
                 {
                     //Trigger "Stamin-Up" skill
                     JOptionPane.showMessageDialog(frame, "Stamin-Up skill triggered!");
-                    player.setStamina(player.getStamina() + 2);
+                    int staminAmt = 2;
+
+                    //Check for temporary boost
+                    if (staminupBoost)
+                    {
+                        staminAmt = 5;
+                    }
+                    player.setStamina(player.getStamina() + staminAmt);
                     player.setTilesWalked(player.getTilesWalked() + 1);
                 }
             }
@@ -931,7 +943,15 @@ public class World{
             {
                 //Trigger "Feeling Lucky" skill
                 JOptionPane.showMessageDialog(frame, "Feeling Lucky skill triggered! Enjoy the extra gold.");
-                player.setGold(player.getGold() + 10);
+                int goldAmt = 10;
+
+                //Check for temporary boost
+                if (feelingLuckyBoost)
+                {
+                    goldAmt = 50;
+                }
+
+                player.setGold(player.getGold() + goldAmt);
                 player.setTilesWalked(player.getTilesWalked() + 1);
             }
 
@@ -941,7 +961,14 @@ public class World{
                 {
                     //Trigger "Natural Healer" skill
                     JOptionPane.showMessageDialog(frame, "Natural Healer skill triggered!");
-                    player.setHp(player.getHp() + 2);
+                    int hpAmt = 10;
+
+                    //Check for temporary boost
+                    if (naturalHealerBoost)
+                    {
+                        hpAmt = 25;
+                    }
+                    player.setHp(player.getHp() + hpAmt);
                     player.setTilesWalked(player.getTilesWalked() + 1);
                 }
             }
@@ -1228,6 +1255,21 @@ public class World{
                 System.out.println("SKILLS PANEL");
                 skillsOpen = 1;
                 SkillsDisplay skillsDisplay = new SkillsDisplay(player);
+            }
+        }
+    }
+
+    public class lockedSkillsAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (lockedSkillsOpen == 1)
+            {
+                //Skills panel already open
+            }
+            else {
+                System.out.println("LOCKED SKILLS PANEL");
+                lockedSkillsOpen = 1;
+                LockedSkillsDisplay lockedSkillsDisplay = new LockedSkillsDisplay(player);
             }
         }
     }
