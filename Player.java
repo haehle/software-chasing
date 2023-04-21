@@ -156,6 +156,17 @@ public class Player {
         tempAvailableGear[i] = gear;
         this.availableGear = tempAvailableGear;
     }
+    
+    public boolean checkIfBought(Gear gear){
+        for(Gear g : this.availableGear){
+            if(g != null){
+                if(gear.getGearName().equals(g.getGearName())){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public void unequipGear(){
         equippedGear = null;
@@ -172,10 +183,11 @@ public class Player {
     public void equipGear(Gear gear){
         int indexToRemove = -1;
         for (int i = 0; i < availableGear.length; i++) {
-
-            if (availableGear[i].getGearName().equals(gear.getGearName())) {
-                indexToRemove = i;
-                break;
+            if(availableGear[i] != null){
+                if (availableGear[i].getGearName().equals(gear.getGearName())) {
+                    indexToRemove = i;
+                    break;
+                }
             }
         }
         

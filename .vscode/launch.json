@@ -9,6 +9,20 @@
             "name": "GearEquip",
             "request": "launch",
             "mainClass": "GearEquip",
+            "projectName": "software-chasing_9c492f81"
+        },
+        {
+            "type": "java",
+            "name": "Registration",
+            "request": "launch",
+            "mainClass": "Registration",
+            "projectName": "software-chasing_9c492f81"
+        },
+        {
+            "type": "java",
+            "name": "GearEquip",
+            "request": "launch",
+            "mainClass": "GearEquip",
             "projectName": "software-chasing_8caf16ec"
         },
         {

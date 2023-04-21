@@ -11,6 +11,7 @@ public class Gear {
         this.staminaBoost = staminaBoost;
     }
 
+
     public String getGearName(){
         return gearName;
     }

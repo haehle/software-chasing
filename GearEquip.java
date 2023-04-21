@@ -25,138 +25,7 @@ public class GearEquip {
     private ImageIcon equipImage1, equipImage2, equipImage3, equippedImage;
     
 
-    
-
-    public void equipScreen(){
-
-        JFrame frame = new JFrame();
-
-        ImageIcon icon1 = new ImageIcon("Images/Soap.png");
-        Image image1 = icon1.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        icon1 = new ImageIcon(image1);
-        ImageIcon icon2 = new ImageIcon("Images/Laptop.png");
-        Image image2 = icon2.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        icon2 = new ImageIcon(image2);
-        ImageIcon icon3 = new ImageIcon("Images/Glasses.png");
-        Image image3 = icon3.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        icon3 = new ImageIcon(image3);
-        
-        JPanel equipmentPanel = new JPanel(new GridLayout(1, 3));
-        equipImage1 = icon1;
-        equipLabel1 = new JLabel("Soap");
-        equipButton1 = new JButton("Equip");
-        equipButton1.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Gear Soap = new Gear("Soap", 10, 0,    0);
-                player.equipGear(Soap);
-                player.setHp(player.getHp() + 10);
-                frame.dispose();
-                equipScreen();
-                //save to db
-            }
-            
-        });
-        JPanel equipPanel1 = new JPanel(new BorderLayout());
-        equipPanel1.add(new JLabel(equipImage1), BorderLayout.CENTER);
-        equipPanel1.add(equipLabel1, BorderLayout.NORTH);
-        equipPanel1.add(equipButton1, BorderLayout.SOUTH);
-        equipmentPanel.add(equipPanel1);
-        equipImage2 = icon2;
-        equipLabel2 = new JLabel("Laptop");
-        equipButton2 = new JButton("Equip");
-        equipButton2.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Gear Laptop = new Gear("Laptop", 0, 0,    10);
-                player.equipGear(Laptop);
-                player.setSpeed(player.getSpeed() + 10);
-                frame.dispose();
-                equipScreen();
-                //save to db
-            }
-            
-        });
-        JPanel equipPanel2 = new JPanel(new BorderLayout());
-        equipPanel2.add(new JLabel(equipImage2), BorderLayout.CENTER);
-        equipPanel2.add(equipLabel2, BorderLayout.NORTH);
-        equipPanel2.add(equipButton2, BorderLayout.SOUTH);
-        equipmentPanel.add(equipPanel2);
-        equipImage3 = icon3;
-        equipLabel3 = new JLabel("Glasses");
-        equipButton3 = new JButton("Equip");
-        equipButton3.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Gear Glasses = new Gear("Glasses", 0, 10,    0);
-                player.equipGear(Glasses);
-                player.setStamina(player.getStamina() + 10);
-                frame.dispose();
-                equipScreen();
-                //save to db
-            }
-            
-        });
-        JPanel equipPanel3 = new JPanel(new BorderLayout());
-        equipPanel3.add(new JLabel(equipImage3), BorderLayout.CENTER);
-        equipPanel3.add(equipLabel3, BorderLayout.NORTH);
-        equipPanel3.add(equipButton3, BorderLayout.SOUTH);
-        equipmentPanel.add(equipPanel3);
-        
-        // Set up the equipped section
-        JPanel equippedPanel = new JPanel(new BorderLayout());
-        if(player.getEquippedGear() != null){
-            if(player.getEquippedGear().getGearName() == "Soap"){
-                equippedImage = icon1;
-            } else if(player.getEquippedGear().getGearName() == "Laptop"){
-                equippedImage = icon2;
-            } else if(player.getEquippedGear().getGearName() == "Glasses"){
-                equippedImage = icon3;
-            }
-        }
-        
-        equippedLabel = new JLabel("Equipped");
-        unequipButton = new JButton("Unequip");
-        unequipButton.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Gear equipped = player.getEquippedGear();
-                player.unequipGear();
-                player.setHp(player.getHp() - equipped.getHpBoost());
-                player.setStamina(player.getStamina() - equipped.getStaminaBoost());
-                player.setSpeed(player.getSpeed() - equipped.getSpeedBoost());
-                System.out.println("HP:" + player.getHp());
-                System.out.println("Speed:" + player.getSpeed());
-                System.out.println("Stamina:" + player.getStamina());
-                frame.dispose();
-                equipScreen();
-            }
-            
-        });
-        equippedImageLabel = new JLabel(equippedImage);
-        equippedPanel.add(equippedImageLabel, BorderLayout.CENTER);
-        equippedPanel.add(equippedLabel, BorderLayout.NORTH);
-        equippedPanel.add(unequipButton, BorderLayout.SOUTH);
-        
-        // Add the equipment and equipped sections to the frame
-        JPanel mainPanel = new JPanel(new GridLayout(2, 1));
-        mainPanel.add(equipmentPanel);
-        mainPanel.add(equippedPanel);
-        frame.add(mainPanel);
-        
-        // Set up the frame
-        frame.setTitle("Equipment");
-        frame.setSize(800, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
-
-    
-    public GearEquip(Player player) throws IOException{
+    public Player equip(Player player) throws IOException{
         this.player = player;
          // Create a new JFrame
          JFrame frame = new JFrame("Label and Image Example");
@@ -247,16 +116,165 @@ public class GearEquip {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                equipScreen();         
+                equipScreen();  
+                System.out.println("HP:" + player.getHp());
+                System.out.println("Speed:" + player.getSpeed());
+                System.out.println("Stamina:" + player.getStamina());       
             }
             
         });
 
         frame.add(equip);
+        return player;
 
     }
 
+    public void equipScreen(){
+
+        JFrame frame = new JFrame();
+
+        ImageIcon icon1 = new ImageIcon("Images/Soap.png");
+        Image image1 = icon1.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        icon1 = new ImageIcon(image1);
+        ImageIcon icon2 = new ImageIcon("Images/Laptop.png");
+        Image image2 = icon2.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        icon2 = new ImageIcon(image2);
+        ImageIcon icon3 = new ImageIcon("Images/Glasses.png");
+        Image image3 = icon3.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        icon3 = new ImageIcon(image3);
+        
+        JPanel equipmentPanel = new JPanel(new GridLayout(1, 3));
+        equipImage1 = icon1;
+        equipLabel1 = new JLabel("Soap");
+        equipButton1 = new JButton("Equip");
+        equipButton1.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Gear Soap = new Gear("Soap", 10, 0,    0);                
+                player.equipGear(Soap);
+                player.setHp(player.getHp() + 10);
+                System.out.println("HP:" + player.getHp());
+                System.out.println("Speed:" + player.getSpeed());
+                System.out.println("Stamina:" + player.getStamina());
+                frame.dispose();
+                equipScreen();
+                //save to db
+            }
+            
+        });
+        JPanel equipPanel1 = new JPanel(new BorderLayout());
+        equipPanel1.add(new JLabel(equipImage1), BorderLayout.CENTER);
+        equipPanel1.add(equipLabel1, BorderLayout.NORTH);
+        equipPanel1.add(equipButton1, BorderLayout.SOUTH);
+        equipmentPanel.add(equipPanel1);
+        equipImage2 = icon2;
+        equipLabel2 = new JLabel("Laptop");
+        equipButton2 = new JButton("Equip");
+        equipButton2.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Gear Laptop = new Gear("Laptop", 0, 0,    10);
+                player.equipGear(Laptop);
+                player.setSpeed(player.getSpeed() + 10);
+                System.out.println("HP:" + player.getHp());
+                System.out.println("Speed:" + player.getSpeed());
+                System.out.println("Stamina:" + player.getStamina());
+                frame.dispose();
+                equipScreen();
+                //save to db
+            }
+            
+        });
+        JPanel equipPanel2 = new JPanel(new BorderLayout());
+        equipPanel2.add(new JLabel(equipImage2), BorderLayout.CENTER);
+        equipPanel2.add(equipLabel2, BorderLayout.NORTH);
+        equipPanel2.add(equipButton2, BorderLayout.SOUTH);
+        equipmentPanel.add(equipPanel2);
+        equipImage3 = icon3;
+        equipLabel3 = new JLabel("Glasses");
+        equipButton3 = new JButton("Equip");
+        equipButton3.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Gear Glasses = new Gear("Glasses", 0, 10,    0);
+                player.equipGear(Glasses);
+                player.setStamina(player.getStamina() + 10);
+                System.out.println("HP:" + player.getHp());
+                System.out.println("Speed:" + player.getSpeed());
+                System.out.println("Stamina:" + player.getStamina());
+                frame.dispose();
+                equipScreen();
+                //save to db
+            }
+            
+        });
+        JPanel equipPanel3 = new JPanel(new BorderLayout());
+        equipPanel3.add(new JLabel(equipImage3), BorderLayout.CENTER);
+        equipPanel3.add(equipLabel3, BorderLayout.NORTH);
+        equipPanel3.add(equipButton3, BorderLayout.SOUTH);
+        equipmentPanel.add(equipPanel3);
+        
+        // Set up the equipped section
+        JPanel equippedPanel = new JPanel(new BorderLayout());
+        if(player.getEquippedGear() != null){
+            if(player.getEquippedGear().getGearName() == "Soap"){
+                equippedImage = icon1;
+            } else if(player.getEquippedGear().getGearName() == "Laptop"){
+                equippedImage = icon2;
+            } else if(player.getEquippedGear().getGearName() == "Glasses"){
+                equippedImage = icon3;
+            }
+        }
+        
+        equippedLabel = new JLabel("Equipped");
+        unequipButton = new JButton("Unequip");
+        unequipButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Gear equipped = player.getEquippedGear();
+                player.setHp(player.getHp() - equipped.getHpBoost());
+                player.setStamina(player.getStamina() - equipped.getStaminaBoost());
+                player.setSpeed(player.getSpeed() - equipped.getSpeedBoost());
+                player.unequipGear();
+                System.out.println("HP:" + player.getHp());
+                System.out.println("Speed:" + player.getSpeed());
+                System.out.println("Stamina:" + player.getStamina());
+                frame.dispose();
+                try {
+                    player = equip(player);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            }
+            
+        });
+        equippedImageLabel = new JLabel(equippedImage);
+        equippedPanel.add(equippedImageLabel, BorderLayout.CENTER);
+        equippedPanel.add(equippedLabel, BorderLayout.NORTH);
+        equippedPanel.add(unequipButton, BorderLayout.SOUTH);
+        
+        // Add the equipment and equipped sections to the frame
+        JPanel mainPanel = new JPanel(new GridLayout(2, 1));
+        mainPanel.add(equipmentPanel);
+        mainPanel.add(equippedPanel);
+        frame.add(mainPanel);
+        
+        // Set up the frame
+        frame.setTitle("Equipment");
+        frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+
+    
+    
+
     public static void main(String[] args) throws IOException {
-        new GearEquip(new Player(null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0));
+        //player = new GearEquip();
     }
 }
