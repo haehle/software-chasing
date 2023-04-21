@@ -65,6 +65,7 @@ public class World{
     public static Skill feelingLucky = new Skill("Feeling Lucky", "User has a chance to randomly find free gold");
     public static Skill naturalHealer = new Skill("Natural Healer", "User has a chance to randomly regain lost HP");
     public static Skill treasureHunter = new Skill("Treasure Hunter", "User has a chance to randomly find new items");
+    public static boolean staminupBoost, feelingLuckyBoost, naturalHealerBoost, treasureHunterBoost;
 
 
     public World(int height, int length, int[][] tileType, Player player, float numLevels){ /*TODO: ADD PLAYER FIELD*/
@@ -814,6 +815,19 @@ public class World{
                 if(!checker3) {
                     NPC3label.setVisible(true);
                     checker3 = true;
+
+                    //Unlock new skill when meeting Sam
+                    if (!player.getSkills().contains(naturalHealer)) {
+                        JOptionPane.showMessageDialog(frame, "Learned the Natural Healer skill. Congratulations!");
+                        player.getSkills().add(naturalHealer);
+                    }
+                    else
+                    {
+                        if (player.getSkills().contains(feelingLucky) && !feelingLuckyBoost) {
+                            JOptionPane.showMessageDialog(frame, "Feeling Lucky skill temporarily boosted!");
+                            feelingLuckyBoost = true;
+                        }
+                    }
 
                     playSound("Music/doorbell.wav");
                 }
