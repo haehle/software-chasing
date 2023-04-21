@@ -41,7 +41,7 @@ public class Player {
     private int level;
     private int levelXP;
     private int initialLevelXP;
-    private String[] skills;
+    private ArrayList<Skill> skills;
     private ArrayList<String> abilities;
     private int currentLevelNo;
     private int maxLevelNO;
@@ -77,7 +77,7 @@ public class Player {
                 this.speed = 15;
                 this.stamina = 20;
                 this.maxStamina = 20;
-                this.skills = new String[]{};
+                this.skills = new ArrayList<>();
                 this.abilities = new ArrayList<>();
             } else if (playerClass == 2) {
                 this.hp = 60;
@@ -85,7 +85,7 @@ public class Player {
                 this.speed = 25;
                 this.stamina = 30;
                 this.maxStamina = 30;
-                this.skills = new String[]{};
+                this.skills = new ArrayList<>();
                 this.abilities = new ArrayList<>();
             } else if (playerClass == 3) {
                 this.hp = 200;
@@ -93,7 +93,7 @@ public class Player {
                 this.speed = 5;
                 this.stamina = 5;
                 this.maxStamina = 5;
-                this.skills = new String[]{};
+                this.skills = new ArrayList<>();
                 this.abilities = new ArrayList<>();
 
             }
@@ -103,7 +103,7 @@ public class Player {
     //Constructor used to initialize Player object from database information
     public Player(String username, String name, int playerClass, int locationX, int locationY, int hp, int maxHP,
                   int speed, int stamina, int maxStamina, int level, int levelXP, int initialLevelXP, Inventory inventory,
-                  long timePlayed, long points, int currentLevelNo, int maxLevelNO) {
+                  long timePlayed, long points, int currentLevelNo, int maxLevelNO, ArrayList<Skill> skills) {
         this.timePlayed = 0;
         this.enemiesDefeated = 0;
         this.questionsAnswered = 0;
@@ -125,10 +125,9 @@ public class Player {
         this.maxLevelNO = maxLevelNO;
         this.timePlayed = timePlayed;
         this.points = points;
+        this.skills = skills;
 
-
-        //Need to get these from alternate table
-        this.skills = new String[]{};
+        //Need to get this from alternate table
         this.abilities = new ArrayList<>();
     }
         public long getTimePlayed(){
@@ -317,15 +316,12 @@ public class Player {
         }
 
 
-        public String[] getSkills () {
+        public ArrayList<Skill> getSkills () {
             return this.skills;
         }
 
-        public void addNewSkills (String[]skills){
-            List<String> list = new ArrayList<String>(Arrays.asList(skills));
-            list.addAll(Arrays.asList(this.skills));
-            String[] updatedSkills = (String[]) list.toArray();
-            this.skills = updatedSkills;
+        public void setSkills (ArrayList<Skill> skills) {
+            this.skills = skills;
         }
 
         public ArrayList<String> getAbilities () {

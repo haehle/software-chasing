@@ -40,6 +40,7 @@ public class World{
     boolean goBack;
     private int[] checkPoint;
     public static int invOpen;
+    public static int skillsOpen;
     BackgroundMusic bm;
 
     private JButton shop, shop2, battle, battle2, battle3, battle4, home, menubuttons;
@@ -57,6 +58,7 @@ public class World{
     Action menuAction = new menuAction();
     Action pauseGame = new pauseAction();
     Action inventoryAction = new inventoryAction();
+    Action skillsAction = new skillsAction();
     boolean exit;
 
 
@@ -307,6 +309,9 @@ public class World{
 
         playerLabel.getInputMap().put(KeyStroke.getKeyStroke('i'), "inventoryAction");
         playerLabel.getActionMap().put("inventoryAction", inventoryAction);
+
+        playerLabel.getInputMap().put(KeyStroke.getKeyStroke('k'), "skillsAction");
+        playerLabel.getActionMap().put("skillsAction", skillsAction);
 
         //add player label to the frame
         frame.add(playerLabel);
@@ -921,6 +926,7 @@ public class World{
             //Keep health updated
             health.setText("HP: " + player.getHp() + "/" + player.getMaxHP());
             stamina.setText("Stamina: " + player.getStamina() + "/" + player.getMaxStamina());
+            speed.setText("Speed: " + player.getSpeed());
             level.setText("Level: " + player.getLevel());
             xp.setText("XP Needed: " + player.getLevelXP());
             gold.setText("Gold: " + player.getGold());
@@ -1142,6 +1148,21 @@ public class World{
                 invOpen = 1;
                 InventoryDisplay inventoryDisplay = new InventoryDisplay(player);
                 //inventoryDisplay.actionPerformed(e);
+            }
+        }
+    }
+
+    public class skillsAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (skillsOpen == 1)
+            {
+                //Skills panel already open
+            }
+            else {
+                System.out.println("SKILLS PANEL");
+                skillsOpen = 1;
+                SkillsDisplay skillsDisplay = new SkillsDisplay(player);
             }
         }
     }
