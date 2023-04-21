@@ -1,5 +1,6 @@
 import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class dbConnection {
     //Fields necessary for database connection
@@ -203,22 +204,22 @@ public class dbConnection {
                     Profile profile = new Profile(email, username, password);
 
                     //Changed loggedIn status
-                    if (loggedIn)
-                    {
-                        throw new IllegalStateException("User already logged in");
-                    } else {
-                        try (Statement newStatement = connection.createStatement()) {
-                            String newQuery = "UPDATE Users SET loggedIn = true WHERE username = '" + username + "';";
+                    //if (loggedIn)
+                    //{
+                    //    throw new IllegalStateException("User already logged in");
+                    //} else {
+                        //try (Statement newStatement = connection.createStatement()) {
+                            //String newQuery = "UPDATE Users SET loggedIn = true WHERE username = '" + username + "';";
 
-                            statement.execute(newQuery);
-                            System.out.println("loggedIn status changed successfully.");
+                            //statement.execute(newQuery);
+                       //     System.out.println("loggedIn status changed successfully.");
 
-                        } catch (SQLException e) {
-                            throw new IllegalStateException("Could not change loggedIn status", e);
-                        }
+                        //} catch (SQLException e) {
+                        //    throw new IllegalStateException("Could not change loggedIn status", e);
+                        //}
 
                         return profile;
-                    }
+                    //}
                 }
 
             } catch (SQLException e) {
@@ -260,13 +261,17 @@ public class dbConnection {
                         Inventory inventory = new Inventory();
                         inventory = getInventory(username, name);
 
+                        //Get skills for player
+                        ArrayList<Skill> skills = new ArrayList<>();
+                        skills = getSkills(username, name);
+
                         Player player = new Player(username, name, rs.getInt("playerClass"),
                                 rs.getInt("locationX"), rs.getInt("locationY"), rs.getInt("hp"),
                                 rs.getInt("maxHP"), rs.getInt("speed"), rs.getInt("stamina"),
                                 rs.getInt("maxStamina"), rs.getInt("level"), rs.getInt("levelXP"),
                                 rs.getInt("initialLevelXP"), inventory, rs.getLong("timePlayed"),
                                 rs.getLong("points"), rs.getInt("currentLevelNo"),
-                                rs.getInt("maxLevel"));
+                                rs.getInt("maxLevel"), skills);
 
                         players[i] = player;
 
@@ -337,6 +342,55 @@ public class dbConnection {
                     }
 
                     return inventory;
+                }
+
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not access user profiles for login", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+
+    }
+
+    public static ArrayList<Skill> getSkills(String username, String name) {
+        ArrayList<Skill> skills = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String query = "SELECT * FROM PlayerSkills WHERE username=\"" + username + "\" AND name=\"" + name + "\";";
+
+                ResultSet rs = statement.executeQuery(query);
+                if (!rs.isBeforeFirst()) {
+                    //No skill entries found
+                    System.out.println("No skills found for specified player.");
+                    return skills;
+                } else {
+                    //Skills found
+                    System.out.println("Skills found for user...");
+
+                    //Parse data
+                    int i = 0;
+                    while (rs.next()) {
+                        //Get values from table
+                        String skillName = rs.getString("skillName");
+                        String description = getSkillDescription(skillName);
+
+                        Skill skill = new Skill(skillName, description);
+                        skills.add(skill);
+
+                        System.out.println("Existing player data " + (i + 1) + " fetched");
+                        i++;
+                    }
+
+                    return skills;
                 }
 
             } catch (SQLException e) {
@@ -735,6 +789,67 @@ public class dbConnection {
                 return itemDesc;
             } catch (SQLException e) {
                 throw new IllegalStateException("Could not get items from database", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
+    public static String getSkillDescription(String skillName) {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+
+                String skillDesc = "";
+                String query = "SELECT * FROM Skills WHERE name=\"" + skillName + "\"";
+
+                ResultSet rs = statement.executeQuery(query);
+                if (!rs.isBeforeFirst()) {
+                    //Skill not found
+                    System.out.println("Skill not found.");
+                    return null;
+                } else {
+                    //Skill found
+                    System.out.println("Skill found.");
+
+                    //Parse data
+                    while (rs.next()) {
+                        skillDesc = rs.getString("description");
+                    }
+                }
+
+                return skillDesc;
+            } catch (SQLException e) {
+                throw new IllegalStateException("Could not get skills from database", e);
+            }
+
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Error occurred while connecting to database", e);
+        }
+    }
+
+    public static void removeInventoryItem(String username, String name, String itemName)
+    {
+        try (Connection connection = DriverManager.getConnection(url, loginUsername, loginPassword)) {
+
+            //Connected to database
+            System.out.println("Connected to database successfully.");
+
+            try (Statement statement = connection.createStatement()) {
+                String query = "DELETE FROM InventoryItems WHERE username = \"" + username + "\"" +
+                        " AND name = \"" + name + "\" AND id = " + dbConnection.getItemId(itemName) + ";";
+
+                statement.execute(query);
+                System.out.println("Removed " + itemName + " item from player's inventory");
+            } catch (SQLException e) {
+                System.out.println("Item not in database for player's inventory");
+                return;
             }
 
 

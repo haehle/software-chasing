@@ -7,6 +7,8 @@ import java.util.concurrent.*;
 
 public class NPC {
 
+    public static JLabel health = new JLabel();
+
     private static JFrame frame;
     private JPanel panel;
 
@@ -199,6 +201,12 @@ public class NPC {
         this.stock3 = stock3;
     }
 
+    public static void updateDisplay(int current, int max)
+    {
+        //Update health on battle display
+        health.setText("My Health: " + current + "/" + max);
+    }
+
 
     public void displayBattle (Player player) {
         frame = new JFrame("Battle against " + getName());
@@ -215,7 +223,7 @@ public class NPC {
         frame.pack();
         frame.setVisible(true);
 
-        JLabel health = new JLabel("My Health: " + player.getHp() + "/" + player.getMaxHP());
+        health.setText("My Health: " + player.getHp() + "/" + player.getMaxHP());
         health.setBackground(Color.white);
         health.setBounds(650,70,250,50);
         health.setOpaque(false);
@@ -271,6 +279,14 @@ public class NPC {
         abilitylist.setBounds(325, 550, 200, 50);
         panel.add(abilitylist);
         abilitylist.setVisible(false);
+
+        //Use item button
+        JButton itemsButton = new JButton("Use Item");
+        itemsButton.setBounds(800, 525, 100, 50);
+        itemsButton.setBackground(Color.decode("#9d9795"));
+        panel.add(itemsButton);
+        itemsButton.setVisible(false);
+
 
         fleeButton = new JButton("Flee");
         fleeButton.setBounds(800, 600, 100, 50);
@@ -389,6 +405,7 @@ public class NPC {
                         battleButton3.setVisible(false);
                         panel.add(congrats);
                         congrats.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -565,6 +582,7 @@ public class NPC {
                         }
 
                         congrats.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -709,6 +727,7 @@ public class NPC {
                             player.addAchievement("10 Enemy Defeated");
                         }
                         congrats.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -849,6 +868,7 @@ public class NPC {
                             player.addAchievement("10 Enemy Defeated");
                         }
                         congrats.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -992,6 +1012,7 @@ public class NPC {
                             player.addAchievement("10 Enemy Defeated");
                         }
                         congrats.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         panel.add(backButton);
                         backButton.setVisible(true);
@@ -1009,6 +1030,8 @@ public class NPC {
             setMaxHP(1);
 
             NPChealth.setText(getName() + " Health: " + getHp() + "/" + getMaxHP());
+
+            itemsButton.setVisible(false);
 
             fleeButton.setVisible(false);
 
@@ -1108,6 +1131,8 @@ public class NPC {
                         security.setVisible(true);
                     }
 
+                    itemsButton.setVisible(true);
+
                 }
             }
         });
@@ -1135,6 +1160,7 @@ public class NPC {
                         battleButton2.setVisible(false);
                         battleButton3.setVisible(false);
                         loser.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         backButton.setVisible(true);
                     }
@@ -1169,6 +1195,7 @@ public class NPC {
                         battleButton2.setVisible(false);
                         battleButton3.setVisible(false);
                         loser.setVisible(true);
+                        itemsButton.setVisible(false);
                         fleeButton.setVisible(false);
                         backButton.setVisible(true);
                     }
@@ -1211,6 +1238,15 @@ public class NPC {
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == fleeButton) {
                     frame.dispose();
+                }
+            }
+        });
+
+        itemsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == itemsButton) {
+                    InventoryDisplay inventoryDisplay = new InventoryDisplay(player);
                 }
             }
         });
@@ -1373,30 +1409,40 @@ public class NPC {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == button1 && stock1 > 0) {
-                    if(player.getGold() >= cost1) {
-                        player.setGold(player.getGold() - cost1);
-                        setStock1(getStock1() - 1);
-                        total_gold.setText("Gold: " + player.getGold());
+                    if (player.getInventory().getItems().size() < Inventory.MAX_ITEM_NUM) {
+                        if (!dbConnection.playerHasItem(player.getUsername(), player.getName(), item1)) {
+                            if (player.getGold() >= cost1) {
+                                player.setGold(player.getGold() - cost1);
+                                setStock1(getStock1() - 1);
+                                total_gold.setText("Gold: " + player.getGold());
 
-                            player.getInventory().addItem(player.getUsername(), player.getName(), item1);
-                            if (getStock1() == 0) {
-                                item1_cost.setText("OUT OF STOCK!");
-                                item1_cost.setForeground(Color.RED);
-                                item1_cost.setFont(font);
+                                player.getInventory().addItem(player.getUsername(), player.getName(), item1);
+                                if (getStock1() == 0) {
+                                    item1_cost.setText("OUT OF STOCK!");
+                                    item1_cost.setForeground(Color.RED);
+                                    item1_cost.setFont(font);
+                                } else {
+                                    //item1_cost.setText(cost1 + " Gold             " + "Stock: " + getStock1());
+                                    item1_cost.setText("Already own item");
+                                    item1_cost.setForeground(Color.RED);
+                                    item1_cost.setFont(font);
+                                }
+
                             } else {
-                                //item1_cost.setText(cost1 + " Gold             " + "Stock: " + getStock1());
-                                item1_cost.setText("Already own item");
+                                item1_cost.setText("Not enough gold!");
                                 item1_cost.setForeground(Color.RED);
+                                Font font = new Font("Arial", Font.BOLD, 14);
                                 item1_cost.setFont(font);
+
                             }
-
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(frame, "Already own item!");
+                        }
                     }
-                    else {
-                        item1_cost.setText("Not enough gold!");
-                        item1_cost.setForeground(Color.RED);
-                        Font font = new Font("Arial", Font.BOLD, 14);
-                        item1_cost.setFont(font);
-
+                    else
+                    {
+                        JOptionPane.showMessageDialog(frame, "Inventory already full!");
                     }
                 }
             }
@@ -1413,32 +1459,42 @@ public class NPC {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == button2 && stock2 > 0) {
-                    if(player.getGold() >= cost2) {
-                        player.setGold(player.getGold() - cost2);
-                        setStock2(getStock2() - 1);
-                        total_gold.setText("Gold: " + player.getGold());
+                    if (player.getInventory().getItems().size() < Inventory.MAX_ITEM_NUM) {
+                        if (!dbConnection.playerHasItem(player.getUsername(), player.getName(), item2)) {
+                            if (player.getGold() >= cost2) {
+                                player.setGold(player.getGold() - cost2);
+                                setStock2(getStock2() - 1);
+                                total_gold.setText("Gold: " + player.getGold());
 
-                            player.getInventory().addItem(player.getUsername(), player.getName(), item2);
+                                player.getInventory().addItem(player.getUsername(), player.getName(), item2);
 
-                            if (getStock2() == 0) {
-                                item2_cost.setText("OUT OF STOCK!");
-                                item2_cost.setForeground(Color.RED);
-                                item2_cost.setFont(font);
+                                if (getStock2() == 0) {
+                                    item2_cost.setText("OUT OF STOCK!");
+                                    item2_cost.setForeground(Color.RED);
+                                    item2_cost.setFont(font);
+                                } else {
+                                    //item2_cost.setText(cost2 + " Gold             " + " Stock: " + getStock2());
+                                    item2_cost.setText("Already own item");
+                                    item2_cost.setForeground(Color.RED);
+                                    item2_cost.setFont(font);
+                                }
+
                             } else {
-                                //item2_cost.setText(cost2 + " Gold             " + " Stock: " + getStock2());
-                                item2_cost.setText("Already own item");
+                                item2_cost.setText("Not enough gold!");
                                 item2_cost.setForeground(Color.RED);
+                                Font font = new Font("Arial", Font.BOLD, 14);
                                 item2_cost.setFont(font);
+
                             }
-
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(frame, "Already own item!");
+                        }
                     }
-
-                    else {
-                        item2_cost.setText("Not enough gold!");
-                        item2_cost.setForeground(Color.RED);
-                        Font font = new Font("Arial", Font.BOLD, 14);
-                        item2_cost.setFont(font);
-
+                    else
+                    {
+                        JOptionPane.showMessageDialog(frame, "Inventory already full!");
                     }
 
                 }
@@ -1454,30 +1510,41 @@ public class NPC {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == button3 && stock3 > 0) {
-                    if(player.getGold() >= cost3) {
-                        player.setGold(player.getGold() - cost3);
-                        total_gold.setText("Gold: " + player.getGold());
+                    if (player.getInventory().getItems().size() < Inventory.MAX_ITEM_NUM) {
+                        if (!dbConnection.playerHasItem(player.getUsername(), player.getName(), item3)) {
+                            if (player.getGold() >= cost3) {
+                                player.setGold(player.getGold() - cost3);
+                                total_gold.setText("Gold: " + player.getGold());
 
-                            player.getInventory().addItem(player.getUsername(), player.getName(), item3);
-                            setStock3(getStock3() - 1);
-                            if (getStock3() == 0) {
-                                item3_cost.setText("OUT OF STOCK!");
-                                item3_cost.setForeground(Color.RED);
-                                item3_cost.setFont(font);
+                                player.getInventory().addItem(player.getUsername(), player.getName(), item3);
+                                setStock3(getStock3() - 1);
+                                if (getStock3() == 0) {
+                                    item3_cost.setText("OUT OF STOCK!");
+                                    item3_cost.setForeground(Color.RED);
+                                    item3_cost.setFont(font);
+                                } else {
+                                    //item3_cost.setText(cost3 + " Gold            " + " Stock: " + getStock3());
+                                    item3_cost.setText("Already own item");
+                                    item3_cost.setForeground(Color.RED);
+                                    item3_cost.setFont(font);
+                                }
+
                             } else {
-                                //item3_cost.setText(cost3 + " Gold            " + " Stock: " + getStock3());
-                                item3_cost.setText("Already own item");
+                                item3_cost.setText("Not enough gold!");
                                 item3_cost.setForeground(Color.RED);
+                                Font font = new Font("Arial", Font.BOLD, 14);
                                 item3_cost.setFont(font);
+
                             }
-
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(frame, "Already own item!");
+                        }
                     }
-                    else {
-                        item3_cost.setText("Not enough gold!");
-                        item3_cost.setForeground(Color.RED);
-                        Font font = new Font("Arial", Font.BOLD, 14);
-                        item3_cost.setFont(font);
-
+                    else
+                    {
+                        JOptionPane.showMessageDialog(frame, "Inventory already full!");
                     }
                 }
             }

@@ -40,6 +40,8 @@ public class World{
     boolean goBack;
     private int[] checkPoint;
     public static int invOpen;
+    public static int skillsOpen;
+    public static int lockedSkillsOpen;
     BackgroundMusic bm;
 
     private JButton shop, shop2, battle, battle2, battle3, battle4, home, menubuttons;
@@ -57,7 +59,15 @@ public class World{
     Action menuAction = new menuAction();
     Action pauseGame = new pauseAction();
     Action inventoryAction = new inventoryAction();
+    Action skillsAction = new skillsAction();
+    Action lockedSkillsAction = new lockedSkillsAction();
     boolean exit;
+
+    public static Skill staminup = new Skill("Stamin-Up", "User has a chance to randomly regain lost stamina");
+    public static Skill feelingLucky = new Skill("Feeling Lucky", "User has a chance to randomly find free gold");
+    public static Skill naturalHealer = new Skill("Natural Healer", "User has a chance to randomly regain lost HP");
+    public static Skill treasureHunter = new Skill("Treasure Hunter", "User has a chance to randomly find new items");
+    public static boolean staminupBoost, feelingLuckyBoost, naturalHealerBoost, treasureHunterBoost;
 
 
     public World(int height, int length, int[][] tileType, Player player, float numLevels){ /*TODO: ADD PLAYER FIELD*/
@@ -307,6 +317,12 @@ public class World{
 
         playerLabel.getInputMap().put(KeyStroke.getKeyStroke('i'), "inventoryAction");
         playerLabel.getActionMap().put("inventoryAction", inventoryAction);
+
+        playerLabel.getInputMap().put(KeyStroke.getKeyStroke('k'), "skillsAction");
+        playerLabel.getActionMap().put("skillsAction", skillsAction);
+
+        playerLabel.getInputMap().put(KeyStroke.getKeyStroke('l'), "lockedSkillsAction");
+        playerLabel.getActionMap().put("lockedSkillsAction", lockedSkillsAction);
 
         //add player label to the frame
         frame.add(playerLabel);
@@ -805,6 +821,19 @@ public class World{
                     NPC3label.setVisible(true);
                     checker3 = true;
 
+                    //Unlock new skill when meeting Sam
+                    if (!player.getSkills().contains(naturalHealer)) {
+                        JOptionPane.showMessageDialog(frame, "Learned the Natural Healer skill. Congratulations!");
+                        player.getSkills().add(naturalHealer);
+                    }
+                    else
+                    {
+                        if (player.getSkills().contains(feelingLucky) && !feelingLuckyBoost) {
+                            JOptionPane.showMessageDialog(frame, "Feeling Lucky skill temporarily boosted!");
+                            feelingLuckyBoost = true;
+                        }
+                    }
+
                     playSound("Music/doorbell.wav");
                 }
             }
@@ -891,6 +920,74 @@ public class World{
                 bug.displayBattle(player);
             }
 
+            //Random encounters for skills
+            if (player.getSkills().contains(staminup) && player.getTilesWalked() == 15)
+            {
+                if (player.getStamina() < player.getMaxStamina())
+                {
+                    //Trigger "Stamin-Up" skill
+                    JOptionPane.showMessageDialog(frame, "Stamin-Up skill triggered!");
+                    int staminAmt = 2;
+
+                    //Check for temporary boost
+                    if (staminupBoost)
+                    {
+                        staminAmt = 5;
+                    }
+                    player.setStamina(player.getStamina() + staminAmt);
+                    player.setTilesWalked(player.getTilesWalked() + 1);
+                }
+            }
+
+            if (player.getSkills().contains(feelingLucky) && player.getTilesWalked() == 30)
+            {
+                //Trigger "Feeling Lucky" skill
+                JOptionPane.showMessageDialog(frame, "Feeling Lucky skill triggered! Enjoy the extra gold.");
+                int goldAmt = 10;
+
+                //Check for temporary boost
+                if (feelingLuckyBoost)
+                {
+                    goldAmt = 50;
+                }
+
+                player.setGold(player.getGold() + goldAmt);
+                player.setTilesWalked(player.getTilesWalked() + 1);
+            }
+
+            if (player.getSkills().contains(naturalHealer) && player.getTilesWalked() == 120)
+            {
+                if (player.getHp() < player.getMaxHP())
+                {
+                    //Trigger "Natural Healer" skill
+                    JOptionPane.showMessageDialog(frame, "Natural Healer skill triggered!");
+                    int hpAmt = 10;
+
+                    //Check for temporary boost
+                    if (naturalHealerBoost)
+                    {
+                        hpAmt = 25;
+                    }
+                    player.setHp(player.getHp() + hpAmt);
+                    player.setTilesWalked(player.getTilesWalked() + 1);
+                }
+            }
+
+            if (player.getSkills().contains(treasureHunter) && player.getTilesWalked() == 75)
+            {
+                if (player.getInventory().getItems().size() < Inventory.MAX_ITEM_NUM)
+                {
+                    //Trigger "Treasure Hunter" skill
+                    JOptionPane.showMessageDialog(frame, "Treasure Hunter skill triggered! There's a chance you gained a new item...");
+                    Item gamingLaptop = new Item(4, "Gaming Laptop", "Lightning fast tool to increase user's efficiency (SPEED +1)");
+                    if (!player.getInventory().getItems().contains(gamingLaptop)) {
+                        System.out.println("Adding surprise item to player's inventory...");
+                        player.getInventory().addItem(player.getUsername(), player.getName(), gamingLaptop);
+                    }
+                    player.setTilesWalked(player.getTilesWalked() + 1);
+                }
+            }
+
             //graphics.clearRect(0, 0, width, height);
 
             for (int y = 0; y < this.height; y++) {
@@ -921,6 +1018,7 @@ public class World{
             //Keep health updated
             health.setText("HP: " + player.getHp() + "/" + player.getMaxHP());
             stamina.setText("Stamina: " + player.getStamina() + "/" + player.getMaxStamina());
+            speed.setText("Speed: " + player.getSpeed());
             level.setText("Level: " + player.getLevel());
             xp.setText("XP Needed: " + player.getLevelXP());
             gold.setText("Gold: " + player.getGold());
@@ -1142,6 +1240,36 @@ public class World{
                 invOpen = 1;
                 InventoryDisplay inventoryDisplay = new InventoryDisplay(player);
                 //inventoryDisplay.actionPerformed(e);
+            }
+        }
+    }
+
+    public class skillsAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (skillsOpen == 1)
+            {
+                //Skills panel already open
+            }
+            else {
+                System.out.println("SKILLS PANEL");
+                skillsOpen = 1;
+                SkillsDisplay skillsDisplay = new SkillsDisplay(player);
+            }
+        }
+    }
+
+    public class lockedSkillsAction extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (lockedSkillsOpen == 1)
+            {
+                //Skills panel already open
+            }
+            else {
+                System.out.println("LOCKED SKILLS PANEL");
+                lockedSkillsOpen = 1;
+                LockedSkillsDisplay lockedSkillsDisplay = new LockedSkillsDisplay(player);
             }
         }
     }

@@ -1,2 +1,6 @@
 # software-chasing
-2D role-playing game inspired by the Purdue CS experience
+*Basic 2D role-playing game base designed to build further functionality upon*
+#### Created and managed using:
+- Java
+- MySQL
+- Google Cloud

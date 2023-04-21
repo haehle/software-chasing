@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.*;
 
@@ -158,11 +159,33 @@ public class CharSelect {
 
         });
 
+        JButton char1GearButton = new JButton();
+        char1GearButton.setBounds(620, 300, 80, 60);
+        char1GearButton.setBackground(Color.white);
+        char1GearButton.setText("Gear");
+        char1GearButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //DeleteWindow(profile, char1Name);
+                try {
+                    GearEquip ge = new GearEquip();
+                    players[0] = ge.equip(players[0]);
+                    // dbConnection.updatePlayer(players[0]);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            }
+
+        });
+
         if(char1Name != null){
             con.add(char1UpgradeButton);
             con.add(char1Button);
             con.add(char1EditButton);
             con.add(char1DeleteButton);
+            con.add(char1GearButton);
         }
 
         JButton char2UpgradeButton = new JButton();
@@ -228,11 +251,33 @@ public class CharSelect {
 
         });
 
+        JButton char2GearButton = new JButton();
+        char2GearButton.setBounds(620, 300, 80, 60);
+        char2GearButton.setBackground(Color.white);
+        char2GearButton.setText("Gear");
+        char2GearButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //DeleteWindow(profile, char1Name);
+                try {
+                    GearEquip ge = new GearEquip();
+                    players[1] = ge.equip(players[1]);
+                    // dbConnection.updatePlayer(players[1]);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            }
+
+        });
+
         if(char2Name != null){
             con.add(char2UpgradeButton);
             con.add(char2Button);
             con.add(char2EditButton);
             con.add(char2DeleteButton);
+            con.add(char2GearButton);
         }
 
         JButton char3UpgradeButton = new JButton();
@@ -292,12 +337,34 @@ public class CharSelect {
             }
 
         });
+        
+        JButton char3GearButton = new JButton();
+        char3GearButton.setBounds(620, 300, 80, 60);
+        char3GearButton.setBackground(Color.white);
+        char3GearButton.setText("Gear");
+        char3GearButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //DeleteWindow(profile, char1Name);
+                try {
+                    GearEquip ge = new GearEquip();
+                    players[2] = ge.equip(players[2]);
+                    // dbConnection.updatePlayer(players[2]);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            }
+
+        });
 
         if(char3Name != null){
             con.add(char3UpgradeButton);
             con.add(char3Button);
             con.add(char3EditButton);
             con.add(char3DeleteButton);
+            con.add(char3GearButton);
         }
 
     }
@@ -551,6 +618,7 @@ public class CharSelect {
     }
 
     public static void main(String[] args) {
+        //Util.createProfile("saheer2@test.com", "saheer2", "Password123");
         Profile profiletemp = dbConnection.login("test", "Password123");
         new CharSelect(profiletemp);
     }

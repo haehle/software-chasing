@@ -6,16 +6,16 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 
-public class InventoryDisplay extends JFrame implements KeyListener {
+public class SkillsDisplay extends JFrame implements KeyListener {
 
-    JLabel itemLabel = new JLabel(" ");
-    List<Item> items;
+    JLabel skillLabel = new JLabel("Unlocked Skills");
+    List<Skill> skills;
     List<String> descriptions = new ArrayList<>();
     String selectedValue = "";
     JList<String> list;
 
-    public InventoryDisplay(Player player) {
-        super(player.getName() + "'s Inventory");
+    public SkillsDisplay(Player player) {
+        super(player.getName() + "'s Skills");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -31,7 +31,11 @@ public class InventoryDisplay extends JFrame implements KeyListener {
         setPreferredSize(new Dimension(500, 300));
         setBackground(Color.decode("#cfb991"));
 
+        //Change skillLabel
+        skillLabel.setFont(new Font(skillLabel.getFont().toString(), Font.PLAIN, 25));
+
         //Add buttons
+        /*
         JButton useButton = new JButton("Use item");
         useButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -40,6 +44,7 @@ public class InventoryDisplay extends JFrame implements KeyListener {
 
                 /* Use item - values are hardcoded for now, but would ideally have uses fetched from
                    separate database table later on */
+        /*
                 if (selectedValue.equals("Coffee"))
                 {
                     player.setHp(player.getHp() + 5);
@@ -65,6 +70,7 @@ public class InventoryDisplay extends JFrame implements KeyListener {
             }
         });
         useButton.setEnabled(false);
+         */
 
         //Add description text
         JLabel description = new JLabel();
@@ -72,17 +78,17 @@ public class InventoryDisplay extends JFrame implements KeyListener {
         description.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
         String item1 = "";
-        if (player.getInventory().getItems().size() > 0)
+        if (player.getSkills().size() > 0)
         {
-            //Inventory is not empty
-            System.out.println("Inventory is not empty");
-            items = player.getInventory().getItems();
+            //Player has one or more skills
+            System.out.println("Player has one or more skills");
+            skills = player.getSkills();
 
             DefaultListModel<String> l1 = new DefaultListModel<>();
-            for (Item item : items)
+            for (Skill skill : skills)
             {
-                l1.addElement(item.getName());
-                descriptions.add(item.getDescription());
+                l1.addElement(skill.getName());
+                descriptions.add(skill.getDescription());
             }
             list = new JList<>(l1);
             list.setVisibleRowCount(-1);
@@ -95,15 +101,12 @@ public class InventoryDisplay extends JFrame implements KeyListener {
                     if (e.getValueIsAdjusting() == false) {
 
                         if (list.getSelectedIndex() == -1) {
-                            //No item selected
-                            useButton.setEnabled(false);
-
+                            //No skill selected
                         } else {
-                            //Item selected
+                            //Skill selected
                             System.out.println("SELECTED VALUE: " + list.getSelectedValue());
                             selectedValue = list.getSelectedValue();
                             description.setText(descriptions.get(list.getSelectedIndex()));
-                            useButton.setEnabled(true);
                         }
                     }
                 }
@@ -113,41 +116,35 @@ public class InventoryDisplay extends JFrame implements KeyListener {
             list.addListSelectionListener(listListener);
 
             //Add components
-            add(itemLabel);
+            add(skillLabel);
             add(scrollPane);
             add(description);
-            add(useButton);
+            //add(useButton);
             add(Box.createRigidArea(new Dimension(10, 10)));
         }
         else
         {
-            //Inventory is empty
-            itemLabel.setText("Your inventory is empty.");
+            //Player has zero skills whatsoever
+            skillLabel.setText("You have no skills at all.");
             add(Box.createRigidArea(new Dimension(10, 10)));
-            add(itemLabel);
-            System.out.println("Inventory is empty");
+            add(skillLabel);
+            System.out.println("Player has zero skills whatsoever");
         }
 
-        itemLabel.addKeyListener(this);
-        itemLabel.setFocusable(true);
+        skillLabel.addKeyListener(this);
+        skillLabel.setFocusable(true);
         pack();
         setVisible(true);
     }
 
-    public static void exitProcedure(Player player)
-    {
-        World.invOpen = 0;
-        NPC.updateDisplay(player.getHp(), player.getMaxHP());
-    }
-
     public static void exitProcedure()
     {
-        World.invOpen = 0;
+        World.skillsOpen = 0;
     }
 
     public void keyTyped(KeyEvent input) {
         char key = input.getKeyChar();
-        if (key == 'i')
+        if (key == 'k')
         {
             exitProcedure();
             dispose();

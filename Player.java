@@ -41,7 +41,7 @@ public class Player {
     private int level;
     private int levelXP;
     private int initialLevelXP;
-    private String[] skills;
+    private ArrayList<Skill> skills;
     private ArrayList<String> abilities;
     private int currentLevelNo;
     private int maxLevelNO;
@@ -50,6 +50,7 @@ public class Player {
     private long timePlayed;
     private long points;
     private Gear[] availableGear;
+    private Gear equippedGear;
 
     public Player(String username, String name, int playerClass) {
         this.timePlayed = 0;
@@ -69,6 +70,7 @@ public class Player {
         this.maxLevelNO = 0;
         this.timePlayed = 0;
         this.points = 0;
+        this.availableGear = new Gear[1];
         //if (type == 1) {
             this.inventory = new Inventory();
             if (playerClass == 1) {
@@ -77,7 +79,7 @@ public class Player {
                 this.speed = 15;
                 this.stamina = 20;
                 this.maxStamina = 20;
-                this.skills = new String[]{};
+                this.skills = new ArrayList<>();
                 this.abilities = new ArrayList<>();
             } else if (playerClass == 2) {
                 this.hp = 60;
@@ -85,7 +87,7 @@ public class Player {
                 this.speed = 25;
                 this.stamina = 30;
                 this.maxStamina = 30;
-                this.skills = new String[]{};
+                this.skills = new ArrayList<>();
                 this.abilities = new ArrayList<>();
             } else if (playerClass == 3) {
                 this.hp = 200;
@@ -93,7 +95,7 @@ public class Player {
                 this.speed = 5;
                 this.stamina = 5;
                 this.maxStamina = 5;
-                this.skills = new String[]{};
+                this.skills = new ArrayList<>();
                 this.abilities = new ArrayList<>();
 
             }
@@ -103,7 +105,7 @@ public class Player {
     //Constructor used to initialize Player object from database information
     public Player(String username, String name, int playerClass, int locationX, int locationY, int hp, int maxHP,
                   int speed, int stamina, int maxStamina, int level, int levelXP, int initialLevelXP, Inventory inventory,
-                  long timePlayed, long points, int currentLevelNo, int maxLevelNO) {
+                  long timePlayed, long points, int currentLevelNo, int maxLevelNO, ArrayList<Skill> skills) {
         this.timePlayed = 0;
         this.enemiesDefeated = 0;
         this.questionsAnswered = 0;
@@ -125,10 +127,10 @@ public class Player {
         this.maxLevelNO = maxLevelNO;
         this.timePlayed = timePlayed;
         this.points = points;
+        this.availableGear = new Gear[1];
+        this.skills = skills;
 
-
-        //Need to get these from alternate table
-        this.skills = new String[]{};
+        //Need to get this from alternate table
         this.abilities = new ArrayList<>();
     }
         public long getTimePlayed(){
@@ -141,6 +143,58 @@ public class Player {
 
     public int getCurrentLevelNo() {
         return currentLevelNo;
+    }
+
+    public void buyGear(Gear gear){
+        System.out.println(gear);
+        Gear[] tempAvailableGear = new Gear[availableGear.length + 1];
+        int i = 0;
+        for(i = 0; i < availableGear.length; i++){
+            tempAvailableGear[i] = availableGear[i];
+        }
+        i--;
+        tempAvailableGear[i] = gear;
+        this.availableGear = tempAvailableGear;
+    }
+    
+    public boolean checkIfBought(Gear gear){
+        for(Gear g : this.availableGear){
+            if(g != null){
+                if(gear.getGearName().equals(g.getGearName())){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void unequipGear(){
+        equippedGear = null;
+    }
+
+    public Gear getEquippedGear(){
+        return equippedGear;
+    }
+
+    public Gear[] getAvailableGear(){
+        return availableGear;
+    }
+
+    public void equipGear(Gear gear){
+        int indexToRemove = -1;
+        for (int i = 0; i < availableGear.length; i++) {
+            if(availableGear[i] != null){
+                if (availableGear[i].getGearName().equals(gear.getGearName())) {
+                    indexToRemove = i;
+                    break;
+                }
+            }
+        }
+        
+        if (indexToRemove >= 0) {
+            equippedGear = availableGear[indexToRemove];
+            availableGear[indexToRemove] = null;
+        }
     }
 
     public int getTilesWalked() {
@@ -231,8 +285,19 @@ public class Player {
             return this.hp;
         }
 
-        public void setHp ( int hp){
-            this.hp = hp;
+        public void setHp ( int hp)
+        {
+            if (hp > getMaxHP())
+            {
+                this.hp = getMaxHP();
+            }
+            else if (hp < 0)
+            {
+                this.hp = 0;
+            }
+            else {
+                this.hp = hp;
+            }
         }
 
         public int getMaxHP () {
@@ -256,7 +321,17 @@ public class Player {
         }
 
         public void setStamina ( int stamina){
-            this.stamina = stamina;
+            if (stamina > getMaxStamina())
+            {
+                this.stamina = getMaxStamina();
+            }
+            else if (stamina < 0)
+            {
+                this.stamina = 0;
+            }
+            else {
+                this.stamina = stamina;
+            }
         }
 
         public int getMaxStamina () {
@@ -296,15 +371,12 @@ public class Player {
         }
 
 
-        public String[] getSkills () {
+        public ArrayList<Skill> getSkills () {
             return this.skills;
         }
 
-        public void addNewSkills (String[]skills){
-            List<String> list = new ArrayList<String>(Arrays.asList(skills));
-            list.addAll(Arrays.asList(this.skills));
-            String[] updatedSkills = (String[]) list.toArray();
-            this.skills = updatedSkills;
+        public void setSkills (ArrayList<Skill> skills) {
+            this.skills = skills;
         }
 
         public ArrayList<String> getAbilities () {
@@ -425,7 +497,14 @@ public class Player {
 
     public void addAchievement(String achievement) {
 
-        if(this.achievements.isEmpty()) {
+        if (this.achievements != null) {
+            if (this.achievements.isEmpty()) {
+                this.achievements.add("Holder");
+            }
+        }
+        else
+        {
+            this.achievements = new ArrayList<>();
             this.achievements.add("Holder");
         }
 
