@@ -442,7 +442,14 @@ public class Player {
 
     public void addAchievement(String achievement) {
 
-        if(this.achievements.isEmpty()) {
+        if (this.achievements != null) {
+            if (this.achievements.isEmpty()) {
+                this.achievements.add("Holder");
+            }
+        }
+        else
+        {
+            this.achievements = new ArrayList<>();
             this.achievements.add("Holder");
         }
 

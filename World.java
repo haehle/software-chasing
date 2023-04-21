@@ -61,6 +61,11 @@ public class World{
     Action skillsAction = new skillsAction();
     boolean exit;
 
+    public static Skill staminup = new Skill("Stamin-Up", "User has a chance to randomly regain lost stamina");
+    public static Skill feelingLucky = new Skill("Feeling Lucky", "User has a chance to randomly find free gold");
+    public static Skill naturalHealer = new Skill("Natural Healer", "User has a chance to randomly regain lost HP");
+    public static Skill treasureHunter = new Skill("Treasure Hunter", "User has a chance to randomly find new items");
+
 
     public World(int height, int length, int[][] tileType, Player player, float numLevels){ /*TODO: ADD PLAYER FIELD*/
         //super(player.getName());
@@ -894,6 +899,52 @@ public class World{
             if(player.getTilesWalked() == 54 && bugCheck) {
                 bugCheck = false;
                 bug.displayBattle(player);
+            }
+
+            //Random encounters for skills
+            if (player.getSkills().contains(staminup) && player.getTilesWalked() == 15)
+            {
+                if (player.getStamina() < player.getMaxStamina())
+                {
+                    //Trigger "Stamin-Up" skill
+                    JOptionPane.showMessageDialog(frame, "Stamin-Up skill triggered!");
+                    player.setStamina(player.getStamina() + 2);
+                    player.setTilesWalked(player.getTilesWalked() + 1);
+                }
+            }
+
+            if (player.getSkills().contains(feelingLucky) && player.getTilesWalked() == 30)
+            {
+                //Trigger "Feeling Lucky" skill
+                JOptionPane.showMessageDialog(frame, "Feeling Lucky skill triggered! Enjoy the extra gold.");
+                player.setGold(player.getGold() + 10);
+                player.setTilesWalked(player.getTilesWalked() + 1);
+            }
+
+            if (player.getSkills().contains(naturalHealer) && player.getTilesWalked() == 120)
+            {
+                if (player.getHp() < player.getMaxHP())
+                {
+                    //Trigger "Natural Healer" skill
+                    JOptionPane.showMessageDialog(frame, "Natural Healer skill triggered!");
+                    player.setHp(player.getHp() + 2);
+                    player.setTilesWalked(player.getTilesWalked() + 1);
+                }
+            }
+
+            if (player.getSkills().contains(treasureHunter) && player.getTilesWalked() == 75)
+            {
+                if (player.getInventory().getItems().size() < Inventory.MAX_ITEM_NUM)
+                {
+                    //Trigger "Treasure Hunter" skill
+                    JOptionPane.showMessageDialog(frame, "Treasure Hunter skill triggered! There's a chance you gained a new item...");
+                    Item gamingLaptop = new Item(4, "Gaming Laptop", "Lightning fast tool to increase user's efficiency (SPEED +1)");
+                    if (!player.getInventory().getItems().contains(gamingLaptop)) {
+                        System.out.println("Adding surprise item to player's inventory...");
+                        player.getInventory().addItem(player.getUsername(), player.getName(), gamingLaptop);
+                    }
+                    player.setTilesWalked(player.getTilesWalked() + 1);
+                }
             }
 
             //graphics.clearRect(0, 0, width, height);

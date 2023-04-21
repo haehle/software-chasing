@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SkillsDisplay extends JFrame implements KeyListener {
 
-    JLabel skillLabel = new JLabel("Current Skills");
+    JLabel skillLabel = new JLabel("Unlocked Skills");
     List<Skill> skills;
     List<String> descriptions = new ArrayList<>();
     String selectedValue = "";
